@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
     public bool startPlaying;
 
     public textChange tc;
+    public PCGMusic pcg;
     void Start()
     {
         
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
             if(Input.anyKeyDown){
                 startPlaying = true;
                 tc.hasStarted = true;
+                pcg.hasStarted = true;
                 theMusic.Play();
             }
         }
