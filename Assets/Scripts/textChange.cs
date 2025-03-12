@@ -9,7 +9,10 @@ public class textChange : MonoBehaviour
     
     private float beatInterval; 
     private float timeSinceLastBeat;
-    private float displayTime = 0.2f; 
+
+    private float displayTime = 0.6f;
+
+    public bool inHitWindow = false;
 
     void Start()
     {
@@ -17,6 +20,7 @@ public class textChange : MonoBehaviour
         beatInterval = 240f / beatTempo;
         timeSinceLastBeat = 0f;
         text.text = "";
+        text.rectTransform.anchoredPosition += new Vector2(20f, 80f);
     }
 
     void Update()
@@ -24,17 +28,19 @@ public class textChange : MonoBehaviour
         if (!hasStarted) return;
 
         timeSinceLastBeat += Time.deltaTime;
-
         if (timeSinceLastBeat >= beatInterval)
         {
-            timeSinceLastBeat -= beatInterval; 
+            timeSinceLastBeat -= beatInterval;
+
             text.text = "Hit Now";
-            Invoke("ClearText", displayTime); 
+            inHitWindow = true;
+            Invoke(nameof(ClearText), displayTime);
         }
     }
 
     void ClearText()
     {
         text.text = "";
+        inHitWindow = false;
     }
 }

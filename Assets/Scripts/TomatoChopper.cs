@@ -8,6 +8,10 @@ public class TomatoChopper : MonoBehaviour
     private SpriteRenderer spriteRenderer;
     private int chopIndex = 0;
 
+    public textChange textChangeRef;
+
+    public GameManager gameManagerRef;
+
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
@@ -16,7 +20,7 @@ public class TomatoChopper : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0))
+        if (Input.GetMouseButtonDown(0) && textChangeRef.inHitWindow)
         {
             ChopTomato();
         }
@@ -28,10 +32,13 @@ public class TomatoChopper : MonoBehaviour
         {
             chopIndex++;
             spriteRenderer.sprite = tomatoSprites[chopIndex];
-        }
-        else
-        {
-            Debug.Log("Tomato is fully chopped!");
+
+            if (chopIndex == tomatoSprites.Length - 1)
+            {
+                Debug.Log("Tomato is fully chopped!");
+                gameManagerRef.StopEverything();
+            }
         }
     }
+
 }
