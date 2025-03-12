@@ -310,7 +310,7 @@ GameObject:
   - component: {fileID: 981053911}
   - component: {fileID: 981053910}
   m_Layer: 0
-  m_Name: Tomato
+  m_Name: Bread
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -329,11 +329,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tomatoSprites:
-  - {fileID: -3962807554240710951, guid: 3f9fc874e8c89402fb7363a98dbb6f2d, type: 3}
-  - {fileID: 21300000, guid: dc9a6743dca34424288a18f359bb99cd, type: 3}
-  - {fileID: 21300000, guid: c153f3fe7bd91437788525d766ded421, type: 3}
-  - {fileID: 21300000, guid: 9a0031f53ebd348ef9f7f90779536da2, type: 3}
-  - {fileID: 21300000, guid: 8758f2ea01af3460bb8ccd46a67605da, type: 3}
+  - {fileID: -4431494890709657585, guid: f993b684c145d481b8b93f413d0a3e1b, type: 3}
+  - {fileID: 21300000, guid: 23d8a6664b0354d63bd989be7a5dc50d, type: 3}
+  - {fileID: 21300000, guid: 0de1742c9c1304269a7035e1974b4611, type: 3}
+  - {fileID: 21300000, guid: c7e7446a46bfc46cba3f2cff69840991, type: 3}
 --- !u!212 &981053911
 SpriteRenderer:
   m_ObjectHideFlags: 0
@@ -378,7 +377,7 @@ SpriteRenderer:
   m_SortingLayerID: 0
   m_SortingLayer: 0
   m_SortingOrder: 0
-  m_Sprite: {fileID: -3962807554240710951, guid: 3f9fc874e8c89402fb7363a98dbb6f2d, type: 3}
+  m_Sprite: {fileID: -4431494890709657585, guid: f993b684c145d481b8b93f413d0a3e1b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
@@ -398,7 +397,7 @@ Transform:
   m_GameObject: {fileID: 981053909}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.6, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children: []
