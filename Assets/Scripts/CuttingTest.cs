@@ -5,6 +5,8 @@ public class CuttingTest : MonoBehaviour
     public GameObject[] slices;
     public int indexToSlice;
     public bool hit = true;
+
+    private SongManager songManager;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
