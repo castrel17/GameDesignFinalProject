@@ -23,14 +23,20 @@ public class MusicNote : MonoBehaviour
     {
         if(moving){
             //move note from start to end based on the beats
-            transform.position = Vector2.Lerp(startingPosition, endingPosition, (songManager.getBeatsPosition() - myBeat) / beatDur);
+            transform.position = Vector2.Lerp(startingPosition, endingPosition, (songManager.getBeatsPosition() - myBeat) / (beatDur*2));
         }
         //if the player presses so early that they don't collide destroy it
         if(!moving && transform.position.y < -1.0f){
             Debug.Log("Miss");
             Destroy(gameObject, 0.75f);
         }
-        
+        //if the player presses so late that they don't collide destroy it
+        if (!moving && transform.position.y > 1.0f)
+        {
+            Debug.Log("Miss");
+            Destroy(gameObject, 0.75f);
+        }
+
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {

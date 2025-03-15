@@ -46,7 +46,7 @@ public class SongManager : MonoBehaviour
                 curr.myBeat = musicNoteBeats[beatIndex];
                 curr.beatDur = 4f;
                 curr.startingPosition = new Vector2(0f, -4f);
-                curr.endingPosition = new Vector2(0f, 0.5f);
+                curr.endingPosition = new Vector2(0f, 4f);
                 musicNotes.Enqueue(curr);
                 beatIndex++;
             }
