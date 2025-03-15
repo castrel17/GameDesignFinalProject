@@ -24,6 +24,13 @@ public class SongManager : MonoBehaviour
 
     private float nextBeatTime;
     private int beatCounter;
+
+    public bool isPotato = true;
+    public bool isCarrot = false;
+    public bool isOnion = false;
+
+    private bool spawnNote = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -31,12 +38,8 @@ public class SongManager : MonoBehaviour
         secondsPerBeat = 60f / bpm;
 
         for (int i = 0; i < 1000; i++)  
-        {
-            if(i!= 0)
-            {
-                musicNoteBeats.Add((i*4)-1);
-                Debug.Log(i.ToString());
-            }
+        {   
+            musicNoteBeats.Add(i*1);
         }
         
     }
@@ -56,20 +59,60 @@ public class SongManager : MonoBehaviour
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
+                if (isPotato && musicNoteBeats[beatIndex] % 8 == 0) //spawns potato slow
+                {
+                    spawnNote = true;
+                    Debug.Log("spawn note potato");
+                    
+                }
+
+                if (isCarrot && musicNoteBeats[beatIndex] % 4 == 0) //spawns carrot medium
+                {
+                    spawnNote = true;
+                    Debug.Log("spawn note onion");
+                }
+
+                if (isOnion && musicNoteBeats[beatIndex] % 2 == 0) //spawns onion fast
+                {
+                    spawnNote = true;
+                    Debug.Log("spawn note onion");
+                }
+
+                if(spawnNote){
                     MusicNote curr = Instantiate(note, this.transform);
-                    //set beat, starting position, and ending position for the note
                     curr.myBeat = musicNoteBeats[beatIndex];
-                    curr.beatDur = 4f;
+                    curr.beatDur = 4f; 
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
+
+                    Debug.Log("Spawning note at beat: " + musicNoteBeats[beatIndex]);
+
                     musicNotes.Enqueue(curr);
-                    beatIndex++;
+                    spawnNote = false;
+                }
+                beatIndex++;
+
             }
 
             //if player pressed space and the queue is not empty dequeue the note and toggle it
             if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
                 musicNotes.Dequeue().notePressed();
+            }
+
+            if (Input.GetKeyDown(KeyCode.Return))
+            {
+                if(isOnion){
+                    isOnion = false;
+                    isPotato = true;
+                    Debug.Log("potato on onion off");
+
+                }else{
+                    isOnion = true;
+                    isPotato = false;
+                    Debug.Log("onion on potato off");
+
+                }
             }
         }
     }

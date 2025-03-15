@@ -5,9 +5,14 @@ public class CuttingTest : MonoBehaviour
     public GameObject[] slices;
     public int indexToSlice;
     public bool hit = true;
-
+    public bool allCut = false;
     private SongManager songManager;
+
+    private MusicNote musicNote;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    public float slideSpeed = 100.0f;
+    private Vector3 offScreenPosition = new Vector3(100f, 0f, 0f);
     void Start()
     {
         indexToSlice = slices.Length - 1;
@@ -16,9 +21,16 @@ public class CuttingTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !allCut)
         {
             slice();
+        }
+        //once all cut move off the screen
+        if(allCut){
+            foreach (var slice in slices)
+            {
+                slice.transform.position = Vector3.MoveTowards(slice.transform.position, offScreenPosition, slideSpeed * Time.deltaTime);
+            }
         }
     }
     public void slice()
@@ -33,6 +45,9 @@ public class CuttingTest : MonoBehaviour
         if(indexToSlice > 0)
         {
             indexToSlice--;
+        }else{
+            allCut = true;
+            Debug.Log("all cut");
         }
     }
 }

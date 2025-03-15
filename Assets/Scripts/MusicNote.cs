@@ -67,6 +67,11 @@ public class MusicNote : MonoBehaviour
         }
         
     }
+
+    public bool hitStatus()
+    {
+        return hit;
+    }
     public void notePressed()
     {
         trigger.enabled = true;
