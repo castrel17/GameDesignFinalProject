@@ -4,7 +4,7 @@ public class CuttingTest : MonoBehaviour
 {
     public GameObject[] slices;
     public int indexToSlice;
-    public bool hit = true;
+    public bool hit = false;
     public bool allCut = false;
     private SongManager songManager;
 
@@ -21,12 +21,9 @@ public class CuttingTest : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !allCut)
-        {
-            slice();
-        }
+        
         //once all cut move off the screen
-        if(allCut){
+        if (allCut){
             foreach (var slice in slices)
             {
                 slice.transform.position = Vector3.MoveTowards(slice.transform.position, offScreenPosition, slideSpeed * Time.deltaTime);
@@ -35,7 +32,7 @@ public class CuttingTest : MonoBehaviour
     }
     public void slice()
     {
-        if (hit && indexToSlice > 0)
+        if (hit && indexToSlice > 0 && !allCut)
         {
             for(int i = indexToSlice; i < slices.Length; i++)
             {

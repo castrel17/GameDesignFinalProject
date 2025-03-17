@@ -13,7 +13,7 @@ public class DemoLevelManager : MonoBehaviour
     private Vector3 targetPosition = new Vector3(0f, 0f, 0f);  
     private Vector3 offScreenPosition = new Vector3(-10f, 0f, 0f); 
 
-    private GameObject currentVegetable; 
+    public GameObject currentVegetable; 
     private bool isSliding = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
