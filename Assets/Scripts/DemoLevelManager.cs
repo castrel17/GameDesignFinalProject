@@ -3,10 +3,10 @@ using UnityEngine;
 public class DemoLevelManager : MonoBehaviour
 {
     // Prefabs for each vegetable
-    public GameObject tomatoPrefab;
-    // public GameObject potatoPrefab;
-    // public GameObject carrotPrefab;
-    // public GameObject onionPrefab;
+    //public GameObject tomatoPrefab;
+    public GameObject potatoPrefab;
+    public GameObject carrotPrefab;
+    public GameObject onionPrefab;
 
     // Speed and positions for sliding
     public float slideSpeed = 5f; 
@@ -47,47 +47,43 @@ public class DemoLevelManager : MonoBehaviour
 
     public void spawnNew()
     {
-        int rand = Random.Range(0, 4);
-
-        if (rand == 0)
-        {
-            SpawnTomato();
-        }
-        else if (rand == 1)
-        {
-            SpawnPotato();
-        }
-        else if (rand == 2)
-        {
-            SpawnCarrot();
-        }
-        else if (rand == 3)
-        {
-            SpawnOnion();
-        }
+        int rand = Random.Range(0, 3);
+        SpawnPotato();
+        //if (rand == 0)
+        //{
+        //    SpawnPotato();
+        //}
+        //else if (rand == 1)
+        //{
+        //    SpawnCarrot();
+        //}
+        //else if (rand == 2)
+        //{
+        //    SpawnOnion();
+        //}
     }
 
-    void SpawnTomato()
-    {
-        currentVegetable = Instantiate(tomatoPrefab, offScreenPosition, Quaternion.identity);
-        isSliding = true;
-    }
+    //void SpawnTomato()
+    //{
+    //    currentVegetable = Instantiate(tomatoPrefab, offScreenPosition, Quaternion.identity);
+    //    isSliding = true;
+    //}
 
     void SpawnPotato()
     {
-        currentVegetable = Instantiate(tomatoPrefab, offScreenPosition, Quaternion.identity);
+        currentVegetable = Instantiate(potatoPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
     }
 
     void SpawnCarrot()
     {
-        currentVegetable = Instantiate(tomatoPrefab, offScreenPosition, Quaternion.identity);
+        currentVegetable = Instantiate(carrotPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
     }
 
     void SpawnOnion()
     {
-        currentVegetable = Instantiate(tomatoPrefab, offScreenPosition, Quaternion.identity);
+        currentVegetable = Instantiate(onionPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
     }
 }

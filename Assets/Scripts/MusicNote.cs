@@ -27,14 +27,19 @@ public class MusicNote : MonoBehaviour
         if(moving){
             //move note from start to end based on the beats
             transform.position = Vector2.Lerp(startingPosition, endingPosition, (songManager.getBeatsPosition() - myBeat) / (beatDur*2));
+            //if the note goes out of bounds without the player pressing the button just delete the note
+            if(transform.position.y == endingPosition.y)
+            {
+                Destroy(gameObject);
+            }
         }
         //if the player presses so early that they don't collide destroy it
         if(!moving && transform.position.y < -1.0f && !markedForDelete)
         {
             markedForDelete = true;
             //tell current vegetable that it was not hit
-            manager.currentVegetable.GetComponent<CuttingTest>().hit = false;
-            manager.currentVegetable.GetComponent<CuttingTest>().slice();
+            manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
+            manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             Debug.Log("Miss");
             Destroy(gameObject, 0.75f);
         }
@@ -43,8 +48,8 @@ public class MusicNote : MonoBehaviour
         {
             markedForDelete = true;
             //tell current vegetable that it was not hit
-            manager.currentVegetable.GetComponent<CuttingTest>().hit = false;
-            manager.currentVegetable.GetComponent<CuttingTest>().slice();
+            manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
+            manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             Debug.Log("Miss");
             Destroy(gameObject, 0.75f);
         }
@@ -61,29 +66,29 @@ public class MusicNote : MonoBehaviour
             {
                 Debug.Log("Perfect");
                 //tell current vegetable that it was hit
-                manager.currentVegetable.GetComponent<CuttingTest>().hit = true;
-                manager.currentVegetable.GetComponent<CuttingTest>().slice();
+                manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
+                manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             }
             else if(distance > 1)
             {
                 Debug.Log("Miss");
                 //tell current vegetable that it was not hit
-                manager.currentVegetable.GetComponent<CuttingTest>().hit = false;
-                manager.currentVegetable.GetComponent<CuttingTest>().slice();
+                manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
+                manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             }
             else if(transform.position.y < 0)
             {
                 Debug.Log("Too Early");
                 //tell current vegetable that it was hit
-                manager.currentVegetable.GetComponent<CuttingTest>().hit = true;
-                manager.currentVegetable.GetComponent<CuttingTest>().slice();
+                manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
+                manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             }
             else
             {
                 Debug.Log("Too Late");
                 //tell current vegetable that it was hit
-                manager.currentVegetable.GetComponent<CuttingTest>().hit = true;
-                manager.currentVegetable.GetComponent<CuttingTest>().slice();
+                manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
+                manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             }
             //destroy the music note after a small delay
             Destroy(gameObject, 0.75f);
