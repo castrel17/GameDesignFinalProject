@@ -16,6 +16,11 @@ public class DemoLevelManager : MonoBehaviour
     public GameObject currentVegetable; 
     private bool isSliding = false;
 
+    public SongManager songManager;
+
+    public bool needVeg = true;
+
+    
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -25,22 +30,33 @@ public class DemoLevelManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Tab))
-        {
-            spawnNew();
-        }
+        if(!songManager.gameOver){
+            if(songManager.startStatus() && needVeg){
+                needVeg = false;
+                spawnNew();
+            }
 
-        if (isSliding && currentVegetable != null)
-        {
-            currentVegetable.transform.position = Vector3.MoveTowards(
-                currentVegetable.transform.position,
-                targetPosition,
-                slideSpeed * Time.deltaTime
-            );
-
-            if (currentVegetable.transform.position == targetPosition)
+            if (isSliding && currentVegetable != null)
             {
-                isSliding = false;
+                currentVegetable.transform.position = Vector3.MoveTowards(
+                    currentVegetable.transform.position,
+                    targetPosition,
+                    slideSpeed * Time.deltaTime
+                );
+
+                if (currentVegetable.transform.position == targetPosition)
+                {
+                    isSliding = false;
+                }
+            }
+            if (currentVegetable != null)
+            {
+                VegetableCutting vegetableCutting = currentVegetable.GetComponent<VegetableCutting>();
+                if (vegetableCutting != null && vegetableCutting.allCut)
+                {
+                    needVeg = true;
+                    currentVegetable = null;
+                }
             }
         }
     }
@@ -51,14 +67,23 @@ public class DemoLevelManager : MonoBehaviour
         if (rand == 0)
         {
             SpawnPotato();
+            songManager.isPotato = true;
+            songManager.isCarrot= false;
+            songManager.isOnion= false;
         }
         else if (rand == 1)
         {
             SpawnCarrot();
+            songManager.isPotato = false;
+            songManager.isCarrot= true;
+            songManager.isOnion= false;
         }
         else if (rand == 2)
         {
             SpawnOnion();
+            songManager.isPotato = false;
+            songManager.isCarrot= false;
+            songManager.isOnion= true;
         }
     }
 
@@ -72,17 +97,20 @@ public class DemoLevelManager : MonoBehaviour
     {
         currentVegetable = Instantiate(potatoPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
+        Debug.Log("spawn potato");
     }
 
     void SpawnCarrot()
     {
         currentVegetable = Instantiate(carrotPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
+        Debug.Log("spawn carrot");
     }
 
     void SpawnOnion()
     {
         currentVegetable = Instantiate(onionPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
+        Debug.Log("spawn onion");
     }
 }

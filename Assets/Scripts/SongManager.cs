@@ -20,7 +20,7 @@ public class SongManager : MonoBehaviour
     private List<float> musicNoteBeats = new List<float>();
     private Queue<MusicNote> musicNotes;
     private int beatIndex = 0;
-    private bool started = false;
+    public bool started = false;
 
     private float nextBeatTime;
     private int beatCounter;
@@ -31,17 +31,21 @@ public class SongManager : MonoBehaviour
 
     private bool spawnNote = false;
 
+    public bool notePressedOnBeat = false;
+    public int numBeats; //NEED TO CALCULATE THIS BASED ON THE SONG LENGTH RN IT IS HARDCODED
+
+    public bool gameOver = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
-
-        for (int i = 0; i < 1000; i++)  
+        numBeats = 95;
+        for (int i = 0; i < numBeats; i++)  
         {   
             musicNoteBeats.Add(i*1);
-        }
-        
+        }   
     }
 
     // Update is called once per frame
@@ -62,17 +66,13 @@ public class SongManager : MonoBehaviour
                 if (isPotato && musicNoteBeats[beatIndex] % 8 == 0) //spawns potato slow
                 {
                     spawnNote = true;
-                    isPotato = true;
-                    isOnion = false;
-                    isCarrot = false;
-                    Debug.Log("spawn note potato");
-                    
+                    Debug.Log("spawn note potato");   
                 }
 
                 if (isCarrot && musicNoteBeats[beatIndex] % 4 == 0) //spawns carrot medium
                 {
                     spawnNote = true;
-                    Debug.Log("spawn note onion");
+                    Debug.Log("spawn note carrot");
                 }
 
                 if (isOnion && musicNoteBeats[beatIndex] % 2 == 0) //spawns onion fast
@@ -97,26 +97,30 @@ public class SongManager : MonoBehaviour
 
             }
 
+            if(beatIndex == numBeats){
+                gameOver = true;
+            }
             //if player pressed space and the queue is not empty dequeue the note and toggle it
             if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
                 musicNotes.Dequeue().notePressed();
             }
 
-            if (Input.GetKeyDown(KeyCode.Return))
-            {
-                if(isOnion){
-                    isOnion = false;
-                    isPotato = true;
-                    Debug.Log("potato on onion off");
+            //Justify FOR TESTING
+            // if (Input.GetKeyDown(KeyCode.Return))
+            // {
+            //     if(isOnion){
+            //         isOnion = false;
+            //         isPotato = true;
+            //         Debug.Log("potato on onion off");
 
-                }else{
-                    isOnion = true;
-                    isPotato = false;
-                    Debug.Log("onion on potato off");
+            //     }else{
+            //         isOnion = true;
+            //         isPotato = false;
+            //         Debug.Log("onion on potato off");
 
-                }
-            }
+            //     }
+            // }
         }
     }
 
