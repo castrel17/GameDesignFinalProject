@@ -1,8 +1,8 @@
 using UnityEngine;
-
 public class VegetableCutting : MonoBehaviour
 {
     public GameObject[] slices;
+    
     public int indexToSlice;
     public bool hit = false;
     public bool allCut = false;
@@ -15,9 +15,38 @@ public class VegetableCutting : MonoBehaviour
 
     public float slideSpeed = 100.0f;
     private Vector3 offScreenPosition = new Vector3(100f, 0f, 0f);
+
+    //these are only for the onion
+    private int[][] horizontals;
+    private int[][] verticals;
+    private int horizontalIndex = 0;
+    private int verticalIndex = 0;
     void Start()
     {
         indexToSlice = slices.Length - 1;
+        if(vegetableType == Vegetables.Onion)
+        {
+            horizontals = new int[][]
+            {
+                new int[]{8,14 },
+                new int[]{3,9,15,20},
+                new int[]{0,4,10,16,21,25},
+                new int[]{1,5,11,17,22,26 },
+                new int[]{2,6,12,18,23 },
+                new int[]{7,13,19,24}
+            };
+
+            verticals = new int[][]
+            {
+                new int[]{0,1,2},
+                new int[]{3,4,5,6,7},
+                new int[]{8,9,10,11,12,13 },
+                new int[]{14,15,16,17,18,19},
+                new int[]{20,21,22,23,24},
+                new int[]{25,26,27 }
+            };
+
+        }
     }
 
     // Update is called once per frame
@@ -134,6 +163,41 @@ public class VegetableCutting : MonoBehaviour
     }
     private void onionCutting()
     {
-        genericCutting();
+        //do horizontal cutting first
+        if(hit && horizontalIndex < 6 && !allCut)
+        {
+            for (int i = horizontalIndex; i >= 0; i--)
+            {
+                foreach(int j in horizontals[i])
+                {
+                    slices[j].transform.position += (Vector3.up * 0.5f);
+                }
+            }
+        }
+        if (horizontalIndex < 6)
+        {
+            horizontalIndex++;
+        }
+        //if we finished the horizontal already start doing the vertical
+        if(horizontalIndex >= 6 && verticalIndex < 6 && hit && !allCut)
+        {
+            for (int i = verticalIndex; i >= 0; i--)
+            {
+                foreach (int j in verticals[i])
+                {
+                    slices[j].transform.position += (Vector3.left * 0.5f);
+                }
+            }
+        }
+        if(horizontalIndex >= 6 && verticalIndex < 6)
+        {
+            verticalIndex++;
+        }
+        //if we are done cutting vertically and horizontally then set allcut to true
+        if(horizontalIndex >= 6 && verticalIndex >= 6)
+        {
+            allCut = true;
+            Debug.Log("all cut");
+        }
     }
 }
