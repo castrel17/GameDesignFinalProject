@@ -1,5 +1,6 @@
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class DemoLevelManager : MonoBehaviour
 {
@@ -20,6 +21,8 @@ public class DemoLevelManager : MonoBehaviour
     public TextMeshProUGUI tutorialText;
 
     private int spawnIndex = 0;
+
+    public Image peelFillBar;
 
     void Start()
     {
@@ -58,6 +61,7 @@ public class DemoLevelManager : MonoBehaviour
                 CheckVegetableProgress();
             }
         }
+        UpdatePeelBar();
     }
 
     private void CheckVegetableProgress()
@@ -161,4 +165,32 @@ public class DemoLevelManager : MonoBehaviour
         }
         Debug.Log("Spawned onion");
     }
+
+    void UpdatePeelBar()
+    {
+        if (peelFillBar == null) return;
+
+        if (currentVegetable == null)
+        {
+            peelFillBar.gameObject.SetActive(false);
+            return;
+        }
+
+        VegetablePeeler peeler = currentVegetable.GetComponent<VegetablePeeler>();
+        if (peeler == null)
+        {
+            peelFillBar.gameObject.SetActive(false);
+            return;
+        }
+
+        bool showBar = !peeler.IsFullyPeeled();
+        peelFillBar.gameObject.SetActive(showBar);
+
+        if (showBar)
+        {
+            float progress = peeler.GetHoldProgress();
+            peelFillBar.fillAmount = progress;
+        }
+    }
 }
+
