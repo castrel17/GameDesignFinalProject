@@ -62,6 +62,9 @@ public class SongManager : MonoBehaviour
                 if (isPotato && musicNoteBeats[beatIndex] % 8 == 0) //spawns potato slow
                 {
                     spawnNote = true;
+                    isPotato = true;
+                    isOnion = false;
+                    isCarrot = false;
                     Debug.Log("spawn note potato");
                     
                 }

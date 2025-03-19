@@ -48,19 +48,18 @@ public class DemoLevelManager : MonoBehaviour
     public void spawnNew()
     {
         int rand = Random.Range(0, 3);
-        SpawnPotato();
-        //if (rand == 0)
-        //{
-        //    SpawnPotato();
-        //}
-        //else if (rand == 1)
-        //{
-        //    SpawnCarrot();
-        //}
-        //else if (rand == 2)
-        //{
-        //    SpawnOnion();
-        //}
+        if (rand == 0)
+        {
+            SpawnPotato();
+        }
+        else if (rand == 1)
+        {
+            SpawnCarrot();
+        }
+        else if (rand == 2)
+        {
+            SpawnOnion();
+        }
     }
 
     //void SpawnTomato()

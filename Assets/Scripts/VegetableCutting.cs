@@ -134,6 +134,6 @@ public class VegetableCutting : MonoBehaviour
     }
     private void onionCutting()
     {
-
+        genericCutting();
     }
 }
