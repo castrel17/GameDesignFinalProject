@@ -52,7 +52,7 @@ public class SongManager : MonoBehaviour
     void Update()
     {
         //start the song when player presses down on mouse
-        if (!started && Input.GetMouseButtonDown(0)) {
+        if (!started && Input.anyKey) {
             Debug.Log("game started");
             StartCoroutine(CountDownToStart());
         }
