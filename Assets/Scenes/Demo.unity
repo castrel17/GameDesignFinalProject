@@ -303,7 +303,7 @@ AudioSource:
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
-  Loop: 0
+  Loop: 1
   Mute: 0
   Spatialize: 0
   SpatializePostEffects: 0
@@ -470,7 +470,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 2
+  m_SortingOrder: 10
   m_Sprite: {fileID: -2413806693520163455, guid: a86470a33a6bf42c4b3595704624658b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 0.35686275}
   m_FlipX: 0
@@ -1890,7 +1890,6 @@ SceneRoots:
   - {fileID: 1042927661}
   - {fileID: 610167285}
   - {fileID: 5237977699768166848}
-  - {fileID: 655364664}
   - {fileID: 4537965514126801781}
   - {fileID: 1330040871}
   - {fileID: 903084207}
@@ -1902,3 +1901,4 @@ SceneRoots:
   - {fileID: 1924809841}
   - {fileID: 4401431395400293937}
   - {fileID: 894956635}
+  - {fileID: 655364664}
