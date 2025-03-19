@@ -41,7 +41,7 @@ public class SongManager : MonoBehaviour
     {
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
-        numBeats = 95;
+        numBeats = 96;
         for (int i = 0; i < numBeats; i++)  
         {   
             musicNoteBeats.Add(i*1);
@@ -63,19 +63,19 @@ public class SongManager : MonoBehaviour
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
-                if (isPotato && musicNoteBeats[beatIndex] % 8 == 0) //spawns potato slow
+                if (isPotato && musicNoteBeats[beatIndex] % 4 == 0) //spawns potato slow
                 {
                     spawnNote = true;
                     Debug.Log("spawn note potato");   
                 }
 
-                if (isCarrot && musicNoteBeats[beatIndex] % 4 == 0) //spawns carrot medium
+                if (isCarrot && musicNoteBeats[beatIndex] % 2 == 0) //spawns carrot medium
                 {
                     spawnNote = true;
                     Debug.Log("spawn note carrot");
                 }
 
-                if (isOnion && musicNoteBeats[beatIndex] % 2 == 0) //spawns onion fast
+                if (isOnion && musicNoteBeats[beatIndex] % 1 == 0) //spawns onion fast
                 {
                     spawnNote = true;
                     Debug.Log("spawn note onion");
