@@ -49,6 +49,7 @@ public class VegetableCutting : MonoBehaviour
         {
             onionCutting();
         }
+        SoundManager.Instance.PlayRandomSound();
         
     }
     private void potatoCutting()
