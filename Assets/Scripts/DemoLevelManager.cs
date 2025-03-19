@@ -1,37 +1,40 @@
 using UnityEngine;
+using TMPro;
 
 public class DemoLevelManager : MonoBehaviour
 {
-    // Prefabs for each vegetable
-    //public GameObject tomatoPrefab;
     public GameObject potatoPrefab;
     public GameObject carrotPrefab;
     public GameObject onionPrefab;
 
-    // Speed and positions for sliding
     public float slideSpeed = 5f; 
-    private Vector3 targetPosition = new Vector3(0f, 0f, 0f);  
-    private Vector3 offScreenPosition = new Vector3(-10f, 0f, 0f); 
+    private Vector3 targetPosition = new Vector3(0f, 0f, 0f);
+    private Vector3 offScreenPosition = new Vector3(-10f, 0f, 0f);
 
-    public GameObject currentVegetable; 
+    public GameObject currentVegetable;
     private bool isSliding = false;
 
     public SongManager songManager;
-
     public bool needVeg = true;
 
-    
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    public TextMeshProUGUI tutorialText;
+
+    private int spawnIndex = 0;
+
     void Start()
     {
-        // Initialize as needed
+        if (tutorialText != null)
+        {
+            tutorialText.text = "Press any key to start!";
+        }
     }
 
-    // Update is called once per frame
     void Update()
     {
-        if(!songManager.gameOver){
-            if(songManager.startStatus() && needVeg){
+        if (!songManager.gameOver)
+        {
+            if (songManager.startStatus() && needVeg)
+            {
                 needVeg = false;
                 spawnNew();
             }
@@ -49,69 +52,113 @@ public class DemoLevelManager : MonoBehaviour
                     isSliding = false;
                 }
             }
+
             if (currentVegetable != null)
             {
-                VegetableCutting vegetableCutting = currentVegetable.GetComponent<VegetableCutting>();
-                if (vegetableCutting != null && vegetableCutting.allCut)
-                {
-                    needVeg = true;
-                    currentVegetable = null;
-                }
+                CheckVegetableProgress();
             }
+        }
+    }
+
+    private void CheckVegetableProgress()
+    {
+        VegetablePeeler peeler = currentVegetable.GetComponent<VegetablePeeler>();
+        VegetableCutting cutting = currentVegetable.GetComponent<VegetableCutting>();
+
+        if (peeler != null && !peeler.IsFullyPeeled())
+        {
+        }
+        else if (peeler != null && peeler.IsFullyPeeled() && cutting != null && !cutting.allCut)
+        {
+            if (tutorialText != null && tutorialText.text != "Great peeling! Now chop")
+            {
+                tutorialText.text = "Great peeling! Now chop";
+            }
+        }
+        else if (cutting != null && cutting.allCut)
+        {
+            if (tutorialText != null)
+            {
+                tutorialText.text = "All done cutting! Good job!";
+            }
+
+            needVeg = true;
+            currentVegetable = null;
+
+            spawnIndex++;
         }
     }
 
     public void spawnNew()
     {
-        int rand = Random.Range(0, 3);
-        //int rand = 0;
-        if (rand == 0)
+        if (spawnIndex >= 3)
         {
-            SpawnPotato();
-            songManager.isPotato = true;
-            songManager.isCarrot= false;
-            songManager.isOnion= false;
+            if (tutorialText != null)
+            {
+                tutorialText.text = "All vegetables done! Excellent work!";
+            }
+            Debug.Log("No more vegetables to spawn!");
+            songManager.StopMusic();
+            return;
         }
-        else if (rand == 1)
+
+        // vegetable to spawn based on spawnIndex
+        // 0 -> Carrot
+        // 1, -> Potato
+        // 2   -> Onion
+        if (spawnIndex < 1)
         {
             SpawnCarrot();
+            songManager.isCarrot = true;
             songManager.isPotato = false;
-            songManager.isCarrot= true;
-            songManager.isOnion= false;
+            songManager.isOnion = false;
         }
-        else if (rand == 2)
+        else if (spawnIndex < 2)
+        {
+            SpawnPotato();
+            songManager.isCarrot = false;
+            songManager.isPotato = true;
+            songManager.isOnion = false;
+        }
+        else
         {
             SpawnOnion();
+            songManager.isCarrot = false;
             songManager.isPotato = false;
-            songManager.isCarrot= false;
-            songManager.isOnion= true;
+            songManager.isOnion = true;
         }
     }
-
-    //void SpawnTomato()
-    //{
-    //    currentVegetable = Instantiate(tomatoPrefab, offScreenPosition, Quaternion.identity);
-    //    isSliding = true;
-    //}
 
     void SpawnPotato()
     {
         currentVegetable = Instantiate(potatoPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
-        Debug.Log("spawn potato");
+        if (tutorialText != null)
+        {
+            tutorialText.text = "A potato! Hold space to peel until peeled!";
+        }
+        Debug.Log("Spawned potato");
     }
 
     void SpawnCarrot()
     {
         currentVegetable = Instantiate(carrotPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
-        Debug.Log("spawn carrot");
+        if (tutorialText != null)
+        {
+            tutorialText.text = "A carrot has appeared! Space to chop";
+        }
+        Debug.Log("Spawned carrot");
     }
 
     void SpawnOnion()
     {
         currentVegetable = Instantiate(onionPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
-        Debug.Log("spawn onion");
+        if (tutorialText != null)
+        {
+            tutorialText.text = "An onion has appeared! chop chop";
+        }
+        Debug.Log("Spawned onion");
     }
 }

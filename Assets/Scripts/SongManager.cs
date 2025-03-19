@@ -154,4 +154,18 @@ public class SongManager : MonoBehaviour
     {
         return beatsPosition;
     }
+
+    public void StopMusic()
+{
+    AudioSource audioSource = GetComponent<AudioSource>();
+    if (audioSource != null && audioSource.isPlaying)
+    {
+        audioSource.Stop();
+        Debug.Log("Music stopped.");
+    }
+
+    started = false;
+    gameOver = true; 
+}
+
 }
