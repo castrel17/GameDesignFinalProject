@@ -3,12 +3,12 @@ using UnityEngine;
 public class VegetablePeeler : MonoBehaviour
 {
     public GameObject[] peelObjects;
-
-    public float holdTimeRequired = 3f;
+    public float holdTimeRequired = 1f;
 
     private float holdTimer = 0f;
     private int peelIndex = 0;
     private bool fullyPeeled = false;
+
 
     void Start()
     {
@@ -60,5 +60,11 @@ public class VegetablePeeler : MonoBehaviour
     public bool IsFullyPeeled()
     {
         return fullyPeeled;
+    }
+
+    public float GetHoldProgress()
+    {
+        if (fullyPeeled) return 1f;
+        return Mathf.Clamp01(holdTimer / holdTimeRequired);
     }
 }
