@@ -401,9 +401,13 @@ MonoBehaviour:
   countDown: {fileID: 549417250}
   countDownTime: 3
   note: {fileID: 3141943632068709071, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
+  started: 0
   isPotato: 1
   isCarrot: 0
   isOnion: 0
+  notePressedOnBeat: 0
+  numBeats: 0
+  gameOver: 0
 --- !u!1 &655364661
 GameObject:
   m_ObjectHideFlags: 0
@@ -668,7 +672,9 @@ MonoBehaviour:
   carrotPrefab: {fileID: 4326880134988741842, guid: e8a003d15bfc3614194b750e698176ed, type: 3}
   onionPrefab: {fileID: 7883923122968734579, guid: dbbabcb1ee7b72d4a8d752d50a6c204d, type: 3}
   slideSpeed: 5
-  currentVegetable: {fileID: 0}
+  currentVegetable: {fileID: 1154618361}
+  songManager: {fileID: 610167287}
+  needVeg: 1
 --- !u!4 &992531443
 Transform:
   m_ObjectHideFlags: 0
@@ -821,6 +827,25 @@ MonoBehaviour:
     m_MipBias: 0
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
+--- !u!1 &1154618361 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2650802879248677190, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
+  m_PrefabInstance: {fileID: 8387111245160154680}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &1154618364
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1154618361}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: fac114dad6e464be0a27c14791e3bcc8, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  peelObjects: []
+  holdTimeRequired: 3
 --- !u!1 &1330040867
 GameObject:
   m_ObjectHideFlags: 0
@@ -1491,7 +1516,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2650802879248677190, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1154618364}
   m_SourcePrefab: {fileID: 100100000, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:

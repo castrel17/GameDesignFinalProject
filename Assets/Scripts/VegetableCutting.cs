@@ -9,7 +9,7 @@ public class VegetableCutting : MonoBehaviour
     private SongManager songManager;
     public enum Vegetables { Potato, Carrot, Onion, Tomato};
     public Vegetables vegetableType;
-    private bool peeled = false;
+    //private bool peeled = false; //not needed anymore since I made seperate peeler (vegetablepeeler.cs))
     private MusicNote musicNote;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
@@ -82,56 +82,29 @@ public class VegetableCutting : MonoBehaviour
     }
     private void potatoCutting()
     {
-        //if we are currently peeling the potato
-        if (hit && indexToSlice > 3 && !allCut)
+        VegetablePeeler peeler = GetComponent<VegetablePeeler>();
+        if (peeler != null && !peeler.IsFullyPeeled())
         {
-            for (int i = indexToSlice; i < slices.Length; i++)
-            {
-                slices[i].transform.position += (Vector3.right * 1.5f);
-            }
-            if(indexToSlice == 4)
-            {
-                peeled = true;
-            }
+            Debug.Log("Cannot cut yet, potato not fully peeled!");
+            return;
         }
-        //if we are cutting the peeled potato
-        //do horizontal middle cut
+
         if (hit && indexToSlice == 3 && !allCut)
         {
-            //if the player failed to fully peel the skin move all of the skin over
-            if (!peeled)
-            {
-                for (int i = 4; i < slices.Length; i++)
-                {
-                    slices[i].transform.position += (Vector3.right * 1.5f);
-                }
-                peeled = true;
-            }
-            //cut in half horizontally
+            // cut in half horizontally
             slices[3].transform.position += (Vector3.up * 0.5f);
             slices[2].transform.position += (Vector3.up * 0.5f);
-
         }
-        //do vertical middle cut
+
         if (hit && indexToSlice == 2 && !allCut)
         {
-            //if the player failed to fully peel the skin move all of the skin over
-            if (!peeled)
-            {
-                for (int i = 4; i < slices.Length; i++)
-                {
-                    slices[i].transform.position += (Vector3.right * 1.5f);
-                }
-                peeled = true;
-            }
-            //cut top in half
+            // cut vertically
             slices[3].transform.position += (Vector3.right * 0.5f);
             slices[2].transform.position += (Vector3.left * 0.5f);
-            //cut  bottom in half
             slices[1].transform.position += (Vector3.right * 0.5f);
             slices[0].transform.position += (Vector3.left * 0.5f);
-
         }
+
         if (indexToSlice > 2)
         {
             indexToSlice--;

@@ -64,6 +64,7 @@ public class DemoLevelManager : MonoBehaviour
     public void spawnNew()
     {
         int rand = Random.Range(0, 3);
+        //int rand = 0;
         if (rand == 0)
         {
             SpawnPotato();
