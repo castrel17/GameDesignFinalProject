@@ -45,7 +45,7 @@ public class SongManager : MonoBehaviour
         for (int i = 0; i < numBeats; i++)  
         {   
             musicNoteBeats.Add(i*1);
-        }   
+        }  
     }
 
     // Update is called once per frame
@@ -105,22 +105,6 @@ public class SongManager : MonoBehaviour
             {
                 musicNotes.Dequeue().notePressed();
             }
-
-            //Justify FOR TESTING
-            // if (Input.GetKeyDown(KeyCode.Return))
-            // {
-            //     if(isOnion){
-            //         isOnion = false;
-            //         isPotato = true;
-            //         Debug.Log("potato on onion off");
-
-            //     }else{
-            //         isOnion = true;
-            //         isPotato = false;
-            //         Debug.Log("onion on potato off");
-
-            //     }
-            // }
         }
     }
 

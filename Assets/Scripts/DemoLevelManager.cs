@@ -24,6 +24,14 @@ public class DemoLevelManager : MonoBehaviour
 
     public Image peelFillBar;
 
+    public GameObject TooEarly;
+    public GameObject TooLate;
+    public GameObject Perfect;
+    public GameObject Miss;
+    public GameObject feedback;
+   Vector3 centerPos = new Vector3(0f, 2f, 0f);
+
+
     void Start()
     {
         if (tutorialText != null)
@@ -62,6 +70,10 @@ public class DemoLevelManager : MonoBehaviour
             }
         }
         UpdatePeelBar();
+
+        if(Input.GetKeyDown(KeyCode.Tab)){
+            spawnFeedback(0);
+        }
     }
 
     private void CheckVegetableProgress()
@@ -93,6 +105,18 @@ public class DemoLevelManager : MonoBehaviour
         }
     }
 
+    public void spawnFeedback(int opt){ //0 = perfect, 1 = miss, 2 = too early, 3 =  too late
+        if(opt == 0){
+            feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
+        }else if(opt == 1){
+            feedback = Instantiate(Miss, centerPos, Quaternion.identity);
+        }else if(opt == 2){
+            feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
+        }else{
+            feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
+        }   
+        Destroy(feedback, 1.0f);
+    }
     public void spawnNew()
     {
         if (spawnIndex >= 3)

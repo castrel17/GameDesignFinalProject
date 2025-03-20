@@ -12,6 +12,7 @@ public class MusicNote : MonoBehaviour
     private bool moving = true;
     private bool hit = false;
     private bool markedForDelete = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
@@ -68,6 +69,8 @@ public class MusicNote : MonoBehaviour
                 //tell current vegetable that it was hit
                 manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+                manager.spawnFeedback(0);
+
             }
             else if(distance > 1)
             {
@@ -75,6 +78,7 @@ public class MusicNote : MonoBehaviour
                 //tell current vegetable that it was not hit
                 manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+                manager.spawnFeedback(1);
             }
             else if(transform.position.y < 0)
             {
@@ -82,6 +86,7 @@ public class MusicNote : MonoBehaviour
                 //tell current vegetable that it was hit
                 manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+                manager.spawnFeedback(2);
             }
             else
             {
@@ -89,6 +94,7 @@ public class MusicNote : MonoBehaviour
                 //tell current vegetable that it was hit
                 manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+                manager.spawnFeedback(3);
             }
             //destroy the music note after a small delay
             Destroy(gameObject, 0.75f);
