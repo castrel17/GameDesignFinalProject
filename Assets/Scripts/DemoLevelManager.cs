@@ -115,6 +115,7 @@ public class DemoLevelManager : MonoBehaviour
         }else{
             feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
         }   
+        feedback.SetActive(true); 
         Destroy(feedback, 1.0f);
     }
     public void spawnNew()

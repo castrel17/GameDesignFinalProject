@@ -134,152 +134,20 @@ TextureImporter:
       name: Perfect_0
       rect:
         serializedVersion: 2
-        x: 15
-        y: 5
-        width: 6
-        height: 7
+        x: 0
+        y: 0
+        width: 64
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: b91ecd3efbbab9240800000000000000
-      internalID: 4799618668543402395
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Perfect_1
-      rect:
-        serializedVersion: 2
-        x: 20
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 6736bb2b654761e50800000000000000
-      internalID: 6779734204767495030
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Perfect_2
-      rect:
-        serializedVersion: 2
-        x: 25
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 74099f15132a80d00800000000000000
-      internalID: 939178855019155527
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Perfect_3
-      rect:
-        serializedVersion: 2
-        x: 30
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: ca4f45e6c120cf540800000000000000
-      internalID: 5042908003881514156
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Perfect_4
-      rect:
-        serializedVersion: 2
-        x: 35
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 2397b09ceca151930800000000000000
-      internalID: 4113223310111373618
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Perfect_5
-      rect:
-        serializedVersion: 2
-        x: 40
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 80bb7974c902c6010800000000000000
-      internalID: 1183356657679710984
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Perfect_6
-      rect:
-        serializedVersion: 2
-        x: 45
-        y: 5
-        width: 7
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 155e8d1ce692b5570800000000000000
-      internalID: 8456398280993596753
+      spriteID: 529537aaaac9a4e0bb28c359ee3354ff
+      internalID: -445906422
       vertices: []
       indices: 
       edges: []
@@ -288,7 +156,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: acbec5dd092c94bb9a692388cc65443c
     internalID: 0
     vertices: []
     indices: 
@@ -297,7 +165,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Perfect_0: -445906422
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

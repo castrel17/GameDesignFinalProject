@@ -122,64 +122,20 @@ TextureImporter:
       name: Miss_0
       rect:
         serializedVersion: 2
-        x: 18
-        y: 5
-        width: 11
-        height: 7
+        x: 0
+        y: 0
+        width: 64
+        height: 16
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: -1
+      tessellationDetail: 0
       bones: []
-      spriteID: e59b39e83b72cb500800000000000000
-      internalID: 413248917955918174
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Miss_1
-      rect:
-        serializedVersion: 2
-        x: 28
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: bd8ec261a0e2024b0800000000000000
-      internalID: -5467319326771189541
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: Miss_2
-      rect:
-        serializedVersion: 2
-        x: 33
-        y: 5
-        width: 6
-        height: 7
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 56808df1a30c39500800000000000000
-      internalID: 401876147640993893
+      spriteID: 22061372481cf41a9a80ebcf6fc5e03e
+      internalID: -1154048459
       vertices: []
       indices: 
       edges: []
@@ -188,7 +144,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 
+    spriteID: 91fcbff9191b148198cac58427a5fc4c
     internalID: 0
     vertices: []
     indices: 
@@ -197,7 +153,8 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      Miss_0: -1154048459
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
