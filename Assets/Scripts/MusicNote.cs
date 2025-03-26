@@ -31,6 +31,7 @@ public class MusicNote : MonoBehaviour
             //if the note goes out of bounds without the player pressing the button just delete the note
             if(transform.position.y == endingPosition.y)
             {
+                songManager.dequeueNote();
                 Destroy(gameObject);
             }
         }

@@ -106,7 +106,7 @@ public class VegetableCutting : MonoBehaviour
             slices[0].transform.position += (Vector3.left * 0.5f);
         }
 
-        if (indexToSlice > 2)
+        if (indexToSlice > 1)
         {
             indexToSlice--;
         }

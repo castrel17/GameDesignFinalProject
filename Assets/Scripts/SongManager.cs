@@ -11,6 +11,7 @@ public class SongManager : MonoBehaviour
     public TextMeshProUGUI countDown;
     public int countDownTime = 3;
     public MusicNote note;
+    public AudioSource song;
     private float songPosition;
     private float beatsPosition;
     private float secondsPerBeat;
@@ -21,11 +22,12 @@ public class SongManager : MonoBehaviour
     private Queue<MusicNote> musicNotes;
     private int beatIndex = 0;
     public bool started = false;
+    private bool startMusic = false;
 
     private float nextBeatTime;
     private int beatCounter;
 
-    public bool isPotato = true;
+    public bool isPotato = false;
     public bool isCarrot = false;
     public bool isOnion = false;
 
@@ -58,6 +60,13 @@ public class SongManager : MonoBehaviour
         }
         if (started)
         {
+            if (startMusic)
+            {
+                Debug.Log("PLAYING MUSIC");
+                song.Play();
+                startMusic = false;
+                StopAllCoroutines();
+            }
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
 
@@ -123,7 +132,10 @@ public class SongManager : MonoBehaviour
             // }
         }
     }
-
+    public void dequeueNote()
+    {
+        musicNotes.Dequeue();
+    }
     //countdown until music starts
     IEnumerator CountDownToStart()
     {
@@ -141,7 +153,8 @@ public class SongManager : MonoBehaviour
         //actually start
         started = true;
         songTime = (float)AudioSettings.dspTime;
-        GetComponent<AudioSource>().Play();
+        startMusic = true;
+        //GetComponent<AudioSource>().Play();
         Debug.Log("game playable");
         musicNotes = new Queue<MusicNote>();
     }
