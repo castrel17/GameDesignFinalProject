@@ -7,7 +7,7 @@ public class MusicNote : MonoBehaviour
     public float myBeat;
     public float beatDur;
     private DemoLevelManager manager;
-    private SongManager songManager;
+    private DemoSongManager songManager;
     private Collider2D trigger;
     private bool moving = true;
     private bool hit = false;
@@ -17,7 +17,7 @@ public class MusicNote : MonoBehaviour
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
-        songManager = transform.parent.GetComponent<SongManager>();
+        songManager = transform.parent.GetComponent<DemoSongManager>();
         trigger = GetComponent<Collider2D>();
         trigger.enabled = false;
     }
@@ -33,6 +33,7 @@ public class MusicNote : MonoBehaviour
             {
                 songManager.dequeueNote();
                 Destroy(gameObject);
+                manager.spawnFeedback(1);
             }
         }
         //if the player presses so early that they don't collide destroy it
@@ -43,6 +44,7 @@ public class MusicNote : MonoBehaviour
             manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
             manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             Debug.Log("Miss");
+            manager.spawnFeedback(1);
             Destroy(gameObject, 0.75f);
         }
         //if the player presses so late that they don't collide destroy it
@@ -53,6 +55,7 @@ public class MusicNote : MonoBehaviour
             manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
             manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             Debug.Log("Miss");
+            manager.spawnFeedback(1);
             Destroy(gameObject, 0.75f);
         }
 

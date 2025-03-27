@@ -232,6 +232,13 @@ MonoBehaviour:
   allCut: 0
   vegetableType: 1
   slideSpeed: 100
+  beats:
+  - 0
+  - 4
+  - 8
+  - 12
+  - 16
+  beatIndex: 0
 --- !u!1 &4823905035259835001
 GameObject:
   m_ObjectHideFlags: 0

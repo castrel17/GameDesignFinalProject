@@ -5,7 +5,7 @@ using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 
-public class SongManager : MonoBehaviour
+public class DemoSongManager : MonoBehaviour
 {
     public float bpm;
     public TextMeshProUGUI countDown;
@@ -16,16 +16,13 @@ public class SongManager : MonoBehaviour
     private float beatsPosition;
     private float secondsPerBeat;
     private float songTime;
-   // private float[] musicNoteBeats = { 0 , 3, 7, 11 }; // hit every four beats for testing
-
-    private List<float> musicNoteBeats = new List<float>();
+  
+    private List<int> musicNoteBeats = new List<int>();
     private Queue<MusicNote> musicNotes;
     private int beatIndex = 0;
     public bool started = false;
     private bool startMusic = false;
-
-    private float nextBeatTime;
-    private int beatCounter;
+    private bool startedCountDown = false;
 
     public bool isPotato = false;
     public bool isCarrot = false;
@@ -38,9 +35,12 @@ public class SongManager : MonoBehaviour
 
     public bool gameOver = false;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
+    private DemoLevelManager manager;
+    public int baseValue = 0;
+    public int vegIndex = 0;
     void Start()
     {
+        manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
         numBeats = 96;
@@ -54,12 +54,14 @@ public class SongManager : MonoBehaviour
     void Update()
     {
         //start the song when player presses down on mouse
-        if (!started && Input.anyKey) {
+        if (!started && Input.anyKey && !startedCountDown) {
             Debug.Log("game started");
             StartCoroutine(CountDownToStart());
+            startedCountDown = true;
         }
         if (started)
         {
+            //start the song and ed the coroutine
             if (startMusic)
             {
                 Debug.Log("PLAYING MUSIC");
@@ -72,28 +74,26 @@ public class SongManager : MonoBehaviour
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
-                if (isPotato && musicNoteBeats[beatIndex] % 8 == 0) //spawns potato slow
+                if (vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length && manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue == musicNoteBeats[beatIndex])
                 {
                     spawnNote = true;
-                    Debug.Log("spawn note potato");   
-                }
-
-                if (isCarrot && musicNoteBeats[beatIndex] % 4 == 0) //spawns carrot medium
-                {
-                    spawnNote = true;
-                    Debug.Log("spawn note carrot");
-                }
-
-                if (isOnion && musicNoteBeats[beatIndex] % 2 == 0) //spawns onion fast
-                {
-                    spawnNote = true;
-                    Debug.Log("spawn note onion");
+                    vegIndex++;
                 }
 
                 if(spawnNote){
                     MusicNote curr = Instantiate(note, this.transform);
                     curr.myBeat = musicNoteBeats[beatIndex];
-                    curr.beatDur = 4f; 
+                    //assign beat duration based on the current vegetable
+                    if (isPotato)
+                    {
+                        curr.beatDur = 8;
+                    }else if (isOnion)
+                    {
+                        curr.beatDur = 2;
+                    }else
+                    {
+                        curr.beatDur = 4;
+                    } 
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
 
@@ -109,28 +109,21 @@ public class SongManager : MonoBehaviour
             if(beatIndex == numBeats){
                 gameOver = true;
             }
+
             //if player pressed space and the queue is not empty dequeue the note and toggle it
             if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
                 musicNotes.Dequeue().notePressed();
             }
-
-            //Justify FOR TESTING
-            // if (Input.GetKeyDown(KeyCode.Return))
-            // {
-            //     if(isOnion){
-            //         isOnion = false;
-            //         isPotato = true;
-            //         Debug.Log("potato on onion off");
-
-            //     }else{
-            //         isOnion = true;
-            //         isPotato = false;
-            //         Debug.Log("onion on potato off");
-
-            //     }
-            // }
         }
+    }
+
+    public void setBase()
+    {
+        //make sure the base value is a multiple of 2
+        baseValue = (int)(musicNoteBeats[beatIndex] / 2);
+        baseValue *= 2;
+        vegIndex = 0;
     }
     public void dequeueNote()
     {

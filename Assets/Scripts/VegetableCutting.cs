@@ -2,11 +2,10 @@ using UnityEngine;
 public class VegetableCutting : MonoBehaviour
 {
     public GameObject[] slices;
-    
+
     public int indexToSlice;
     public bool hit = false;
     public bool allCut = false;
-    private SongManager songManager;
     public enum Vegetables { Potato, Carrot, Onion, Tomato};
     public Vegetables vegetableType;
     //private bool peeled = false; //not needed anymore since I made seperate peeler (vegetablepeeler.cs))
@@ -21,6 +20,10 @@ public class VegetableCutting : MonoBehaviour
     private int[][] verticals;
     private int horizontalIndex = 0;
     private int verticalIndex = 0;
+
+    //beat sequence variable
+    public int[] beats;
+
     void Start()
     {
         indexToSlice = slices.Length - 1;
@@ -52,7 +55,6 @@ public class VegetableCutting : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
         //once all cut move off the screen
         if (allCut){
             foreach (var slice in slices)

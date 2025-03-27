@@ -15,7 +15,7 @@ public class DemoLevelManager : MonoBehaviour
     public GameObject currentVegetable;
     private bool isSliding = false;
 
-    public SongManager songManager;
+    public DemoSongManager songManager;
     public bool needVeg = true;
 
     public TextMeshProUGUI tutorialText;
@@ -43,7 +43,11 @@ public class DemoLevelManager : MonoBehaviour
     void Update()
     {
         if (!songManager.gameOver)
-        {
+        { 
+            if(songManager.startStatus() && needVeg && spawnIndex > 0)
+            {
+                songManager.setBase();
+            }
             if (songManager.startStatus() && needVeg)
             {
                 needVeg = false;
