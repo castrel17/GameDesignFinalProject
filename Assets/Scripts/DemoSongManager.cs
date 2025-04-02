@@ -29,6 +29,7 @@ public class DemoSongManager : MonoBehaviour
     public bool isOnion = false;
 
     private bool spawnNote = false;
+    public bool setBaseBool = false;
 
     public bool notePressedOnBeat = false;
     public int numBeats; //NEED TO CALCULATE THIS BASED ON THE SONG LENGTH RN IT IS HARDCODED
@@ -74,13 +75,22 @@ public class DemoSongManager : MonoBehaviour
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
+                if (setBaseBool)
+                {
+                    setBaseBool = false;
+                    setBase();
+
+                }
                 if (vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length && manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue == musicNoteBeats[beatIndex])
                 {
                     spawnNote = true;
                     vegIndex++;
                 }
-
-                if(spawnNote){
+                if(vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length)
+                {
+                    Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
+                }
+                if (spawnNote){
                     MusicNote curr = Instantiate(note, this.transform);
                     curr.myBeat = musicNoteBeats[beatIndex];
                     //assign beat duration based on the current vegetable
@@ -103,7 +113,7 @@ public class DemoSongManager : MonoBehaviour
                     spawnNote = false;
                 }
                 beatIndex++;
-
+                Debug.Log("Current Note: "+ musicNoteBeats[beatIndex]);
             }
 
             if(beatIndex == numBeats){
@@ -120,9 +130,7 @@ public class DemoSongManager : MonoBehaviour
 
     public void setBase()
     {
-        //make sure the base value is a multiple of 2
-        baseValue = (int)(musicNoteBeats[beatIndex] / 2);
-        baseValue *= 2;
+        baseValue = musicNoteBeats[beatIndex];
         vegIndex = 0;
     }
     public void dequeueNote()

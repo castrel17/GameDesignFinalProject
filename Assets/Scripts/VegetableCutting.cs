@@ -6,8 +6,7 @@ public class VegetableCutting : MonoBehaviour
 {
     public GameObject[] slices;
     public GameObject pile;
-    public int indexToSlice;
-    public bool hit = false;
+    public int numberOfCuts;
     public bool allCut = false;
     public enum Vegetables { Potato, Carrot, Onion, Tomato};
     public Vegetables vegetableType;
@@ -24,12 +23,23 @@ public class VegetableCutting : MonoBehaviour
     private int horizontalIndex = 0;
     private int verticalIndex = 0;
     private List<GameObject> piles;
+    private Animator animator;
+
     //beat sequence variable
     public int[] beats;
 
     void Start()
     {
-        indexToSlice = slices.Length - 1;
+        if (vegetableType == Vegetables.Carrot)
+        {
+            numberOfCuts = 4;
+            animator = GetComponent<Animator>();
+        }
+        else
+        {
+            numberOfCuts = slices.Length - 1;
+        }
+        
         if(vegetableType == Vegetables.Onion)
         {
             horizontals = new int[][]
@@ -54,11 +64,17 @@ public class VegetableCutting : MonoBehaviour
 
         }
         piles = new List<GameObject>();
+        
     }
 
     // Update is called once per frame
     void Update()
     {
+        //once all cut move off the screen
+        if(allCut && vegetableType == Vegetables.Carrot)
+        {
+            this.transform.position = Vector3.MoveTowards(this.transform.position, offScreenPosition, slideSpeed * Time.deltaTime);
+        }
         //once all cut move off the screen
         if (allCut){
             foreach (var slice in slices)
@@ -73,10 +89,10 @@ public class VegetableCutting : MonoBehaviour
     }
     public void slice()
     {
-        //slicing logic for carrot and tomato 
-        if (vegetableType == Vegetables.Carrot || vegetableType == Vegetables.Tomato)
+        //slicing logic for carrot
+        if (vegetableType == Vegetables.Carrot)
         {
-            genericCutting();
+            carrotCutting();
         }
         //slicing logic for potato
         if(vegetableType == Vegetables.Potato)
@@ -100,14 +116,14 @@ public class VegetableCutting : MonoBehaviour
             return;
         }
 
-        if (hit && indexToSlice == 3 && !allCut)
+        if (numberOfCuts == 3 && !allCut)
         {
             // cut in half horizontally
             slices[3].transform.position += (Vector3.up * 0.5f);
             slices[2].transform.position += (Vector3.up * 0.5f);
         }
 
-        if (hit && indexToSlice == 2 && !allCut)
+        if (numberOfCuts == 2 && !allCut)
         {
             // cut vertically
             slices[3].transform.position += (Vector3.right * 0.5f);
@@ -116,9 +132,9 @@ public class VegetableCutting : MonoBehaviour
             slices[0].transform.position += (Vector3.left * 0.5f);
         }
 
-        if (indexToSlice > 1)
+        if (numberOfCuts > 1)
         {
-            indexToSlice--;
+            numberOfCuts--;
         }
         else
         {
@@ -126,18 +142,20 @@ public class VegetableCutting : MonoBehaviour
             Debug.Log("all cut");
         }
     }
-    private void genericCutting()
+    private void carrotCutting()
     {
-        if (hit && indexToSlice > 0 && !allCut)
+        //trigger cutting
+        animator.SetTrigger("Next");
+
+        //spawn carrot pile
+        float y = Random.Range(-2.0f, 2.0f);
+        float x = Random.Range(2.7f, 4.0f);
+        GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
+        piles.Add(newPile);
+
+        if (numberOfCuts > 0)
         {
-            for (int i = indexToSlice; i < slices.Length; i++)
-            {
-                slices[i].transform.position += Vector3.right;
-            }
-        }
-        if (indexToSlice > 0)
-        {
-            indexToSlice--;
+            numberOfCuts--;
         }
         else
         {
@@ -148,7 +166,7 @@ public class VegetableCutting : MonoBehaviour
     private void onionCutting()
     {
         //do horizontal cutting first
-        if(hit && horizontalIndex < 6 && !allCut)
+        if(horizontalIndex < 6 && !allCut)
         {
             for (int i = horizontalIndex; i >= 0; i--)
             {
@@ -163,7 +181,7 @@ public class VegetableCutting : MonoBehaviour
             horizontalIndex++;
         }
         //if we finished the horizontal already start doing the vertical
-        if(horizontalIndex >= 6 && verticalIndex < 6 && hit && !allCut)
+        if(horizontalIndex >= 6 && verticalIndex < 6 && !allCut)
         {
             //spawn onion pile
             float y = Random.Range(-2.0f, 2.0f);

@@ -10,7 +10,6 @@ public class MusicNote : MonoBehaviour
     private DemoSongManager songManager;
     private Collider2D trigger;
     private bool moving = true;
-    private bool hit = false;
     private bool markedForDelete = false;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -31,6 +30,7 @@ public class MusicNote : MonoBehaviour
             //if the note goes out of bounds without the player pressing the button just delete the note
             if(transform.position.y == endingPosition.y)
             {
+                manager.currentVegetable.GetComponent<VegetableCutting>().slice();
                 songManager.dequeueNote();
                 Destroy(gameObject);
                 manager.spawnFeedback(1);
@@ -40,8 +40,6 @@ public class MusicNote : MonoBehaviour
         if(!moving && transform.position.y < -1.0f && !markedForDelete)
         {
             markedForDelete = true;
-            //tell current vegetable that it was not hit
-            manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
             manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             Debug.Log("Miss");
             manager.spawnFeedback(1);
@@ -51,8 +49,6 @@ public class MusicNote : MonoBehaviour
         if (!moving && transform.position.y > 1.0f && !markedForDelete)
         {
             markedForDelete = true;
-            //tell current vegetable that it was not hit
-            manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
             manager.currentVegetable.GetComponent<VegetableCutting>().slice();
             Debug.Log("Miss");
             manager.spawnFeedback(1);
@@ -70,8 +66,6 @@ public class MusicNote : MonoBehaviour
             if(distance < 0.2)
             {
                 Debug.Log("Perfect");
-                //tell current vegetable that it was hit
-                manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
                 manager.spawnFeedback(0);
 
@@ -79,24 +73,18 @@ public class MusicNote : MonoBehaviour
             else if(distance > 1)
             {
                 Debug.Log("Miss");
-                //tell current vegetable that it was not hit
-                manager.currentVegetable.GetComponent<VegetableCutting>().hit = false;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
                 manager.spawnFeedback(1);
             }
             else if(transform.position.y < 0)
             {
                 Debug.Log("Too Early");
-                //tell current vegetable that it was hit
-                manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
                 manager.spawnFeedback(2);
             }
             else
             {
                 Debug.Log("Too Late");
-                //tell current vegetable that it was hit
-                manager.currentVegetable.GetComponent<VegetableCutting>().hit = true;
                 manager.currentVegetable.GetComponent<VegetableCutting>().slice();
                 manager.spawnFeedback(3);
             }
@@ -106,10 +94,6 @@ public class MusicNote : MonoBehaviour
         
     }
 
-    public bool hitStatus()
-    {
-        return hit;
-    }
     public void notePressed()
     {
         trigger.enabled = true;

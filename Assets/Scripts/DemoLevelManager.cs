@@ -1,6 +1,7 @@
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using Unity.Properties;
 
 public class DemoLevelManager : MonoBehaviour
 {
@@ -56,7 +57,7 @@ public class DemoLevelManager : MonoBehaviour
         { 
             if(songManager.startStatus() && needVeg && spawnIndex > 0)
             {
-                songManager.setBase();
+                songManager.setBaseBool = true;
             }
             if (songManager.startStatus() && needVeg)
             {
