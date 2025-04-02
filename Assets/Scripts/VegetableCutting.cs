@@ -54,12 +54,12 @@ public class VegetableCutting : MonoBehaviour
 
             verticals = new int[][]
             {
-                new int[]{0,1,2},
-                new int[]{3,4,5,6,7},
-                new int[]{8,9,10,11,12,13 },
-                new int[]{14,15,16,17,18,19},
+                new int[]{25,26,27 },
                 new int[]{20,21,22,23,24},
-                new int[]{25,26,27 }
+                new int[]{14,15,16,17,18,19},
+                new int[]{8,9,10,11,12,13 },
+                new int[]{3,4,5,6,7},
+                new int[]{0,1,2}
             };
 
         }
@@ -188,6 +188,14 @@ public class VegetableCutting : MonoBehaviour
             float x = Random.Range(2.7f, 4.0f);
             GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
             piles.Add(newPile);
+            //make corresponding vertical slice disappear
+            for (int i = verticalIndex; i >= 0; i--)
+            {
+                foreach (int j in verticals[i])
+                {
+                    slices[j].GetComponent<Renderer>().enabled = false;
+                }
+            }
         }
         if(horizontalIndex >= 6 && verticalIndex < 6)
         {
