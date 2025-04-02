@@ -11,6 +11,7 @@ public class DemoSongManager : MonoBehaviour
     public TextMeshProUGUI countDown;
     public int countDownTime = 3;
     public MusicNote note;
+    public MusicNote holdNote;
     public AudioSource song;
     private float songPosition;
     private float beatsPosition;
@@ -90,28 +91,49 @@ public class DemoSongManager : MonoBehaviour
                 {
                     Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
                 }
-                if (spawnNote){
-                    MusicNote curr = Instantiate(note, this.transform);
-                    curr.myBeat = musicNoteBeats[beatIndex];
-                    //assign beat duration based on the current vegetable
+                if (spawnNote)
+                {
+                    MusicNote curr;
                     if (isPotato)
                     {
-                        curr.beatDur = 8;
-                    }else if (isOnion)
+                        // For potato, check if it's in peeling mode or chopping mode
+                        VegetablePeeler peeler = manager.currentVegetable.GetComponent<VegetablePeeler>();
+                        if (peeler != null && !peeler.IsFullyPeeled())
+                        {
+                            // Peeling mode: spawn the hold note template.
+                            curr = Instantiate(holdNote, this.transform);
+                            curr.beatDur = 8; // Longer beat duration for hold note
+                        }
+                        else
+                        {
+                            // Chopping mode: spawn the regular note template.
+                            curr = Instantiate(note, this.transform);
+                            curr.beatDur = 4;
+                        }
+                    }
+                    else if (isOnion)
                     {
+                        curr = Instantiate(note, this.transform);
                         curr.beatDur = 2;
-                    }else
+                    }
+                    else // for carrot or other types
                     {
+                        curr = Instantiate(note, this.transform);
                         curr.beatDur = 4;
-                    } 
+                    }
+
+                    curr.myBeat = musicNoteBeats[beatIndex];
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
 
-                    Debug.Log("Spawning note at beat: " + musicNoteBeats[beatIndex]);
+                    // Activate the clone in case the template was inactive.
+                    curr.gameObject.SetActive(true);
 
+                    Debug.Log("Spawning note at beat: " + musicNoteBeats[beatIndex]);
                     musicNotes.Enqueue(curr);
                     spawnNote = false;
                 }
+
                 beatIndex++;
                 Debug.Log("Current Note: "+ musicNoteBeats[beatIndex]);
             }
