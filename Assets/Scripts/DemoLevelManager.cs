@@ -2,6 +2,7 @@ using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
 using Unity.Properties;
+using UnityEngine.SceneManagement;
 
 public class DemoLevelManager : MonoBehaviour
 {
@@ -84,11 +85,13 @@ public class DemoLevelManager : MonoBehaviour
                 CheckVegetableProgress();
             }
         }
-        UpdatePeelBar();
-
-        if(Input.GetKeyDown(KeyCode.Tab)){
-            spawnFeedback(0);
+        else{
+            if(Input.GetKeyDown(KeyCode.Tab)){
+                SceneManager.LoadScene(0);
+            }
+            
         }
+        UpdatePeelBar();
     }
 
     private void CheckVegetableProgress()
@@ -110,7 +113,7 @@ public class DemoLevelManager : MonoBehaviour
         {
             if (tutorialText != null)
             {
-                tutorialText.text = "All done cutting! Good job!";
+                tutorialText.text = "All done cutting! Good job! Hit tab to go to start";
             }
 
             needVeg = true;
