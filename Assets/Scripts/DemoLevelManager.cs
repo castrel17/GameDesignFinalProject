@@ -28,8 +28,18 @@ public class DemoLevelManager : MonoBehaviour
     public GameObject TooLate;
     public GameObject Perfect;
     public GameObject Miss;
+    public GameObject bonusStreak;
     public GameObject feedback;
+    public GameObject bonus;
+    private int streak;
+
+    public TextMeshProUGUI scoreText;
+    private int score = 0;
    Vector3 centerPos = new Vector3(0f, 2f, 0f);
+
+   Vector3 centerPosDown = new Vector3(0f, -2f, 0f);
+
+   public Slider streakSlider;
 
 
     void Start()
@@ -109,18 +119,48 @@ public class DemoLevelManager : MonoBehaviour
         }
     }
 
+
+    //scoring system
+    /*
+    -perfect = 100pts
+    -too early/toolate = 50pts
+    -miss = 0pts
+    -streaks = 3 perfects = 100pts
+    */
     public void spawnFeedback(int opt){ //0 = perfect, 1 = miss, 2 = too early, 3 =  too late
         if(opt == 0){
             feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
+            streak++;
+            score += 100;
         }else if(opt == 1){
             feedback = Instantiate(Miss, centerPos, Quaternion.identity);
+            streak = 0;
         }else if(opt == 2){
             feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
+            streak = 0;
+            score += 50;
         }else{
             feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
-        }   
+            streak = 0;
+            score += 50;
+        } 
+
+        if(streak == 3){
+            Debug.Log("bonus streak hit");
+            //inc score and set streak to 0
+            score += 100;
+            //update score bar
+            bonus = Instantiate(bonusStreak, centerPosDown, Quaternion.identity);
+            bonus.SetActive(true);
+            Destroy(bonus, 1.0f);
+            streak = 0;
+        }
+        
+        streakSlider.value = streak;
         feedback.SetActive(true); 
         Destroy(feedback, 1.0f);
+        scoreText.text = "Score: " + score;
+        Debug.Log("streak: " + streak);
     }
     public void spawnNew()
     {
