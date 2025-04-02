@@ -2015,6 +2015,7 @@ MonoBehaviour:
   - {fileID: 7750012653076162677}
   - {fileID: 5479457417875761976}
   - {fileID: 688770606473899692}
+  pile: {fileID: 1888879121157839676, guid: 0891f27a2937fc6449452e347b63bf2a, type: 3}
   indexToSlice: 0
   hit: 0
   allCut: 0

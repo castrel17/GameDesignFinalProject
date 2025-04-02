@@ -1,8 +1,11 @@
+using Unity.Hierarchy;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 public class VegetableCutting : MonoBehaviour
 {
     public GameObject[] slices;
-
+    public GameObject pile;
     public int indexToSlice;
     public bool hit = false;
     public bool allCut = false;
@@ -20,7 +23,7 @@ public class VegetableCutting : MonoBehaviour
     private int[][] verticals;
     private int horizontalIndex = 0;
     private int verticalIndex = 0;
-
+    private List<GameObject> piles;
     //beat sequence variable
     public int[] beats;
 
@@ -50,6 +53,7 @@ public class VegetableCutting : MonoBehaviour
             };
 
         }
+        piles = new List<GameObject>();
     }
 
     // Update is called once per frame
@@ -60,6 +64,10 @@ public class VegetableCutting : MonoBehaviour
             foreach (var slice in slices)
             {
                 slice.transform.position = Vector3.MoveTowards(slice.transform.position, offScreenPosition, slideSpeed * Time.deltaTime);
+            }
+            foreach(var newPiles in piles)
+            {
+                Destroy(newPiles);
             }
         }
     }
@@ -146,7 +154,7 @@ public class VegetableCutting : MonoBehaviour
             {
                 foreach(int j in horizontals[i])
                 {
-                    slices[j].transform.position += (Vector3.up * 0.5f);
+                    slices[j].transform.position += (Vector3.up * 0.2f);
                 }
             }
         }
@@ -157,13 +165,11 @@ public class VegetableCutting : MonoBehaviour
         //if we finished the horizontal already start doing the vertical
         if(horizontalIndex >= 6 && verticalIndex < 6 && hit && !allCut)
         {
-            for (int i = verticalIndex; i >= 0; i--)
-            {
-                foreach (int j in verticals[i])
-                {
-                    slices[j].transform.position += (Vector3.left * 0.5f);
-                }
-            }
+            //spawn onion pile
+            float y = Random.Range(-2.0f, 2.0f);
+            float x = Random.Range(2.7f, 4.0f);
+            GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
+            piles.Add(newPile);
         }
         if(horizontalIndex >= 6 && verticalIndex < 6)
         {
