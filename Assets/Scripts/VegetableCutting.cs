@@ -35,6 +35,11 @@ public class VegetableCutting : MonoBehaviour
             numberOfCuts = 4;
             animator = GetComponent<Animator>();
         }
+        else if(vegetableType == Vegetables.Potato)
+        {
+            numberOfCuts = 3;
+            animator = GetComponent<Animator>();
+        }
         else
         {
             numberOfCuts = slices.Length - 1;
@@ -71,7 +76,7 @@ public class VegetableCutting : MonoBehaviour
     void Update()
     {
         //once all cut move off the screen
-        if(allCut && vegetableType == Vegetables.Carrot)
+        if(allCut && (vegetableType == Vegetables.Carrot || vegetableType == Vegetables.Potato))
         {
             this.transform.position = Vector3.MoveTowards(this.transform.position, offScreenPosition, slideSpeed * Time.deltaTime);
         }
@@ -115,24 +120,9 @@ public class VegetableCutting : MonoBehaviour
             Debug.Log("Cannot cut yet, potato not fully peeled!");
             return;
         }
-
-        if (numberOfCuts == 3 && !allCut)
-        {
-            // cut in half horizontally
-            slices[3].transform.position += (Vector3.up * 0.5f);
-            slices[2].transform.position += (Vector3.up * 0.5f);
-        }
-
-        if (numberOfCuts == 2 && !allCut)
-        {
-            // cut vertically
-            slices[3].transform.position += (Vector3.right * 0.5f);
-            slices[2].transform.position += (Vector3.left * 0.5f);
-            slices[1].transform.position += (Vector3.right * 0.5f);
-            slices[0].transform.position += (Vector3.left * 0.5f);
-        }
-
-        if (numberOfCuts > 1)
+        //trigger potato cutting animation
+        animator.SetTrigger("Next");
+        if (numberOfCuts > 0)
         {
             numberOfCuts--;
         }

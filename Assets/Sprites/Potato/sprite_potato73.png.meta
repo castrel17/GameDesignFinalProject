@@ -1,10 +1,19 @@
 fileFormatVersion: 2
-guid: a6cc4fa41a7234543adc81fde6e6a2af
+guid: f7fc114ab7b9c1b43b52855dd0e08766
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2736421289659764940
-    second: peeled_potato_mid_0
+      213: -1644351077689649523
+    second: sprite_potato73_0
+  - first:
+      213: -3279154991122273228
+    second: sprite_potato73_1
+  - first:
+      213: 6394170298842575886
+    second: sprite_potato73_2
+  - first:
+      213: -8001696803492773303
+    second: sprite_potato73_3
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +55,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,67 +122,89 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: peeled_potato_mid_0
+      name: sprite_potato73_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 2
-        width: 6
-        height: 26
+        x: 1183
+        y: 1727
+        width: 642
+        height: 386
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43f6302d557460ad0800000000000000
-      internalID: -2736421289659764940
+      spriteID: d86174038671e29e0800000000000000
+      internalID: -1644351077689649523
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: peeled_potato_mid_1
+      name: sprite_potato73_1
       rect:
         serializedVersion: 2
-        x: 12
-        y: 2
-        width: 6
-        height: 26
+        x: 1855
+        y: 1727
+        width: 578
+        height: 322
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 40ea92a9a880c114aa4719e7e6c67de1
-      internalID: -91458318
+      spriteID: 43c25b6c8e91e72d0800000000000000
+      internalID: -3279154991122273228
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: peeled_potato_mid_2
+      name: sprite_potato73_2
       rect:
         serializedVersion: 2
-        x: 18
-        y: 2
-        width: 6
-        height: 26
+        x: 1183
+        y: 1279
+        width: 642
+        height: 418
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: af63062e04ae62d48a5ca3553a408bec
-      internalID: 622977497
+      spriteID: e047ddf4208acb850800000000000000
+      internalID: 6394170298842575886
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: sprite_potato73_3
+      rect:
+        serializedVersion: 2
+        x: 1855
+        y: 1343
+        width: 578
+        height: 354
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9424f6be62344f090800000000000000
+      internalID: -8001696803492773303
       vertices: []
       indices: 
       edges: []
@@ -182,7 +213,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bc5ecc2069db0d642a2f498777362f1f
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -192,8 +223,10 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      peeled_potato_mid_1: -91458318
-      peeled_potato_mid_2: 622977497
+      sprite_potato73_0: -1644351077689649523
+      sprite_potato73_1: -3279154991122273228
+      sprite_potato73_2: 6394170298842575886
+      sprite_potato73_3: -8001696803492773303
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

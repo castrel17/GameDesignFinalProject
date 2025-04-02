@@ -1,10 +1,13 @@
 fileFormatVersion: 2
-guid: a6cc4fa41a7234543adc81fde6e6a2af
+guid: 633d1eafdb8a9d64fac71e36eb827226
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -2736421289659764940
-    second: peeled_potato_mid_0
+      213: 7672562558173086902
+    second: sprite_potato72_0
+  - first:
+      213: 5444870709757853440
+    second: sprite_potato72_1
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -46,7 +49,7 @@ TextureImporter:
   nPOTScale: 0
   lightmap: 0
   compressionQuality: 50
-  spriteMode: 2
+  spriteMode: 1
   spriteExtrude: 1
   spriteMeshType: 1
   alignment: 0
@@ -113,67 +116,45 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: peeled_potato_mid_0
+      name: sprite_potato72_0
       rect:
         serializedVersion: 2
-        x: 6
-        y: 2
-        width: 6
-        height: 26
+        x: 1183
+        y: 1279
+        width: 642
+        height: 802
       alignment: 0
-      pivot: {x: 0.5, y: 0.5}
+      pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 43f6302d557460ad0800000000000000
-      internalID: -2736421289659764940
+      spriteID: 6b48ed4eefa6a7a60800000000000000
+      internalID: 7672562558173086902
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: peeled_potato_mid_1
+      name: sprite_potato72_1
       rect:
         serializedVersion: 2
-        x: 12
-        y: 2
-        width: 6
-        height: 26
+        x: 1855
+        y: 1343
+        width: 578
+        height: 674
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
       customData: 
       outline: []
       physicsShape: []
-      tessellationDetail: 0
+      tessellationDetail: -1
       bones: []
-      spriteID: 40ea92a9a880c114aa4719e7e6c67de1
-      internalID: -91458318
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: peeled_potato_mid_2
-      rect:
-        serializedVersion: 2
-        x: 18
-        y: 2
-        width: 6
-        height: 26
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: 0
-      bones: []
-      spriteID: af63062e04ae62d48a5ca3553a408bec
-      internalID: 622977497
+      spriteID: 00fbb07ff01109b40800000000000000
+      internalID: 5444870709757853440
       vertices: []
       indices: 
       edges: []
@@ -182,7 +163,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: bc5ecc2069db0d642a2f498777362f1f
+    spriteID: 5e97eb03825dee720800000000000000
     internalID: 0
     vertices: []
     indices: 
@@ -192,8 +173,8 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      peeled_potato_mid_1: -91458318
-      peeled_potato_mid_2: 622977497
+      sprite_potato72_0: 7672562558173086902
+      sprite_potato72_1: 5444870709757853440
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

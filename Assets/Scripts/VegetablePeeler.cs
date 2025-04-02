@@ -6,16 +6,13 @@ public class VegetablePeeler : MonoBehaviour
     public float holdTimeRequired = 1f;
 
     private float holdTimer = 0f;
-    private int peelIndex = 0;
+    private int peelCount = 0;
     private bool fullyPeeled = false;
-
+    private Animator animator;
 
     void Start()
     {
-        foreach (var peelObj in peelObjects)
-        {
-            if (peelObj != null) peelObj.SetActive(true);
-        }
+        animator = GetComponent<Animator>();
     }
 
     void Update()
@@ -34,22 +31,26 @@ public class VegetablePeeler : MonoBehaviour
         }
         else
         {
+            //if the player actually pressed down on the timer still peel
+            if(holdTimer >= 0.2f)
+            {
+                PeelOneSection();
+            }
             holdTimer = 0f;
         }
     }
 
     private void PeelOneSection()
     {
-        if (peelIndex < peelObjects.Length)
+        if (peelCount < 3)
         {
-            if (peelObjects[peelIndex] != null)
-            {
-                peelObjects[peelIndex].SetActive(false);
-                Debug.Log("Peeled section: " + peelObjects[peelIndex].name);
-            }
-            peelIndex++;
+            //trigger potato peeling animation
+            animator.SetTrigger("Next");
+            Debug.Log("Peeled section: ");
 
-            if (peelIndex >= peelObjects.Length)
+            peelCount++;
+
+            if (peelCount == 2)
             {
                 fullyPeeled = true;
                 Debug.Log("Vegetable fully peeled!");

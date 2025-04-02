@@ -597,6 +597,7 @@ MonoBehaviour:
   isPotato: 0
   isCarrot: 0
   isOnion: 0
+  setBaseBool: 0
   notePressedOnBeat: 0
   numBeats: 0
   gameOver: 0
@@ -1387,7 +1388,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_Sprite: {fileID: -2736421289659764940, guid: a6cc4fa41a7234543adc81fde6e6a2af, type: 3}
+  m_Sprite: {fileID: -91458318, guid: a6cc4fa41a7234543adc81fde6e6a2af, type: 3}
   m_Type: 3
   m_PreserveAspect: 0
   m_FillCenter: 0
