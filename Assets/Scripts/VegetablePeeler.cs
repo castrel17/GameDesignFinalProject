@@ -48,13 +48,12 @@ public class VegetablePeeler : MonoBehaviour
             animator.SetTrigger("Next");
             Debug.Log("Peeled section: ");
 
-            peelCount++;
-
             if (peelCount == 2)
             {
                 fullyPeeled = true;
                 Debug.Log("Vegetable fully peeled!");
             }
+            peelCount++;
         }
     }
 

@@ -26,6 +26,6 @@ public class SoundManager : MonoBehaviour
         AudioClip randomClip = soundClips[randomIndex];
 
         Debug.Log("Playing sound: " + randomClip.name);
-        audioSource.PlayOneShot(randomClip);
+        audioSource.PlayOneShot(randomClip, 0.75f);
     }
 }

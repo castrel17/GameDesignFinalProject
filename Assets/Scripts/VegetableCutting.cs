@@ -37,7 +37,7 @@ public class VegetableCutting : MonoBehaviour
         }
         else if(vegetableType == Vegetables.Potato)
         {
-            numberOfCuts = 3;
+            numberOfCuts = 2;
             animator = GetComponent<Animator>();
         }
         else if(vegetableType == Vegetables.Onion)
@@ -82,8 +82,6 @@ public class VegetableCutting : MonoBehaviour
         {
             onionCutting();
         }
-        SoundManager.Instance.PlayRandomSound();
-        
     }
     private void potatoCutting()
     {
@@ -93,8 +91,10 @@ public class VegetableCutting : MonoBehaviour
             Debug.Log("Cannot cut yet, potato not fully peeled!");
             return;
         }
-        //trigger potato cutting animation
+        //trigger potato cutting animation and play sound
+        SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
+
         if (numberOfCuts > 0)
         {
             numberOfCuts--;
@@ -107,8 +107,10 @@ public class VegetableCutting : MonoBehaviour
     }
     private void carrotCutting()
     {
-        //trigger cutting
+        //trigger cutting and play sound
+        SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
+        
 
         //spawn carrot pile
         float y = Random.Range(-4.0f, 0.0f);
@@ -128,7 +130,8 @@ public class VegetableCutting : MonoBehaviour
     }
     private void onionCutting()
     {
-        //trigger cutting
+        //trigger cutting and play sound
+        SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
 
         //do vertical cutting first

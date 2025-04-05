@@ -96,7 +96,7 @@ public class DemoSongManager : MonoBehaviour
                     //assign beat duration based on the current vegetable
                     if (isPotato)
                     {
-                        curr.beatDur = 8;
+                        curr.beatDur = 6;
                     }else if (isOnion)
                     {
                         curr.beatDur = 2;
