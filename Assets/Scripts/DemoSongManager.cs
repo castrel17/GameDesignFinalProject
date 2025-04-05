@@ -4,6 +4,8 @@ using UnityEngine.UIElements;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
+using UnityEngine.InputSystem.Android;
 
 public class DemoSongManager : MonoBehaviour
 {
@@ -39,9 +41,12 @@ public class DemoSongManager : MonoBehaviour
     private DemoLevelManager manager;
     public int baseValue = 0;
     public int vegIndex = 0;
+    private Animator animator;
+    private float timeSinceTrigger = 0;
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
+        animator = GameObject.Find("Goal").GetComponent<Animator>();
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
         numBeats = 96;
@@ -72,9 +77,14 @@ public class DemoSongManager : MonoBehaviour
             }
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
-
+            if(secondsPerBeat / 3 + timeSinceTrigger < beatsPosition)
+            {
+                timeSinceTrigger = beatsPosition;
+                animator.SetTrigger("Next");
+            }
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
+                
                 if (setBaseBool)
                 {
                     setBaseBool = false;
