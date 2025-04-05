@@ -15,7 +15,7 @@ public class VegetableCutting : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     public float slideSpeed = 100.0f;
-    private Vector3 offScreenPosition = new Vector3(100f, 0f, 0f);
+    private Vector3 offScreenPosition = new Vector3(100f, -2.0f, 0f);
 
     //these are only for the onion
     private int horizontalCuts = 0;
@@ -111,7 +111,7 @@ public class VegetableCutting : MonoBehaviour
         animator.SetTrigger("Next");
 
         //spawn carrot pile
-        float y = Random.Range(-2.0f, 2.0f);
+        float y = Random.Range(-4.0f, 0.0f);
         float x = Random.Range(2.7f, 4.0f);
         GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
         piles.Add(newPile);
@@ -140,7 +140,7 @@ public class VegetableCutting : MonoBehaviour
         if(verticalCuts == 0 && horizontalCuts > 0 && !allCut)
         {
             //spawn onion pile
-            float y = Random.Range(-2.0f, 2.0f);
+            float y = Random.Range(-4.0f, 0.0f);
             float x = Random.Range(2.7f, 4.0f);
             GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
             piles.Add(newPile);
