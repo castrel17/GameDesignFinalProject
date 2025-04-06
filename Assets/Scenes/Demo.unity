@@ -761,6 +761,7 @@ GameObject:
   - component: {fileID: 655364666}
   - component: {fileID: 655364668}
   - component: {fileID: 655364667}
+  - component: {fileID: 655364669}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Goal
@@ -923,6 +924,20 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &655364669
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655364661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2b2ca7c2905ae44efbe623fc9d321e22, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  shakeMagnitude: 0.05
+  shakeDuration: 0.5
 --- !u!1 &728945560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1092,7 +1107,7 @@ MonoBehaviour:
   audioSource: {fileID: 894956636}
   soundClips:
   - {fileID: 8300000, guid: dcee773febc2042b6b15537913537f22, type: 3}
-  - {fileID: 8300000, guid: f282f7897377444759ccfb276d058335, type: 3}
+  - {fileID: 8300000, guid: 3856fd3bab22b4a6989b06bb84eef64e, type: 3}
   - {fileID: 8300000, guid: e838fe0993e544b8484edbdd780a5335, type: 3}
 --- !u!4 &894956635
 Transform:
@@ -1330,6 +1345,7 @@ MonoBehaviour:
   bonusStreak: {fileID: 629565063}
   feedback: {fileID: 1627165753}
   bonus: {fileID: 629565063}
+  goalNote: {fileID: 655364669}
   scoreText: {fileID: 2086510676}
   streakSlider: {fileID: 143341346}
 --- !u!4 &992531443

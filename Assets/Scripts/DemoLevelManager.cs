@@ -35,6 +35,8 @@ public class DemoLevelManager : MonoBehaviour
     public GameObject bonusStreak;
     public GameObject feedback;
     public GameObject bonus;
+
+    public GoalNote goalNote;
     private int streak;
 
     public TextMeshProUGUI scoreText;
@@ -141,6 +143,7 @@ public class DemoLevelManager : MonoBehaviour
         }else if(opt == 1){
             feedback = Instantiate(Miss, centerPos, Quaternion.identity);
             streak = 0;
+            goalNote.shake();
         }else if(opt == 2){
             feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
             streak = 0;
