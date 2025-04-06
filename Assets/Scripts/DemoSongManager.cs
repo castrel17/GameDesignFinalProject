@@ -79,7 +79,7 @@ public class DemoSongManager : MonoBehaviour
             }
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
-            if(secondsPerBeat / 3 + timeSinceTrigger < beatsPosition)
+            if(secondsPerBeat / 3 + timeSinceTrigger <= beatsPosition)
             {
                 timeSinceTrigger = beatsPosition;
                 animator.SetTrigger("Next");
@@ -124,8 +124,8 @@ public class DemoSongManager : MonoBehaviour
                     musicNotes.Enqueue(curr);
                     spawnNote = false;
                 }
+                Debug.Log("Current Note: " + musicNoteBeats[beatIndex]);
                 beatIndex++;
-                Debug.Log("Current Note: "+ musicNoteBeats[beatIndex]);
                 metronome.Play();
             }
 
