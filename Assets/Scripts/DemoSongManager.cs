@@ -79,7 +79,7 @@ public class DemoSongManager : MonoBehaviour
             }
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
-            if(secondsPerBeat / 3 + timeSinceTrigger <= beatsPosition)
+            if(beatsPosition - timeSinceTrigger >= secondsPerBeat / 4)
             {
                 timeSinceTrigger = beatsPosition;
                 animator.SetTrigger("Next");
