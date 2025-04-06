@@ -43,6 +43,8 @@ public class DemoSongManager : MonoBehaviour
     public int vegIndex = 0;
     private Animator animator;
     private float timeSinceTrigger = 0;
+
+    public AudioSource metronome;
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
@@ -124,6 +126,7 @@ public class DemoSongManager : MonoBehaviour
                 }
                 beatIndex++;
                 Debug.Log("Current Note: "+ musicNoteBeats[beatIndex]);
+                metronome.Play();
             }
 
             if(beatIndex == numBeats){
