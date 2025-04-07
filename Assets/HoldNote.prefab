@@ -10,9 +10,8 @@ GameObject:
   m_Component:
   - component: {fileID: 2734081885266592490}
   - component: {fileID: 8088005060760778359}
-  - component: {fileID: 3141943632068709071}
-  - component: {fileID: 4749424891573770923}
   - component: {fileID: 5602817470213577932}
+  - component: {fileID: 4416470751574696668}
   m_Layer: 0
   m_Name: HoldNote
   m_TagString: Untagged
@@ -30,7 +29,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.02, y: 0.06, z: 0}
-  m_LocalScale: {x: 0.1990252, y: 0.1990252, z: 0.1990252}
+  m_LocalScale: {x: 2, y: 2, z: 2}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -90,24 +89,8 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
---- !u!114 &3141943632068709071
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 3926037408780857874}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 27911d27fee981341ba7a931ba1b4e8d, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  startingPosition: {x: 0, y: 0}
-  endingPosition: {x: 0, y: 0}
-  myBeat: 0
-  beatDur: 0
---- !u!58 &4749424891573770923
-CircleCollider2D:
+--- !u!70 &5602817470213577932
+CapsuleCollider2D:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -140,42 +123,24 @@ CircleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0.108432874}
-  m_Radius: 4.945788
---- !u!70 &5602817470213577932
-CapsuleCollider2D:
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 10.26, y: 9.94}
+  m_Direction: 0
+--- !u!114 &4416470751574696668
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 3926037408780857874}
   m_Enabled: 1
-  serializedVersion: 3
-  m_Density: 1
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_ForceSendLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ForceReceiveLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_ContactCaptureLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_CallbackLayers:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_IsTrigger: 0
-  m_UsedByEffector: 0
-  m_CompositeOperation: 0
-  m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0}
-  m_Size: {x: 10.26, y: 9.94}
-  m_Direction: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b492d5b1324b4a7a84d77e2ff62689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdSeconds: 0
+  holdTimer: 0
+  beatDur: 0
+  myBeat: 0
+  startingPosition: {x: 0, y: 0}
+  endingPosition: {x: 0, y: 0}
