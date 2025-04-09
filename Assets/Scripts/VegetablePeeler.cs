@@ -6,6 +6,7 @@ public class VegetablePeeler : MonoBehaviour
     public float holdTimeRequired = 1f;
 
     private float holdTimer = 0f;
+    private bool isHolding = false;
     private int peelCount = 0;
     private bool fullyPeeled = false;
     private Animator animator;
@@ -19,7 +20,7 @@ public class VegetablePeeler : MonoBehaviour
     {
         if (fullyPeeled) return;
 
-        if (Input.GetKey(KeyCode.Space))
+        if (isHolding)
         {
             holdTimer += Time.deltaTime;
 
@@ -27,15 +28,23 @@ public class VegetablePeeler : MonoBehaviour
             {
                 PeelOneSection();
                 holdTimer = 0f;
+                isHolding = false; // force stop holding even if space is still down
             }
         }
-        else
+
+        if (Input.GetKeyDown(KeyCode.Space) && !isHolding)
         {
-            //if the player actually pressed down on the timer still peel
-            if(holdTimer >= 0.2f)
+            isHolding = true;
+            holdTimer = 0f; // reset timer at start of new hold
+        }
+
+        if (Input.GetKeyUp(KeyCode.Space) && isHolding)
+        {
+            if (holdTimer >= 0.2f)
             {
-                PeelOneSection();
+                PeelOneSection(); // allow early peel
             }
+            isHolding = false;
             holdTimer = 0f;
         }
     }
