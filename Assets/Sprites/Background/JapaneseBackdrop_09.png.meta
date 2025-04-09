@@ -172,7 +172,9 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      JapaneseBackdrop_09_0: -5168140687517381731
+      JapaneseBackdrop_09_1: 4368785227161004792
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
