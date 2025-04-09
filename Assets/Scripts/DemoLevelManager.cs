@@ -190,13 +190,9 @@ public class DemoLevelManager : MonoBehaviour
         // 2   -> Onion
         if (spawnIndex < 1)
         {
-            // SpawnCarrot();
-            // songManager.isCarrot = true;
-            // songManager.isPotato = false;
-            // songManager.isOnion = false;
-            SpawnPotato();
-            songManager.isCarrot = false;
-            songManager.isPotato = true;
+            SpawnCarrot();
+            songManager.isCarrot = true;
+            songManager.isPotato = false;
             songManager.isOnion = false;
         }
         else if (spawnIndex < 2)
