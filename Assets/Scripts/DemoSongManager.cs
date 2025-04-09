@@ -13,6 +13,7 @@ public class DemoSongManager : MonoBehaviour
     public TextMeshProUGUI countDown;
     public int countDownTime = 3;
     public MusicNote note;
+    public HoldNote holdNote;
     public AudioSource song;
     private float songPosition;
     private float beatsPosition;
@@ -102,28 +103,54 @@ public class DemoSongManager : MonoBehaviour
                 {
                     Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
                 }
-                if (spawnNote){
-                    MusicNote curr = Instantiate(note, this.transform);
-                    curr.myBeat = musicNoteBeats[beatIndex];
-                    //assign beat duration based on the current vegetable
+                if (spawnNote)
+                {
+                    Vector2 startPos = new Vector2(0f, -4f);
+                    Vector2 endPos = new Vector2(0f, 4f);
+
                     if (isPotato)
                     {
-                        curr.beatDur = 6;
-                    }else if (isOnion)
+                        VegetablePeeler peeler = manager.currentVegetable.GetComponent<VegetablePeeler>();
+                        if (peeler != null && !peeler.IsFullyPeeled())
+                        {
+                            HoldNote hold = Instantiate(holdNote, this.transform);
+                            hold.myBeat = musicNoteBeats[beatIndex];
+                            hold.beatDur = 6; // beat duration for potato peeling
+                            hold.startingPosition = startPos;
+                            hold.endingPosition = endPos;
+                        }
+                        else
+                        {
+                            MusicNote noteInstance = Instantiate(note, this.transform);
+                            noteInstance.myBeat = musicNoteBeats[beatIndex];
+                            noteInstance.beatDur = 6;
+                            noteInstance.startingPosition = startPos;
+                            noteInstance.endingPosition = endPos;
+                            musicNotes.Enqueue(noteInstance);
+                        }
+                    }
+                    else if (isOnion)
                     {
-                        curr.beatDur = 2;
-                    }else
+                        MusicNote noteInstance = Instantiate(note, this.transform);
+                        noteInstance.myBeat = musicNoteBeats[beatIndex];
+                        noteInstance.beatDur = 2;
+                        noteInstance.startingPosition = startPos;
+                        noteInstance.endingPosition = endPos;
+                        musicNotes.Enqueue(noteInstance);
+                    }
+                    else
                     {
-                        curr.beatDur = 4;
-                    } 
-                    curr.startingPosition = new Vector2(0f, -4f);
-                    curr.endingPosition = new Vector2(0f, 4f);
-
-                    Debug.Log("Spawning note at beat: " + musicNoteBeats[beatIndex]);
-
-                    musicNotes.Enqueue(curr);
+                        MusicNote noteInstance = Instantiate(note, this.transform);
+                        noteInstance.myBeat = musicNoteBeats[beatIndex];
+                        noteInstance.beatDur = 4;
+                        noteInstance.startingPosition = startPos;
+                        noteInstance.endingPosition = endPos;
+                        musicNotes.Enqueue(noteInstance);
+                    }
+                    
                     spawnNote = false;
                 }
+
                 Debug.Log("Current Note: " + musicNoteBeats[beatIndex]);
                 beatIndex++;
                 metronome.Play();
