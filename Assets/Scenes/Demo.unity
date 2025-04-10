@@ -721,7 +721,6 @@ MonoBehaviour:
   countDown: {fileID: 549417250}
   countDownTime: 3
   note: {fileID: 3141943632068709071, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
-  holdNote: {fileID: 4416470751574696668, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   song: {fileID: 610167286}
   started: 0
   isPotato: 0
