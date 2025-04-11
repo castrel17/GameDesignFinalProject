@@ -71,9 +71,9 @@ public class DemoLevelManager : MonoBehaviour
                 spawnNew();
             }
 
-            if ((isSliding || isExiting) && currentVegetable != null)
+            if (isSliding && currentVegetable != null)
             {
-                Vector3 target = isSliding ? targetPosition : exitPosition;
+                Vector3 target = targetPosition;
 
                 currentVegetable.transform.position = Vector3.MoveTowards(
                     currentVegetable.transform.position,
@@ -87,15 +87,8 @@ public class DemoLevelManager : MonoBehaviour
                     {
                         isSliding = false;
                     }
-                    else if (isExiting)
-                    {
-                        isExiting = false;
-                        Destroy(currentVegetable); 
-                        currentVegetable = null;
-                    }
                 }
             }
-
             if (currentVegetable != null)
             {
                 CheckVegetableProgress();
@@ -131,7 +124,6 @@ public class DemoLevelManager : MonoBehaviour
             {
                 tutorialText.text = "All done cutting! Good job! Hit tab to go to start";
             }
-            isExiting = true;
             spawnIndex++;
             needVeg = true;
 
