@@ -55,7 +55,7 @@ public class DemoSongManager : MonoBehaviour
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
-        numBeats = 96;
+        numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
         for (int i = 0; i < numBeats; i++)  
         {   
             musicNoteBeats.Add(i*1);
@@ -134,9 +134,7 @@ public class DemoSongManager : MonoBehaviour
                     MusicNote curr = Instantiate(note, this.transform);
                     curr.myBeat = currentBeat;
 
-                    if (isPotato) curr.beatDur = 6;
-                    else if (isOnion) curr.beatDur = 2;
-                    else curr.beatDur = 4;
+                    curr.beatDur = 4;
 
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
