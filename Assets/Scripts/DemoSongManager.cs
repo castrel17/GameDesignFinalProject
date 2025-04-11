@@ -48,6 +48,8 @@ public class DemoSongManager : MonoBehaviour
 
     public List<int> spawnBeats = new List<int>(); 
     private int spawnInterval = 1; 
+    private int notesSpawned = 0;
+    private int maxNotes = 0;
 
     void Start()
     {
@@ -66,6 +68,7 @@ public class DemoSongManager : MonoBehaviour
             spawnBeats.Add(i);
         }
         musicNotes = new Queue<MusicNote>();
+        Debug.Log("num beats: "+numBeats);
     }
 
     // Update is called once per frame
@@ -97,15 +100,18 @@ public class DemoSongManager : MonoBehaviour
 
             if (isOnion)
             {
-                spawnInterval = 1; 
+                spawnInterval = 1;
+                maxNotes = 12;
             }
             else if (isCarrot)
             {
-                spawnInterval = 4; 
+                spawnInterval = 2;
+                maxNotes = 4;
             }
             else if (isPotato)
             {
-                spawnInterval = 6; 
+                spawnInterval = 4;
+                maxNotes = 5;
             }
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
@@ -129,20 +135,18 @@ public class DemoSongManager : MonoBehaviour
                 
                 int currentBeat = musicNoteBeats[beatIndex];
 
-                if (currentBeat % spawnInterval == 0)
+                if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
                 {
                     MusicNote curr = Instantiate(note, this.transform);
                     curr.myBeat = currentBeat;
-
                     curr.beatDur = 4;
-
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
-
+                    notesSpawned++;
                     musicNotes.Enqueue(curr);
                     Debug.Log("Spawning note at beat: " + currentBeat);
                 }
-                Debug.Log("Current Note: " + musicNoteBeats[beatIndex]);
+               // Debug.Log("Current Note: " + musicNoteBeats[beatIndex]);
                 beatIndex++;
                 metronome.Play();
             }
@@ -163,6 +167,7 @@ public class DemoSongManager : MonoBehaviour
     {
         baseValue = musicNoteBeats[beatIndex];
         vegIndex = 0;
+        notesSpawned = 0;
     }
     public void dequeueNote()
     {

@@ -45,8 +45,6 @@ public class VegetableCutting : MonoBehaviour
             verticalCuts = 6;
             horizontalCuts = 6;
         }
-
-        
         
     }
 
@@ -91,38 +89,35 @@ public class VegetableCutting : MonoBehaviour
             Debug.Log("Cannot cut yet, potato not fully peeled!");
             return;
         }
-        //trigger potato cutting animation and play sound
+
         SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
 
-        if (numberOfCuts > 0)
-        {
-            numberOfCuts--;
-        }
-        else
+        numberOfCuts--;
+        Debug.Log("num Cuts: " + numberOfCuts);
+
+        if (numberOfCuts <= 0)
         {
             allCut = true;
             Debug.Log("all cut");
         }
     }
+
     private void carrotCutting()
     {
-        //trigger cutting and play sound
         SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
-        
 
-        //spawn carrot pile
         float y = Random.Range(-4.0f, 0.0f);
         float x = Random.Range(2.7f, 4.0f);
         GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
         piles.Add(newPile);
 
-        if (numberOfCuts > 0)
-        {
-            numberOfCuts--;
-        }
-        else
+        numberOfCuts--;
+
+        Debug.Log("num Cuts: " + numberOfCuts);
+
+        if (numberOfCuts <= 0)
         {
             allCut = true;
             Debug.Log("all cut");
@@ -130,33 +125,30 @@ public class VegetableCutting : MonoBehaviour
     }
     private void onionCutting()
     {
-        //trigger cutting and play sound
         SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
 
-        //do vertical cutting first
         if (verticalCuts > 0)
         {
             verticalCuts--;
+            Debug.Log("verticalCuts remaining: " + verticalCuts);
         }
-        //if we finished the horizontal already start doing the vertical
-        if(verticalCuts == 0 && horizontalCuts > 0 && !allCut)
+        else if (horizontalCuts > 0)
         {
-            //spawn onion pile
             float y = Random.Range(-4.0f, 0.0f);
             float x = Random.Range(2.7f, 4.0f);
             GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
             piles.Add(newPile);
-        }
-        if(horizontalCuts > 0  && verticalCuts == 0)
-        {
+
             horizontalCuts--;
+            Debug.Log("horizontalCuts remaining: " + horizontalCuts);
         }
-        //if we are done cutting vertically and horizontally then set allcut to true
-        if(horizontalCuts == 0  && verticalCuts == 0)
+
+        if (verticalCuts <= 0 && horizontalCuts <= 0 && !allCut)
         {
             allCut = true;
             Debug.Log("all cut");
         }
     }
+
 }

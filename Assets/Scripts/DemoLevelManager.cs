@@ -48,6 +48,10 @@ public class DemoLevelManager : MonoBehaviour
 
    public Slider streakSlider;
 
+   private Vector3 exitPosition = new Vector3(10f, -2.0f, 0f); // Right side
+    private bool isExiting = false;
+
+
 
     void Start()
     {
@@ -67,17 +71,28 @@ public class DemoLevelManager : MonoBehaviour
                 spawnNew();
             }
 
-            if (isSliding && currentVegetable != null)
+            if ((isSliding || isExiting) && currentVegetable != null)
             {
+                Vector3 target = isSliding ? targetPosition : exitPosition;
+
                 currentVegetable.transform.position = Vector3.MoveTowards(
                     currentVegetable.transform.position,
-                    targetPosition,
+                    target,
                     slideSpeed * Time.deltaTime
                 );
 
-                if (currentVegetable.transform.position == targetPosition)
+                if (currentVegetable.transform.position == target)
                 {
-                    isSliding = false;
+                    if (isSliding)
+                    {
+                        isSliding = false;
+                    }
+                    else if (isExiting)
+                    {
+                        isExiting = false;
+                        Destroy(currentVegetable); 
+                        currentVegetable = null;
+                    }
                 }
             }
 
@@ -116,11 +131,10 @@ public class DemoLevelManager : MonoBehaviour
             {
                 tutorialText.text = "All done cutting! Good job! Hit tab to go to start";
             }
-
-            needVeg = true;
-            currentVegetable = null;
-
+            isExiting = true;
             spawnIndex++;
+            needVeg = true;
+
         }
     }
 
