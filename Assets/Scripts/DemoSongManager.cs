@@ -45,6 +45,10 @@ public class DemoSongManager : MonoBehaviour
     private float timeSinceTrigger = 0;
 
     public AudioSource metronome;
+
+    public List<int> spawnBeats = new List<int>(); 
+    private int spawnInterval = 1; 
+
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
@@ -56,6 +60,12 @@ public class DemoSongManager : MonoBehaviour
         {   
             musicNoteBeats.Add(i*1);
         }   
+
+        for (int i = 1; i <= 96; i += 1)
+        {
+            spawnBeats.Add(i);
+        }
+        musicNotes = new Queue<MusicNote>();
     }
 
     // Update is called once per frame
@@ -84,6 +94,20 @@ public class DemoSongManager : MonoBehaviour
                 timeSinceTrigger = beatsPosition;
                 animator.SetTrigger("Next");
             }
+
+            if (isOnion)
+            {
+                spawnInterval = 1; 
+            }
+            else if (isCarrot)
+            {
+                spawnInterval = 4; 
+            }
+            else if (isPotato)
+            {
+                spawnInterval = 6; 
+            }
+
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
                 
@@ -102,27 +126,23 @@ public class DemoSongManager : MonoBehaviour
                 {
                     Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
                 }
-                if (spawnNote){
+                
+                int currentBeat = musicNoteBeats[beatIndex];
+
+                if (currentBeat % spawnInterval == 0)
+                {
                     MusicNote curr = Instantiate(note, this.transform);
-                    curr.myBeat = musicNoteBeats[beatIndex];
-                    //assign beat duration based on the current vegetable
-                    if (isPotato)
-                    {
-                        curr.beatDur = 6;
-                    }else if (isOnion)
-                    {
-                        curr.beatDur = 2;
-                    }else
-                    {
-                        curr.beatDur = 4;
-                    } 
+                    curr.myBeat = currentBeat;
+
+                    if (isPotato) curr.beatDur = 6;
+                    else if (isOnion) curr.beatDur = 2;
+                    else curr.beatDur = 4;
+
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
 
-                    Debug.Log("Spawning note at beat: " + musicNoteBeats[beatIndex]);
-
                     musicNotes.Enqueue(curr);
-                    spawnNote = false;
+                    Debug.Log("Spawning note at beat: " + currentBeat);
                 }
                 Debug.Log("Current Note: " + musicNoteBeats[beatIndex]);
                 beatIndex++;
