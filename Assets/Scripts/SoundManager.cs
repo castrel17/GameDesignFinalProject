@@ -1,5 +1,5 @@
 using UnityEngine;
-
+//this is for the PCG sounds
 public class SoundManager : MonoBehaviour
 {
     public static SoundManager Instance { get; private set; }

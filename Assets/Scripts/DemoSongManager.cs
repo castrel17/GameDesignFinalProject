@@ -34,7 +34,7 @@ public class DemoSongManager : MonoBehaviour
     public bool setBaseBool = false;
 
     public bool notePressedOnBeat = false;
-    public int numBeats; //NEED TO CALCULATE THIS BASED ON THE SONG LENGTH RN IT IS HARDCODED
+    public int numBeats; 
 
     public bool gameOver = false;
 
@@ -62,7 +62,7 @@ public class DemoSongManager : MonoBehaviour
     void Update()
     {
         //start the song when player presses down on mouse
-        if (!started && Input.anyKey && !startedCountDown) {
+        if (!started && !startedCountDown) {
             Debug.Log("game started");
             StartCoroutine(CountDownToStart());
             startedCountDown = true;

@@ -51,10 +51,6 @@ public class DemoLevelManager : MonoBehaviour
 
     void Start()
     {
-        if (tutorialText != null)
-        {
-            tutorialText.text = "Press any key to start!";
-        }
     }
 
     void Update()
