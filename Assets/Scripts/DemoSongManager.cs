@@ -57,6 +57,7 @@ public class DemoSongManager : MonoBehaviour
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
+        Debug.Log(secondsPerBeat);
         numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
         for (int i = 0; i < numBeats; i++)  
         {   
@@ -82,7 +83,7 @@ public class DemoSongManager : MonoBehaviour
         }
         if (started)
         {
-            //start the song and ed the coroutine
+            //start the song and end the coroutine
             if (startMusic)
             {
                 Debug.Log("PLAYING MUSIC");
@@ -92,11 +93,6 @@ public class DemoSongManager : MonoBehaviour
             }
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
-            if(beatsPosition - timeSinceTrigger >= secondsPerBeat / 4)
-            {
-                timeSinceTrigger = beatsPosition;
-                animator.SetTrigger("Next");
-            }
 
             if (isOnion)
             {
@@ -113,6 +109,15 @@ public class DemoSongManager : MonoBehaviour
                 spawnInterval = 4;
                 maxNotes = 5;
             }
+
+            //update circle counter in middle if a 1/4 of a beat has passed
+            if (0.25 <= beatsPosition - timeSinceTrigger)
+            {
+                Debug.Log(beatsPosition);
+                timeSinceTrigger = beatsPosition;
+                animator.SetTrigger("Next");
+            }
+
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
@@ -146,12 +151,12 @@ public class DemoSongManager : MonoBehaviour
                     musicNotes.Enqueue(curr);
                     Debug.Log("Spawning note at beat: " + currentBeat);
                 }
-               // Debug.Log("Current Note: " + musicNoteBeats[beatIndex]);
                 beatIndex++;
                 metronome.Play();
             }
 
-            if(beatIndex == numBeats){
+
+            if (beatIndex == numBeats){
                 gameOver = true;
             }
 

@@ -48,10 +48,6 @@ public class DemoLevelManager : MonoBehaviour
 
    public Slider streakSlider;
 
-   private Vector3 exitPosition = new Vector3(10f, -2.0f, 0f); // Right side
-    private bool isExiting = false;
-
-
 
     void Start()
     {
