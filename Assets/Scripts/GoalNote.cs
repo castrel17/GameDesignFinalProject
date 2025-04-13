@@ -1,17 +1,40 @@
 using UnityEngine;
 using System.Collections;
-using System.Collections.Generic;
 
 public class GoalNote : MonoBehaviour
 {
     private Vector3 originalPosition;
-    public float shakeMagnitude = 0.05f; 
-    public float shakeDuration = 0.5f; 
+    public float shakeMagnitude = 0.05f;
+    public float shakeDuration = 0.5f;
+    public float pulseMagnitude = 0.2f;  
+    
+    public DemoSongManager songManager;
+
+    private Vector3 originalScale;
+    private bool isPulsing = false;
+    private float lastPulseTime = -1f; 
 
     void Start()
     {
         originalPosition = transform.position;
+        originalScale = transform.localScale;
     }
+
+    void Update()
+    {
+        if (songManager.startStatus())
+        {
+            float beatsPosition = songManager.getBeatsPosition();
+
+            int currentBeat = Mathf.FloorToInt(beatsPosition);
+            if (currentBeat != lastPulseTime)
+            {
+                lastPulseTime = currentBeat;
+                StartCoroutine(PulseCoroutine()); 
+            }
+        }
+    }
+
     public void shake()
     {
         StartCoroutine(shakeCoroutine());
@@ -30,5 +53,21 @@ public class GoalNote : MonoBehaviour
             yield return null;
         }
         transform.position = originalPosition;
+    }
+
+    private IEnumerator PulseCoroutine()
+    {
+        float pulseDuration = 60f / songManager.bpm;
+        float elapsed = 0f;
+
+        while (elapsed < pulseDuration)
+        {
+            float pulseScale = Mathf.Abs(Mathf.Sin(elapsed / pulseDuration * Mathf.PI)) * pulseMagnitude + 1.0f;
+            transform.localScale = originalScale * pulseScale;
+
+            elapsed += Time.deltaTime;
+            yield return null;
+        }
+        transform.localScale = originalScale;
     }
 }

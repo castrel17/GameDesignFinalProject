@@ -734,6 +734,9 @@ MonoBehaviour:
   vegIndex: 0
   metronome: {fileID: 24833241}
   spawnBeats: 
+  loopStarted: 0
+  goal: {fileID: 655364661}
+  scaleMultiplier: 1.5
 --- !u!1 &616985374 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 505961869153952726, guid: d851fd1f752c048e9aa80ea9d1faec38, type: 3}
@@ -939,6 +942,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   shakeMagnitude: 0.05
   shakeDuration: 0.5
+  pulseMagnitude: 0.2
+  songManager: {fileID: 610167287}
 --- !u!1 &728945560
 GameObject:
   m_ObjectHideFlags: 0
@@ -1349,6 +1354,8 @@ MonoBehaviour:
   goalNote: {fileID: 655364669}
   scoreText: {fileID: 2086510676}
   streakSlider: {fileID: 143341346}
+  fullCycles: 0
+  maxCycles: 21
 --- !u!4 &992531443
 Transform:
   m_ObjectHideFlags: 0

@@ -52,6 +52,10 @@ public class DemoSongManager : MonoBehaviour
     private int maxNotes = 0;
     private int loopCount = 0;
     public bool loopStarted = false;
+
+    public GameObject goal;  // The "Goal" GameObject
+    private Vector3 originalScale; // Store the original scale of the goal
+    public float scaleMultiplier = 1.5f; 
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
@@ -115,14 +119,12 @@ public class DemoSongManager : MonoBehaviour
                 maxNotes = 5;
             }
 
-            //update circle counter in middle if a 1/4 of a beat has passed
-            if (0.25 <= beatsPosition - timeSinceTrigger)
-            {
-              //  Debug.Log(beatsPosition);
-                timeSinceTrigger = beatsPosition;
-                animator.SetTrigger("Next");
-            }
-
+            // //update circle counter in middle if a 1/4 of a beat has passed
+            // if (beatsPosition - timeSinceTrigger >= 0.25f) // Ensure we are at least 1/4 beat ahead
+            // {
+            //     timeSinceTrigger += 0.25f; // Ensure we update time correctly after each 1/4 beat
+            //     animator.SetTrigger("Next"); // Trigger the animation on every 1/4 beat
+            // }
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
@@ -133,6 +135,8 @@ public class DemoSongManager : MonoBehaviour
                     setBase();
 
                 }
+
+                
                 if (vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length && manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue == musicNoteBeats[beatIndex])
                 {
                     spawnNote = true;
@@ -187,6 +191,10 @@ public class DemoSongManager : MonoBehaviour
                 beatIndex = 0; 
                 notesSpawned = 0; 
                 musicNotes = new Queue<MusicNote>();
+                if (beatsPosition < numBeats)
+                {
+                    timeSinceTrigger = beatsPosition;
+                }
 
             }
 
@@ -253,7 +261,5 @@ public class DemoSongManager : MonoBehaviour
         started = false;
         gameOver = true; 
     }
-
-    
 
 }
