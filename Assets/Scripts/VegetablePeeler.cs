@@ -40,7 +40,7 @@ public class VegetablePeeler : MonoBehaviour
         }
     }
 
-    private void PeelOneSection()
+    public void PeelOneSection()
     {
         if (peelCount < 3)
         {

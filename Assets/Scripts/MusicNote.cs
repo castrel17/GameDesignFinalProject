@@ -30,7 +30,7 @@ public class MusicNote : MonoBehaviour
             //if the note goes out of bounds without the player pressing the button just delete the note
             if(transform.position.y == endingPosition.y)
             {
-                manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+                outOfBoundsSlicing();
                 songManager.dequeueNote();
                 Destroy(gameObject);
                 manager.spawnFeedback(1);
@@ -40,7 +40,7 @@ public class MusicNote : MonoBehaviour
         if(!moving && transform.position.y < -1.0f && !markedForDelete)
         {
             markedForDelete = true;
-            manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+            outOfBoundsSlicing();
             Debug.Log("Miss");
             manager.spawnFeedback(1);
             Destroy(gameObject, 0.75f);
@@ -49,7 +49,7 @@ public class MusicNote : MonoBehaviour
         if (!moving && transform.position.y > 1.0f && !markedForDelete)
         {
             markedForDelete = true;
-            manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+            outOfBoundsSlicing();
             Debug.Log("Miss");
             manager.spawnFeedback(1);
             Destroy(gameObject, 0.75f);
@@ -94,6 +94,17 @@ public class MusicNote : MonoBehaviour
         
     }
 
+    private void outOfBoundsSlicing()
+    {
+        //if the veggie is a potato that isn't fully peeled peel a section
+        if (manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType == VegetableCutting.Vegetables.Potato && !manager.currentVegetable.GetComponent<VegetablePeeler>().IsFullyPeeled()) {
+            manager.currentVegetable.GetComponent<VegetablePeeler>().PeelOneSection();
+        }
+        else //else slice
+        {
+            manager.currentVegetable.GetComponent<VegetableCutting>().slice();
+        }
+    }
     public void notePressed()
     {
         trigger.enabled = true;
