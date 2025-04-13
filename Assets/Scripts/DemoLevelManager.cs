@@ -3,8 +3,11 @@ using TMPro;
 using UnityEngine.UI;
 using Unity.Properties;
 using UnityEngine.SceneManagement;
-
-//test commit
+/*In the demo level
+-carrots x7
+-potatos x7
+-onions x7
+*/
 public class DemoLevelManager : MonoBehaviour
 {
     public GameObject potatoPrefab;
@@ -47,7 +50,9 @@ public class DemoLevelManager : MonoBehaviour
    Vector3 centerPosDown = new Vector3(0f, -2f, 0f);
 
    public Slider streakSlider;
-
+   public int fullCycles = 0;
+   public int maxCycles = 21;  
+   private int cyclesThisLoop = 0;
 
     void Start()
     {
@@ -55,7 +60,7 @@ public class DemoLevelManager : MonoBehaviour
 
     void Update()
     {
-        if (!songManager.gameOver)
+        if (!songManager.gameOver && songManager.loopStarted)
         { 
             if(songManager.startStatus() && needVeg && spawnIndex > 0)
             {
@@ -116,14 +121,22 @@ public class DemoLevelManager : MonoBehaviour
         }
         else if (cutting != null && cutting.allCut)
         {
+            spawnIndex++;
             if (tutorialText != null)
             {
                 tutorialText.text = "All done cutting! Good job! Hit tab to go to start";
             }
-            spawnIndex++;
             needVeg = true;
+            if (cyclesThisLoop == 6)
+            {
+                songManager.loopStarted = false;
+                cyclesThisLoop = 0;
+                Debug.Log("Completed 2 cycles in this loop");
+            }
+
 
         }
+
     }
 
 
@@ -172,43 +185,49 @@ public class DemoLevelManager : MonoBehaviour
     }
     public void spawnNew()
     {
-        if (spawnIndex >= 3)
+        if (fullCycles >= maxCycles)
         {
             if (tutorialText != null)
             {
                 tutorialText.text = "All vegetables done! Excellent work!";
             }
-            Debug.Log("No more vegetables to spawn!");
-            songManager.StopMusic();
+            Debug.Log("No more vegetables to spawn! " + fullCycles + " " + maxCycles);
             return;
         }
 
-        // vegetable to spawn based on spawnIndex
-        // 0 -> Carrot
-        // 1, -> Potato
-        // 2   -> Onion
-        if (spawnIndex < 1)
+        int cycleIndex = fullCycles % 3;
+        //carrot → potato → onion
+        switch (fullCycles % 3)
         {
-            SpawnCarrot();
-            songManager.isCarrot = true;
-            songManager.isPotato = false;
-            songManager.isOnion = false;
+            case 0: //carrot
+                SpawnCarrot();
+                songManager.isCarrot = true;
+                songManager.isPotato = false;
+                songManager.isOnion = false;
+                break;
+                
+            case 1: //potato
+                SpawnPotato();
+                songManager.isCarrot = false;
+                songManager.isPotato = true;
+                songManager.isOnion = false;
+                break;
+
+            case 2: //onion
+                SpawnOnion();
+                songManager.isCarrot = false;
+                songManager.isPotato = false;
+                songManager.isOnion = true;
+                break;
         }
-        else if (spawnIndex < 2)
-        {
-            SpawnPotato();
-            songManager.isCarrot = false;
-            songManager.isPotato = true;
-            songManager.isOnion = false;
-        }
-        else
-        {
-            SpawnOnion();
-            songManager.isCarrot = false;
-            songManager.isPotato = false;
-            songManager.isOnion = true;
-        }
+
+        fullCycles++;
+        Debug.Log("full cycles: " + fullCycles);
+        cyclesThisLoop++;
+
     }
+
+
 
     void SpawnPotato()
     {

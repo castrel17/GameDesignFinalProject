@@ -50,14 +50,15 @@ public class DemoSongManager : MonoBehaviour
     private int spawnInterval = 1; 
     private int notesSpawned = 0;
     private int maxNotes = 0;
-
+    private int loopCount = 0;
+    public bool loopStarted = false;
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         //calculate seconds per beat
         secondsPerBeat = 60f / bpm;
-        Debug.Log(secondsPerBeat);
+      //  Debug.Log(secondsPerBeat);
         numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
         for (int i = 0; i < numBeats; i++)  
         {   
@@ -69,7 +70,11 @@ public class DemoSongManager : MonoBehaviour
             spawnBeats.Add(i);
         }
         musicNotes = new Queue<MusicNote>();
-        Debug.Log("num beats: "+numBeats);
+   //     Debug.Log("num beats: "+numBeats);
+
+
+        //song just continues until all vegetables have been spawned
+        song.loop = true;
     }
 
     // Update is called once per frame
@@ -113,7 +118,7 @@ public class DemoSongManager : MonoBehaviour
             //update circle counter in middle if a 1/4 of a beat has passed
             if (0.25 <= beatsPosition - timeSinceTrigger)
             {
-                Debug.Log(beatsPosition);
+              //  Debug.Log(beatsPosition);
                 timeSinceTrigger = beatsPosition;
                 animator.SetTrigger("Next");
             }
@@ -135,29 +140,41 @@ public class DemoSongManager : MonoBehaviour
                 }
                 if(vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length)
                 {
-                    Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
+                   // Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
                 }
                 
-                int currentBeat = musicNoteBeats[beatIndex];
+                int currentBeat = musicNoteBeats[beatIndex] + (loopCount * numBeats);
 
                 if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
                 {
                     MusicNote curr = Instantiate(note, this.transform);
-                    curr.myBeat = currentBeat;
+                    curr.myBeat = musicNoteBeats[beatIndex];
                     curr.beatDur = 4;
                     curr.startingPosition = new Vector2(0f, -4f);
                     curr.endingPosition = new Vector2(0f, 4f);
                     notesSpawned++;
                     musicNotes.Enqueue(curr);
-                    Debug.Log("Spawning note at beat: " + currentBeat);
+                   // Debug.Log("Spawning note at beat: " + currentBeat);
                 }
                 beatIndex++;
                 metronome.Play();
             }
 
+            //detect when song loops
+            if (beatsPosition >= numBeats)
+            {
+                songTime += song.clip.length;
+                Debug.Log("Song looped, resetting beat tracking.");
+                loopCount++;
+                loopStarted = true;
+                if (loopCount >= 3)
+                {
+                    StopMusic();
+                }
+                beatIndex = 0; 
+                notesSpawned = 0; 
+                musicNotes = new Queue<MusicNote>();
 
-            if (beatIndex == numBeats){
-                gameOver = true;
             }
 
             //if player pressed space and the queue is not empty dequeue the note and toggle it
@@ -196,6 +213,7 @@ public class DemoSongManager : MonoBehaviour
         started = true;
         songTime = (float)AudioSettings.dspTime;
         startMusic = true;
+        loopStarted = true; 
         //GetComponent<AudioSource>().Play();
         Debug.Log("game playable");
         musicNotes = new Queue<MusicNote>();
@@ -211,16 +229,18 @@ public class DemoSongManager : MonoBehaviour
     }
 
     public void StopMusic()
-{
-    AudioSource audioSource = GetComponent<AudioSource>();
-    if (audioSource != null && audioSource.isPlaying)
     {
-        audioSource.Stop();
-        Debug.Log("Music stopped.");
+        AudioSource audioSource = GetComponent<AudioSource>();
+        if (audioSource != null && audioSource.isPlaying)
+        {
+            audioSource.Stop();
+            Debug.Log("Music stopped.");
+        }
+
+        started = false;
+        gameOver = true; 
     }
 
-    started = false;
-    gameOver = true; 
-}
+    
 
 }
