@@ -6,7 +6,7 @@ public class GoalNote : MonoBehaviour
     private Vector3 originalPosition;
     public float shakeMagnitude = 0.05f;
     public float shakeDuration = 0.5f;
-    public float pulseMagnitude = 0.2f;  
+    public float pulseMagnitude = 0.5f;  
     
     public DemoSongManager songManager;
 
@@ -24,14 +24,18 @@ public class GoalNote : MonoBehaviour
     {
         if (songManager.startStatus())
         {
-            float beatsPosition = songManager.getBeatsPosition();
-
-            int currentBeat = Mathf.FloorToInt(beatsPosition);
-            if (currentBeat != lastPulseTime)
+            if (this.transform.CompareTag("OuterRing"))
             {
-                lastPulseTime = currentBeat;
-                StartCoroutine(PulseCoroutine()); 
+                float beatsPosition = songManager.getBeatsPosition();
+
+                int currentBeat = Mathf.FloorToInt(beatsPosition);
+                if (currentBeat != lastPulseTime)
+                {
+                    lastPulseTime = currentBeat;
+                    StartCoroutine(PulseCoroutine());
+                }
             }
+            
         }
     }
 

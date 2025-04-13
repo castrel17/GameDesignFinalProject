@@ -175,6 +175,7 @@ public class DemoSongManager : MonoBehaviour
                 }
                 beatIndex++;
                 metronome.Play();
+                animator.SetTrigger("Next");
             }
 
             //detect when song loops
