@@ -1448,7 +1448,7 @@ MonoBehaviour:
   needVeg: 1
   tutorialText: {fileID: 728945562}
   peelFillBar: {fileID: 1096986119}
-  TooEarly: {fileID: 270979050}
+  TooEarly: {fileID: 2355303830120934234, guid: 5b0f896f6757d428680e7d133e12f009, type: 3}
   TooLate: {fileID: 616985374}
   Perfect: {fileID: 1627165753}
   Miss: {fileID: 641282729}
