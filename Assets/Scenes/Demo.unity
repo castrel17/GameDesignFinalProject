@@ -1445,7 +1445,7 @@ MonoBehaviour:
   peelFillBar: {fileID: 1096986119}
   TooEarly: {fileID: 2355303830120934234, guid: 5b0f896f6757d428680e7d133e12f009, type: 3}
   TooLate: {fileID: 616985374}
-  Perfect: {fileID: 1627165753}
+  Perfect: {fileID: 8917227915873660650, guid: c177e1f3102c64538be4606274007a5e, type: 3}
   Miss: {fileID: 6146003313420816589, guid: 5b5e279a8d70042cca063edc8b415056, type: 3}
   bonusStreak: {fileID: 629565063}
   feedback: {fileID: 1627165753}
