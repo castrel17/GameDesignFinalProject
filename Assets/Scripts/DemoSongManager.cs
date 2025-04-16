@@ -159,19 +159,19 @@ public class DemoSongManager : MonoBehaviour
                     notesSpawned++;
                     musicNotes.Enqueue(curr);
 
-                    //hide the notes after the demo portion
-                    // if(loopCount >= 1){
-                    //     if (curr.GetComponent<SpriteRenderer>() != null)
-                    //     {
-                    //         curr.GetComponent<SpriteRenderer>().enabled = false; 
-                    //     }
-                    //     else if (curr.GetComponent<MeshRenderer>() != null)
-                    //     {
-                    //         curr.GetComponent<MeshRenderer>().enabled = false; 
-                    //     }
+                   // hide the notes after the demo portion
+                    if(loopCount >= 1){
+                        if (curr.GetComponent<SpriteRenderer>() != null)
+                        {
+                            curr.GetComponent<SpriteRenderer>().enabled = false; 
+                        }
+                        else if (curr.GetComponent<MeshRenderer>() != null)
+                        {
+                            curr.GetComponent<MeshRenderer>().enabled = false; 
+                        }
 
-                    // }
-                   // Debug.Log("Spawning note at beat: " + currentBeat);
+                    }
+                   Debug.Log("Spawning note at beat: " + currentBeat);
                 }
                 beatIndex++;
                 metronome.Play();
