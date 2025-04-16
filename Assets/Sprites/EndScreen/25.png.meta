@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 585e9561f64d67246a6d913527356813
+guid: 9e7e202dc90bf3549b827e3525a3c9f7
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4940509809837319197
-    second: JapaneseBackdrop_17_0
-  - first:
-      213: -4400339053808803809
-    second: JapaneseBackdrop_17_1
+      213: 6894999169920593895
+    second: 25_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -116,35 +113,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: JapaneseBackdrop_17_0
-      rect:
-        serializedVersion: 2
-        x: 0
-        y: 859
-        width: 2000
-        height: 341
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: 3eb505ff088cf6bb0800000000000000
-      internalID: -4940509809837319197
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: JapaneseBackdrop_17_1
+      name: 25_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 2000
-        height: 691
+        width: 258
+        height: 195
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +128,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: f10a27ec1fadee2c0800000000000000
-      internalID: -4400339053808803809
+      spriteID: 7efeab9b635ffaf50800000000000000
+      internalID: 6894999169920593895
       vertices: []
       indices: 
       edges: []
@@ -172,9 +147,7 @@ TextureImporter:
     secondaryTextures: []
     spriteCustomMetadata:
       entries: []
-    nameFileIdTable:
-      JapaneseBackdrop_17_0: -4940509809837319197
-      JapaneseBackdrop_17_1: -4400339053808803809
+    nameFileIdTable: {}
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
