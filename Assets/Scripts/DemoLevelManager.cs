@@ -40,6 +40,8 @@ public class DemoLevelManager : MonoBehaviour
     public GameObject feedback;
     public GameObject bonus;
 
+    public ScoreBar scoreBar;
+
     public GoalNote goalNote;
     private int streak;
 
@@ -144,6 +146,7 @@ public class DemoLevelManager : MonoBehaviour
             feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
             streak++;
             score += 100;
+            scoreBar.updateScoreBar(2);
         }else if(opt == 1){
             feedback = Instantiate(Miss, centerPos, Quaternion.identity);
             streak = 0;
@@ -152,13 +155,17 @@ public class DemoLevelManager : MonoBehaviour
             feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
             streak = 0;
             score += 50;
-        }else{
+            scoreBar.updateScoreBar(1);
+        }
+        else
+        {
             feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
             streak = 0;
             score += 50;
-        } 
+            scoreBar.updateScoreBar(1);
+        }
 
-        if(streak == 3){
+        if (streak == 3){
             Debug.Log("bonus streak hit");
             //inc score and set streak to 0
             score += 100;
