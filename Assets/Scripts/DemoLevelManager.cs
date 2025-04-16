@@ -141,11 +141,13 @@ public class DemoLevelManager : MonoBehaviour
     -streaks = 3 perfects = 100pts
     */
     public void spawnFeedback(int opt){ //0 = perfect, 1 = miss, 2 = too early, 3 =  too late
+    //hard coding for now: 6 carrots (4), 6 potatos (5), 6 onions (12 hits)
+    //max score is 126
         if(opt == 0){
             feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
             streak++;
             score += 100;
-            scoreBar.updateScore(2);
+            scoreBar.updateScore(1);
         }else if(opt == 1){
             feedback = Instantiate(Miss, centerPos, Quaternion.identity);
             streak = 0;
