@@ -114,18 +114,10 @@ public class DemoLevelManager : MonoBehaviour
         }
         else if (peeler != null && peeler.IsFullyPeeled() && cutting != null && !cutting.allCut)
         {
-            if (tutorialText != null && tutorialText.text != "Great peeling! Now chop")
-            {
-                tutorialText.text = "Great peeling! Now chop";
-            }
         }
         else if (cutting != null && cutting.allCut)
         {
             spawnIndex++;
-            if (tutorialText != null)
-            {
-                tutorialText.text = "All done cutting! Good job! Hit tab to go to start";
-            }
             needVeg = true;
             if (cyclesThisLoop == 6)
             {
@@ -233,10 +225,6 @@ public class DemoLevelManager : MonoBehaviour
     {
         currentVegetable = Instantiate(potatoPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
-        if (tutorialText != null)
-        {
-            tutorialText.text = "A potato! Hold space to peel until peeled!";
-        }
         Debug.Log("Spawned potato");
     }
 
@@ -244,10 +232,6 @@ public class DemoLevelManager : MonoBehaviour
     {
         currentVegetable = Instantiate(carrotPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
-        if (tutorialText != null)
-        {
-            tutorialText.text = "A carrot has appeared! Space to chop";
-        }
         Debug.Log("Spawned carrot");
     }
 
@@ -256,9 +240,6 @@ public class DemoLevelManager : MonoBehaviour
         currentVegetable = Instantiate(onionPrefab, offScreenPosition, Quaternion.identity);
         isSliding = true;
         if (tutorialText != null)
-        {
-            tutorialText.text = "An onion has appeared! chop chop";
-        }
         Debug.Log("Spawned onion");
     }
 
