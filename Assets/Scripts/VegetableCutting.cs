@@ -108,7 +108,7 @@ public class VegetableCutting : MonoBehaviour
         SoundManager.Instance.PlayRandomSound();
         animator.SetTrigger("Next");
 
-        float y = Random.Range(-4.0f, 0.0f);
+        float y = Random.Range(-4.0f, -3.0f);
         float x = Random.Range(2.7f, 4.0f);
         GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
         piles.Add(newPile);
@@ -135,7 +135,7 @@ public class VegetableCutting : MonoBehaviour
         }
         else if (horizontalCuts > 0)
         {
-            float y = Random.Range(-4.0f, 0.0f);
+            float y = Random.Range(-4.0f, -3.0f);
             float x = Random.Range(2.7f, 4.0f);
             GameObject newPile = Instantiate(pile, new Vector3(x, y, 0f), Quaternion.identity);
             piles.Add(newPile);
