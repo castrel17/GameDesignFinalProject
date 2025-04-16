@@ -20,6 +20,10 @@ public class ScoreBar : MonoBehaviour
     public void updateScore(int value)
     {
         index += value;
+        if(index >= progress.Length)
+        {
+            index = progress.Length - 1;
+        }
         render.sprite = progress[index];
     }
 }
