@@ -16,9 +16,9 @@ public class DemoLevelManager : MonoBehaviour
 
     public float slideSpeed = 5f;
     //private Vector3 targetPosition = new Vector3(0f, 0f, 0f);
-    private Vector3 targetPosition = new Vector3(0f, -2.0f, 0f);
+    private Vector3 targetPosition = new Vector3(0f, -3.25f, 0f);
 
-    private Vector3 offScreenPosition = new Vector3(-10f, -2.0f, 0f);
+    private Vector3 offScreenPosition = new Vector3(-10f, -3.25f, 0f);
 
     public GameObject currentVegetable;
     private bool isSliding = false;
