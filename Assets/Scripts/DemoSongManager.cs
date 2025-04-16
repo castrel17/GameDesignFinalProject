@@ -159,8 +159,8 @@ public class DemoSongManager : MonoBehaviour
                     notesSpawned++;
                     musicNotes.Enqueue(curr);
 
-                    //hide the notes after the demo portion
-                    if(loopCount >= 1){
+                    //hide the notes after the demo portions
+                    if(loopCount >= 3){
                         if (curr.GetComponent<SpriteRenderer>() != null)
                         {
                             curr.GetComponent<SpriteRenderer>().enabled = false; 
