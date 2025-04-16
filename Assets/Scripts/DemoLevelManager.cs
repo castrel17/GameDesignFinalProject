@@ -45,6 +45,7 @@ public class DemoLevelManager : MonoBehaviour
 
     public TextMeshProUGUI scoreText;
     private int score = 0;
+    public ScoreBar scoreBar;
    Vector3 centerPos = new Vector3(0f, 2f, 0f);
 
    Vector3 centerPosDown = new Vector3(0f, -2f, 0f);
@@ -144,18 +145,23 @@ public class DemoLevelManager : MonoBehaviour
             feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
             streak++;
             score += 100;
+            scoreBar.updateScore(2);
         }else if(opt == 1){
             feedback = Instantiate(Miss, centerPos, Quaternion.identity);
             streak = 0;
             goalNote.shake();
-        }else if(opt == 2){
+        }
+        else if(opt == 2){
             feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
             streak = 0;
             score += 50;
-        }else{
+            scoreBar.updateScore(1);
+        }
+        else{
             feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
             streak = 0;
             score += 50;
+            scoreBar.updateScore(1);
         } 
 
         if(streak == 3){
