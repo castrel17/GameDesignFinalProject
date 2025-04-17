@@ -97,6 +97,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5329723986714862785}
   - component: {fileID: 1181094675731126131}
+  - component: {fileID: 2929452652276195492}
   m_Layer: 0
   m_Name: HoldNote
   m_TagString: Untagged
@@ -165,7 +166,7 @@ SpriteRenderer:
   m_LightmapParameters: {fileID: 0}
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 14
+  m_SortingOrder: 12
   m_Sprite: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 0.35686275}
   m_FlipX: 0
@@ -177,6 +178,24 @@ SpriteRenderer:
   m_WasSpriteAssigned: 0
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &2929452652276195492
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 771873054292305035}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 7b492d5b1324b4a7a84d77e2ff62689d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  holdSeconds: 0
+  holdTimer: 0
+  beatDur: 0
+  myBeat: 0
+  startingPosition: {x: 0, y: 0}
+  endingPosition: {x: 0, y: 0}
 --- !u!1 &1948162768814070726
 GameObject:
   m_ObjectHideFlags: 0
