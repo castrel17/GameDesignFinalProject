@@ -90,6 +90,7 @@ public class DemoSongManager : MonoBehaviour
             StartCoroutine(CountDownToStart());
             startedCountDown = true;
         }
+
         if (started)
         {
             // start the song and end the coroutine
@@ -100,24 +101,13 @@ public class DemoSongManager : MonoBehaviour
                 startMusic = false;
                 StopAllCoroutines();
             }
+
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
 
-            if (isOnion)
-            {
-                spawnInterval = 1;
-                maxNotes = 12;
-            }
-            else if (isCarrot)
-            {
-                spawnInterval = 2;
-                maxNotes = 4;
-            }
-            else if (isPotato)
-            {
-                spawnInterval = 4;
-                maxNotes = 5;
-            }
+            if      (isOnion)  { spawnInterval = 1; maxNotes = 12; }
+            else if (isCarrot) { spawnInterval = 2; maxNotes = 4;  }
+            else if (isPotato){ spawnInterval = 4; maxNotes = 5;  }
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
@@ -126,68 +116,56 @@ public class DemoSongManager : MonoBehaviour
                     setBaseBool = false;
                     setBase();
                 }
-                
-                // peeling functionality changes made here
-                // might be issue for later since its specific to potato only so not generalized to all peeling
-                if (isPotato)
-                {
-                    var cutting = manager.currentVegetable.GetComponent<VegetableCutting>();
-                    if (vegIndex < cutting.beats.Length
-                        && cutting.beats[vegIndex] + baseValue == musicNoteBeats[beatIndex])
-                    {
-                        spawnNote = true;
-                        vegIndex++;
-                    }
-                }
 
-                if (spawnNote && isPotato)
-                {
-                    Vector2 startPos = new Vector2(0f, -4f);
-                    Vector2 endPos   = new Vector2(0f,  4f);
+                int currentBeat = musicNoteBeats[beatIndex] + (loopCount * numBeats);
 
-                    var peeler = manager.currentVegetable.GetComponent<VegetablePeeler>();
-                    if (peeler != null && !peeler.IsFullyPeeled())
+                if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
+                {
+                    MusicNote curr = null;
+
+                    if (isPotato)
                     {
-                        var h = Instantiate(holdNote, this.transform);
-                        h.myBeat           = musicNoteBeats[beatIndex];
-                        h.beatDur          = 6;
-                        h.startingPosition = startPos;
-                        h.endingPosition   = endPos;
+                        if (notesSpawned < 3)
+                        {
+                            // spawn a HoldNote
+                            var h = Instantiate(holdNote, transform);
+                            h.myBeat           = musicNoteBeats[beatIndex];
+                            h.beatDur          = 4;
+                            h.startingPosition = new Vector2(0f, -4f);
+                            h.endingPosition   = new Vector2(0f,  4f);
+                        }
+                        else
+                        {
+                            // spawn the last 2 MusicNotes
+                            curr = Instantiate(note, transform);
+                            curr.myBeat           = musicNoteBeats[beatIndex];
+                            curr.beatDur          = 4;
+                            curr.startingPosition = new Vector2(0f, -4f);
+                            curr.endingPosition   = new Vector2(0f,  4f);
+                            musicNotes.Enqueue(curr);
+                        }
                     }
+
                     else
                     {
-                        var n = Instantiate(note, this.transform);
-                        n.myBeat           = musicNoteBeats[beatIndex];
-                        n.beatDur          = 6;
-                        n.startingPosition = startPos;
-                        n.endingPosition   = endPos;
-                        musicNotes.Enqueue(n);
-                    }
-
-                    spawnNote = false;
-                }
-                // logic for all the other foods
-                else
-                {
-                    int currentBeat = musicNoteBeats[beatIndex] + (loopCount * numBeats);
-                    if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
-                    {
-                        MusicNote curr = Instantiate(note, this.transform);
+                        // onion & carrot unchanged
+                        curr = Instantiate(note, transform);
                         curr.myBeat           = musicNoteBeats[beatIndex];
                         curr.beatDur          = isOnion ? 2 : 4;
                         curr.startingPosition = new Vector2(0f, -4f);
-                        curr.endingPosition   = new Vector2(0f, 4f);
-                        notesSpawned++;
+                        curr.endingPosition   = new Vector2(0f,  4f);
                         musicNotes.Enqueue(curr);
+                    }
 
-                        // hide notes after the demo loops
-                        if (loopCount >= 3)
-                        {
-                            var sr = curr.GetComponent<SpriteRenderer>();
-                            if (sr != null) sr.enabled = false;
-                            else if (curr.GetComponent<MeshRenderer>() != null)
-                                curr.GetComponent<MeshRenderer>().enabled = false;
-                        }
+                    notesSpawned++;
+
+                    // hide notes after demo loops
+                    if (loopCount >= 3 && curr != null)
+                    {
+                        var sr = curr.GetComponent<SpriteRenderer>();
+                        if (sr != null) sr.enabled = false;
+                        else if (curr.GetComponent<MeshRenderer>() != null)
+                            curr.GetComponent<MeshRenderer>().enabled = false;
                     }
                 }
 
@@ -199,27 +177,26 @@ public class DemoSongManager : MonoBehaviour
             // detect when song loops
             if (beatsPosition >= numBeats)
             {
-                songTime += song.clip.length;
-                Debug.Log("Song looped, resetting beat tracking.");
+                songTime      += song.clip.length;
                 loopCount++;
-                loopStarted = true;
-                if (loopCount >= 3)
-                    StopMusic();
+                loopStarted    = true;
+                if (loopCount >= 3) StopMusic();
 
-                beatIndex    = 0;
-                notesSpawned = 0;
-                musicNotes   = new Queue<MusicNote>();
-                timeSinceTrigger = beatsPosition < numBeats ? beatsPosition : timeSinceTrigger;
+                beatIndex      = 0;
+                notesSpawned   = 0;
+                musicNotes     = new Queue<MusicNote>();
+                timeSinceTrigger = (beatsPosition < numBeats) 
+                    ? beatsPosition 
+                    : timeSinceTrigger;
             }
 
-            // if player pressed space and the queue is not empty, dequeue the note and toggle it
+            // dequeue on player input
             if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
                 musicNotes.Dequeue().notePressed();
             }
         }
     }
-
 
     public void setBase()
     {
