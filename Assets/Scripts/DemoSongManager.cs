@@ -12,6 +12,7 @@ public class DemoSongManager : MonoBehaviour
     public TextMeshProUGUI countDown;
     public int countDownTime = 3;
     public MusicNote note;
+    public HoldNote holdNote;
     public AudioSource song;
     private float songPosition;
     private float beatsPosition;
@@ -83,7 +84,7 @@ public class DemoSongManager : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        //start the song when player presses down on mouse
+        // start the song when player presses down on mouse
         if (!started && !startedCountDown) {
             Debug.Log("game started");
             StartCoroutine(CountDownToStart());
@@ -91,7 +92,7 @@ public class DemoSongManager : MonoBehaviour
         }
         if (started)
         {
-            //start the song and end the coroutine
+            // start the song and end the coroutine
             if (startMusic)
             {
                 Debug.Log("PLAYING MUSIC");
@@ -118,66 +119,84 @@ public class DemoSongManager : MonoBehaviour
                 maxNotes = 5;
             }
 
-            // //update circle counter in middle if a 1/4 of a beat has passed
-            // if (beatsPosition - timeSinceTrigger >= 0.25f) // Ensure we are at least 1/4 beat ahead
-            // {
-            //     timeSinceTrigger += 0.25f; // Ensure we update time correctly after each 1/4 beat
-            //     animator.SetTrigger("Next"); // Trigger the animation on every 1/4 beat
-            // }
-
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
-                
                 if (setBaseBool)
                 {
                     setBaseBool = false;
                     setBase();
-
-                }
-
-                
-                if (vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length && manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue == musicNoteBeats[beatIndex])
-                {
-                    spawnNote = true;
-                    vegIndex++;
-                }
-                if(vegIndex < manager.currentVegetable.GetComponent<VegetableCutting>().beats.Length)
-                {
-                   // Debug.Log(manager.currentVegetable.GetComponent<VegetableCutting>().vegetableType + " : current beat " + (int) (manager.currentVegetable.GetComponent<VegetableCutting>().beats[vegIndex] + baseValue));
                 }
                 
-                int currentBeat = musicNoteBeats[beatIndex] + (loopCount * numBeats);
-
-                if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
+                // peeling functionality changes made here
+                // might be issue for later since its specific to potato only so not generalized to all peeling
+                if (isPotato)
                 {
-                    MusicNote curr = Instantiate(note, this.transform);
-                    curr.myBeat = musicNoteBeats[beatIndex];
-                    curr.beatDur = 4;
-                    curr.startingPosition = new Vector2(0f, -4f);
-                    curr.endingPosition = new Vector2(0f, 4f);
-                    notesSpawned++;
-                    musicNotes.Enqueue(curr);
-
-                    //hide the notes after the demo portions
-                    if(loopCount >= 3){
-                        if (curr.GetComponent<SpriteRenderer>() != null)
-                        {
-                            curr.GetComponent<SpriteRenderer>().enabled = false; 
-                        }
-                        else if (curr.GetComponent<MeshRenderer>() != null)
-                        {
-                            curr.GetComponent<MeshRenderer>().enabled = false; 
-                        }
-
+                    var cutting = manager.currentVegetable.GetComponent<VegetableCutting>();
+                    if (vegIndex < cutting.beats.Length
+                        && cutting.beats[vegIndex] + baseValue == musicNoteBeats[beatIndex])
+                    {
+                        spawnNote = true;
+                        vegIndex++;
                     }
-                   // Debug.Log("Spawning note at beat: " + currentBeat);
                 }
+
+                if (spawnNote && isPotato)
+                {
+                    Vector2 startPos = new Vector2(0f, -4f);
+                    Vector2 endPos   = new Vector2(0f,  4f);
+
+                    var peeler = manager.currentVegetable.GetComponent<VegetablePeeler>();
+                    if (peeler != null && !peeler.IsFullyPeeled())
+                    {
+                        var h = Instantiate(holdNote, this.transform);
+                        h.myBeat           = musicNoteBeats[beatIndex];
+                        h.beatDur          = 6;
+                        h.startingPosition = startPos;
+                        h.endingPosition   = endPos;
+                    }
+                    else
+                    {
+                        var n = Instantiate(note, this.transform);
+                        n.myBeat           = musicNoteBeats[beatIndex];
+                        n.beatDur          = 6;
+                        n.startingPosition = startPos;
+                        n.endingPosition   = endPos;
+                        musicNotes.Enqueue(n);
+                    }
+
+                    spawnNote = false;
+                }
+                // logic for all the other foods
+                else
+                {
+                    int currentBeat = musicNoteBeats[beatIndex] + (loopCount * numBeats);
+                    if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
+                    {
+                        MusicNote curr = Instantiate(note, this.transform);
+                        curr.myBeat           = musicNoteBeats[beatIndex];
+                        curr.beatDur          = isOnion ? 2 : 4;
+                        curr.startingPosition = new Vector2(0f, -4f);
+                        curr.endingPosition   = new Vector2(0f, 4f);
+                        notesSpawned++;
+                        musicNotes.Enqueue(curr);
+
+                        // hide notes after the demo loops
+                        if (loopCount >= 3)
+                        {
+                            var sr = curr.GetComponent<SpriteRenderer>();
+                            if (sr != null) sr.enabled = false;
+                            else if (curr.GetComponent<MeshRenderer>() != null)
+                                curr.GetComponent<MeshRenderer>().enabled = false;
+                        }
+                    }
+                }
+
                 beatIndex++;
                 metronome.Play();
                 animator.SetTrigger("Next");
             }
 
-            //detect when song loops
+            // detect when song loops
             if (beatsPosition >= numBeats)
             {
                 songTime += song.clip.length;
@@ -185,26 +204,22 @@ public class DemoSongManager : MonoBehaviour
                 loopCount++;
                 loopStarted = true;
                 if (loopCount >= 3)
-                {
                     StopMusic();
-                }
-                beatIndex = 0; 
-                notesSpawned = 0; 
-                musicNotes = new Queue<MusicNote>();
-                if (beatsPosition < numBeats)
-                {
-                    timeSinceTrigger = beatsPosition;
-                }
 
+                beatIndex    = 0;
+                notesSpawned = 0;
+                musicNotes   = new Queue<MusicNote>();
+                timeSinceTrigger = beatsPosition < numBeats ? beatsPosition : timeSinceTrigger;
             }
 
-            //if player pressed space and the queue is not empty dequeue the note and toggle it
+            // if player pressed space and the queue is not empty, dequeue the note and toggle it
             if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
                 musicNotes.Dequeue().notePressed();
             }
         }
     }
+
 
     public void setBase()
     {
@@ -214,7 +229,9 @@ public class DemoSongManager : MonoBehaviour
     }
     public void dequeueNote()
     {
-        musicNotes.Dequeue();
+        if (musicNotes.Count > 0)
+            musicNotes.Dequeue();
+        
     }
     //countdown until music starts
     IEnumerator CountDownToStart()
