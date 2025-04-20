@@ -1,9 +1,9 @@
 using UnityEngine;
 using UnityEngine.TerrainTools;
-using UnityEngine.UIElements;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using UnityEngine.UI; 
 using Unity.VisualScripting;
 
 public class DemoSongManager : MonoBehaviour
@@ -45,6 +45,11 @@ public class DemoSongManager : MonoBehaviour
     private float timeSinceTrigger = 0;
 
     public AudioSource metronome;
+    public bool metronomeOn = true;
+    public Button metronomeToggleButton;
+    public TextMeshProUGUI metronomeButtonText;
+
+
 
     public List<int> spawnBeats = new List<int>(); 
     private int spawnInterval = 1; 
@@ -53,9 +58,11 @@ public class DemoSongManager : MonoBehaviour
     private int loopCount = 0;
     public bool loopStarted = false;
 
-    public GameObject goal;  // The "Goal" GameObject
-    private Vector3 originalScale; // Store the original scale of the goal
+    public GameObject goal; 
+    private Vector3 originalScale; 
     public float scaleMultiplier = 1.5f; 
+
+
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
@@ -77,7 +84,10 @@ public class DemoSongManager : MonoBehaviour
    //     Debug.Log("num beats: "+numBeats);
 
 
-        //song just continues until all vegetables have been spawned
+        if (metronomeToggleButton != null)
+        {
+            metronomeToggleButton.onClick.AddListener(ToggleMetronome);
+        }
         song.loop = true;
     }
 
@@ -170,7 +180,11 @@ public class DemoSongManager : MonoBehaviour
                 }
 
                 beatIndex++;
-                metronome.Play();
+                if (metronomeOn)
+                {
+                    metronome.Play();
+                }
+
                 animator.SetTrigger("Next");
             }
 
@@ -210,6 +224,18 @@ public class DemoSongManager : MonoBehaviour
             musicNotes.Dequeue();
         
     }
+
+    public void ToggleMetronome()
+    {
+        metronomeOn = !metronomeOn;
+        Debug.Log("Metronome is now: " + (metronomeOn ? "ON" : "OFF"));
+
+        if (metronomeButtonText != null)
+        {
+            metronomeButtonText.text = "Metronome: " + (metronomeOn ? "ON" : "OFF");
+        }
+    }
+
     //countdown until music starts
     IEnumerator CountDownToStart()
     {
