@@ -1,11 +1,11 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class StartGame : MonoBehaviour
+public class Level1Select : MonoBehaviour
 {
     public void OnMouseDown()
     {
         Debug.Log("Click");
-        SceneManager.LoadScene("LevelSelect");
+        SceneManager.LoadScene("Level1");
     }
 }
