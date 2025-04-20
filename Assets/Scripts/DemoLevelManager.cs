@@ -53,11 +53,18 @@ public class DemoLevelManager : MonoBehaviour
 
    public Slider streakSlider;
    public int fullCycles = 0;
-   public int maxCycles = 21;  
+   public int maxCycles;  
    private int cyclesThisLoop = 0;
 
+   public int level;
     void Start()
     {
+        if(level == 0){
+            maxCycles = 21;
+        }
+        if(level == 1){
+            maxCycles = 50;
+        }
     }
 
     void Update()
@@ -121,7 +128,7 @@ public class DemoLevelManager : MonoBehaviour
         {
             spawnIndex++;
             needVeg = true;
-            if (cyclesThisLoop == 6)
+            if (cyclesThisLoop == 6 && level == 0)
             {
                 songManager.loopStarted = false;
                 cyclesThisLoop = 0;
@@ -226,7 +233,9 @@ public class DemoLevelManager : MonoBehaviour
 
     }
 
-
+    public int whatLevel(){
+        return level;
+    }
 
     void SpawnPotato()
     {

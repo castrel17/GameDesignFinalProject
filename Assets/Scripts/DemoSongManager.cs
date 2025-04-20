@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine.UI; 
 using Unity.VisualScripting;
+using NUnit.Framework;
 
 public class DemoSongManager : MonoBehaviour
 {
@@ -170,7 +171,7 @@ public class DemoSongManager : MonoBehaviour
                     notesSpawned++;
 
                     // hide notes after demo loops
-                    if (loopCount >= 3 && curr != null)
+                    if (loopCount >= 3 && curr != null && manager.whatLevel() != 1)
                     {
                         var sr = curr.GetComponent<SpriteRenderer>();
                         if (sr != null) sr.enabled = false;
