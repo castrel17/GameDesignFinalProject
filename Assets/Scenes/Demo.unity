@@ -938,10 +938,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 80
+  noteTravelBeats: 8
+  activeHoldNote: {fileID: 0}
+  holdNoteContainerPrefab: {fileID: 771873054292305035, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   countDown: {fileID: 549417250}
   countDownTime: 3
   note: {fileID: 3141943632068709071, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
-  holdNote: {fileID: 2929452652276195492, guid: e67282b9585634f97a345b546cf0b760, type: 3}
+  holdNote: {fileID: 5252630127214143228, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   song: {fileID: 610167286}
   started: 0
   isPotato: 0
@@ -1666,7 +1669,6 @@ MonoBehaviour:
   songManager: {fileID: 610167287}
   needVeg: 1
   tutorialText: {fileID: 728945562}
-  peelFillBar: {fileID: 1096986119}
   TooEarly: {fileID: 1702596484875735762, guid: 342bc6cde9dd94055b61370528332db6, type: 3}
   TooLate: {fileID: 1917556046250911626, guid: c98a13c583598476c87cb705ba2542a0, type: 3}
   Perfect: {fileID: 8679905425073071012, guid: 2e09b34b2617248cf9c8cfb9d8b0d2b9, type: 3}
@@ -1680,6 +1682,7 @@ MonoBehaviour:
   streakSlider: {fileID: 143341346}
   fullCycles: 0
   maxCycles: 21
+  level: 0
 --- !u!4 &992531443
 Transform:
   m_ObjectHideFlags: 0
@@ -1961,7 +1964,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peelObjects: []
-  holdTimeRequired: 0.75
 --- !u!1 &1174447294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3190,7 +3192,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5329723986714862785, guid: e67282b9585634f97a345b546cf0b760, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.45
+      value: 0.73
       objectReference: {fileID: 0}
     - target: {fileID: 5329723986714862785, guid: e67282b9585634f97a345b546cf0b760, type: 3}
       propertyPath: m_LocalPosition.z

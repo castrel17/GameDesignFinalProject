@@ -3,13 +3,19 @@ using UnityEngine.TerrainTools;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
-using UnityEngine.UI; 
+using UnityEngine.UI;
 using Unity.VisualScripting;
 using NUnit.Framework;
 
 public class DemoSongManager : MonoBehaviour
 {
     public float bpm;
+    public float noteTravelBeats = 8f;
+
+    public HoldNoteController activeHoldNote = null;
+
+    public GameObject holdNoteContainerPrefab;
+
     public TextMeshProUGUI countDown;
     public int countDownTime = 3;
     public MusicNote note;
@@ -19,9 +25,9 @@ public class DemoSongManager : MonoBehaviour
     private float beatsPosition;
     private float secondsPerBeat;
     private float songTime;
-  
+
     private List<int> musicNoteBeats = new List<int>();
-    private Queue<MusicNote> musicNotes;
+    private Queue<MonoBehaviour> musicNotes;
     private int beatIndex = 0;
     public bool started = false;
     private bool startMusic = false;
@@ -35,7 +41,7 @@ public class DemoSongManager : MonoBehaviour
     public bool setBaseBool = false;
 
     public bool notePressedOnBeat = false;
-    public int numBeats; 
+    public int numBeats;
 
     public bool gameOver = false;
 
@@ -50,64 +56,57 @@ public class DemoSongManager : MonoBehaviour
     public Button metronomeToggleButton;
     public TextMeshProUGUI metronomeButtonText;
 
-
-
-    public List<int> spawnBeats = new List<int>(); 
-    private int spawnInterval = 1; 
+    public List<int> spawnBeats = new List<int>();
+    private int spawnInterval = 1;
     private int notesSpawned = 0;
     private int maxNotes = 0;
     private int loopCount = 0;
     public bool loopStarted = false;
 
-    public GameObject goal; 
-    private Vector3 originalScale; 
-    public float scaleMultiplier = 1.5f; 
-
+    public GameObject goal;
+    private Vector3 originalScale;
+    public float scaleMultiplier = 1.5f;
 
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         animator = GameObject.Find("Goal").GetComponent<Animator>();
-        //calculate seconds per beat
+
         secondsPerBeat = 60f / bpm;
-      //  Debug.Log(secondsPerBeat);
         numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
-        for (int i = 0; i < numBeats; i++)  
-        {   
-            musicNoteBeats.Add(i*1);
-        }   
+
+        for (int i = 0; i < numBeats; i++)
+        {
+            musicNoteBeats.Add(i * 1);
+        }
 
         for (int i = 1; i <= 96; i += 1)
         {
             spawnBeats.Add(i);
         }
-        musicNotes = new Queue<MusicNote>();
-   //     Debug.Log("num beats: "+numBeats);
 
+        musicNotes = new Queue<MonoBehaviour>();
 
         if (metronomeToggleButton != null)
         {
             metronomeToggleButton.onClick.AddListener(ToggleMetronome);
         }
+
         song.loop = true;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        // start the song when player presses down on mouse
-        if (!started && !startedCountDown) {
-            Debug.Log("game started");
+        if (!started && !startedCountDown)
+        {
             StartCoroutine(CountDownToStart());
             startedCountDown = true;
         }
 
         if (started)
         {
-            // start the song and end the coroutine
             if (startMusic)
             {
-                Debug.Log("PLAYING MUSIC");
                 song.Play();
                 startMusic = false;
                 StopAllCoroutines();
@@ -116,9 +115,9 @@ public class DemoSongManager : MonoBehaviour
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
 
-            if      (isOnion)  { spawnInterval = 1; maxNotes = 12; }
-            else if (isCarrot) { spawnInterval = 2; maxNotes = 4;  }
-            else if (isPotato){ spawnInterval = 4; maxNotes = 5;  }
+            if (isOnion) { spawnInterval = 1; maxNotes = 12; }
+            else if (isCarrot) { spawnInterval = 2; maxNotes = 4; }
+            else if (isPotato) { spawnInterval = 4; maxNotes = 5; }
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
@@ -128,49 +127,48 @@ public class DemoSongManager : MonoBehaviour
                     setBase();
                 }
 
-                int currentBeat = musicNoteBeats[beatIndex] + (loopCount * numBeats);
-
-                if (currentBeat % spawnInterval == 0 && notesSpawned < maxNotes)
+                int beatToSpawn = musicNoteBeats[beatIndex];
+                if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                 {
                     MusicNote curr = null;
+
+                    Debug.Log(isPotato);
 
                     if (isPotato)
                     {
                         if (notesSpawned < 3)
                         {
-                            // spawn a HoldNote
-                            var h = Instantiate(holdNote, transform);
-                            h.myBeat           = musicNoteBeats[beatIndex];
-                            h.beatDur          = 4;
-                            h.startingPosition = new Vector2(0f, -4f);
-                            h.endingPosition   = new Vector2(0f,  4f);
+                            var container = Instantiate(holdNoteContainerPrefab, transform);
+                            var controller = container.GetComponent<HoldNoteController>();
+
+                            float startBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
+                            float endBeat = startBeat + 2f;
+
+                            controller.Initialize(startBeat, endBeat, new Vector2(0f, -4f), new Vector2(0f, 4f), this);
+                            musicNotes.Enqueue(controller.startNote);
+
+                            Debug.Log("hold note spawned");
                         }
                         else
                         {
-                            // spawn the last 2 MusicNotes
                             curr = Instantiate(note, transform);
-                            curr.myBeat           = musicNoteBeats[beatIndex];
-                            curr.beatDur          = 4;
+                            curr.myBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
                             curr.startingPosition = new Vector2(0f, -4f);
-                            curr.endingPosition   = new Vector2(0f,  4f);
+                            curr.endingPosition = new Vector2(0f, 4f);
                             musicNotes.Enqueue(curr);
                         }
                     }
-
                     else
                     {
-                        // onion & carrot unchanged
                         curr = Instantiate(note, transform);
-                        curr.myBeat           = musicNoteBeats[beatIndex];
-                        curr.beatDur          = isOnion ? 2 : 4;
+                        curr.myBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
-                        curr.endingPosition   = new Vector2(0f,  4f);
+                        curr.endingPosition = new Vector2(0f, 4f);
                         musicNotes.Enqueue(curr);
                     }
 
                     notesSpawned++;
 
-                    // hide notes after demo loops
                     if (loopCount >= 3 && curr != null && manager.whatLevel() != 1)
                     {
                         var sr = curr.GetComponent<SpriteRenderer>();
@@ -181,34 +179,32 @@ public class DemoSongManager : MonoBehaviour
                 }
 
                 beatIndex++;
-                if (metronomeOn)
-                {
-                    metronome.Play();
-                }
-
+                if (metronomeOn) metronome.Play();
                 animator.SetTrigger("Next");
             }
 
-            // detect when song loops
             if (beatsPosition >= numBeats)
             {
-                songTime      += song.clip.length;
+                songTime += song.clip.length;
                 loopCount++;
-                loopStarted    = true;
+                loopStarted = true;
                 if (loopCount >= 3) StopMusic();
 
-                beatIndex      = 0;
-                notesSpawned   = 0;
-                musicNotes     = new Queue<MusicNote>();
-                timeSinceTrigger = (beatsPosition < numBeats) 
-                    ? beatsPosition 
-                    : timeSinceTrigger;
+                beatIndex = 0;
+                notesSpawned = 0;
+                musicNotes = new Queue<MonoBehaviour>();
+                timeSinceTrigger = beatsPosition < numBeats ? beatsPosition : timeSinceTrigger;
             }
 
-            // dequeue on player input
-            if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
+           if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
-                musicNotes.Dequeue().notePressed();
+                var note = musicNotes.Peek(); // peek instead of dequeue
+
+                if (note != null)
+                {
+                    note.SendMessage("notePressed", SendMessageOptions.DontRequireReceiver);
+                    musicNotes.Dequeue(); // remove only after pressing
+                }
             }
         }
     }
@@ -219,11 +215,11 @@ public class DemoSongManager : MonoBehaviour
         vegIndex = 0;
         notesSpawned = 0;
     }
+
     public void dequeueNote()
     {
         if (musicNotes.Count > 0)
             musicNotes.Dequeue();
-        
     }
 
     public void ToggleMetronome()
@@ -237,31 +233,28 @@ public class DemoSongManager : MonoBehaviour
         }
     }
 
-    //countdown until music starts
     IEnumerator CountDownToStart()
     {
-        while(countDownTime > 0)
+        while (countDownTime > 0)
         {
             countDown.text = countDownTime.ToString();
-            Debug.Log(countDownTime.ToString());
             yield return new WaitForSeconds(1f);
             countDownTime--;
         }
+
         countDown.text = "Start!";
         yield return new WaitForSeconds(1f);
         countDown.gameObject.SetActive(false);
 
-        //actually start
         started = true;
         songTime = (float)AudioSettings.dspTime;
         startMusic = true;
-        loopStarted = true; 
-        //GetComponent<AudioSource>().Play();
-        Debug.Log("game playable");
-        musicNotes = new Queue<MusicNote>();
+        loopStarted = true;
+        musicNotes = new Queue<MonoBehaviour>();
     }
 
-    public bool startStatus(){
+    public bool startStatus()
+    {
         return started;
     }
 
@@ -280,7 +273,11 @@ public class DemoSongManager : MonoBehaviour
         }
 
         started = false;
-        gameOver = true; 
+        gameOver = true;
     }
 
+    public void ResetNoteCounter()
+{
+    notesSpawned = 0;
+}
 }

@@ -3,9 +3,6 @@ using UnityEngine;
 public class VegetablePeeler : MonoBehaviour
 {
     public GameObject[] peelObjects;
-    public float holdTimeRequired = 1f;
-
-    private float holdTimer = 0f;
     private int peelCount = 0;
     private bool fullyPeeled = false;
     private Animator animator;
@@ -15,56 +12,35 @@ public class VegetablePeeler : MonoBehaviour
         animator = GetComponent<Animator>();
     }
 
-    void Update()
+    public void TriggerStartPeel()
     {
-        if (fullyPeeled) return;
+        Debug.Log("Start peel visual maybe?");
+        // Optional: play visual cue or shake
+    }
 
-        if (Input.GetKey(KeyCode.Space))
-        {
-            holdTimer += Time.deltaTime;
-
-            if (holdTimer >= holdTimeRequired)
-            {
-                PeelOneSection();
-                holdTimer = 0f;
-            }
-        }
-        else
-        {
-            //if the player actually pressed down on the timer still peel
-            if(holdTimer >= 0.2f)
-            {
-                PeelOneSection();
-            }
-            holdTimer = 0f;
-        }
+    public void TriggerEndPeel()
+    {
+        PeelOneSection();
     }
 
     public void PeelOneSection()
     {
         if (peelCount < 3)
         {
-            //trigger potato peeling animation
             animator.SetTrigger("Next");
-            Debug.Log("Peeled section: ");
+            Debug.Log("Peeled section");
 
-            if (peelCount == 2)
+            peelCount++;
+            if (peelCount == 3)
             {
                 fullyPeeled = true;
                 Debug.Log("Vegetable fully peeled!");
             }
-            peelCount++;
         }
     }
 
     public bool IsFullyPeeled()
     {
         return fullyPeeled;
-    }
-
-    public float GetHoldProgress()
-    {
-        if (fullyPeeled) return 1f;
-        return Mathf.Clamp01(holdTimer / holdTimeRequired);
     }
 }

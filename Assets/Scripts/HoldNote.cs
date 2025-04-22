@@ -1,94 +1,152 @@
 using UnityEngine;
 
-
 public class HoldNote : MonoBehaviour
 {
-   private DemoLevelManager levelManager;
-   private DemoSongManager songManager;
-   private Collider2D trigger;
-   private bool inZone = false;
-   private bool heldPerfect = false;
+    public float startBeat;
+    public float endBeat;
+    public Vector2 startingPosition;
+    public Vector2 endingPosition;
 
+    private DemoLevelManager levelManager;
+    private DemoSongManager songManager;
 
-   public float holdSeconds;
-   public float holdTimer = 0f;
+    private bool startEvaluated = false;
+    private bool endEvaluated = false;
+    private bool isHolding = false;
 
+    void Awake()
+    {
+        Debug.Log("[HoldNote] Awake called");
+    }
 
-   public float beatDur;
-   public float myBeat;
-   public Vector2 startingPosition;
-   public Vector2 endingPosition;
+    void Start()
+    {
+        levelManager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
+        songManager = GetComponentInParent<DemoSongManager>();
 
+        Debug.Log("[HoldNote] Start called. StartBeat: " + startBeat + ", EndBeat: " + endBeat);
+    }
 
-   void Start()
-   {
-       levelManager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
-       songManager = transform.parent.GetComponent<DemoSongManager>();
-       trigger = GetComponent<Collider2D>();
-       trigger.isTrigger = true;
-       trigger.enabled = false;
+    void Update()
+    {
+        float currentBeat = songManager.getBeatsPosition();
+        float travelBeats = songManager.noteTravelBeats;
 
+        // ✅ Compute t so that t = 0.5 when currentBeat == startBeat
+        float visualStart = startBeat - (travelBeats / 2f);
+        float t = 1 - ((visualStart - currentBeat) / travelBeats);
+        t = Mathf.Clamp01(t);
+        transform.position = Vector2.Lerp(startingPosition, endingPosition, t);
 
-       // Convert beat duration to seconds based on BPM
-       float secondsPerBeat = 60f / songManager.bpm;
-       holdSeconds = beatDur * secondsPerBeat;
-   }
+        // 🧨 Auto despawn if missed completely
+        float missCutoffBeat = endBeat + 0.5f;
+        if (currentBeat > missCutoffBeat && (!startEvaluated))
+        {
+            if (!startEvaluated)
+            {
+                EvaluateStart(missed: true);
+                startEvaluated = true;
+            }
 
+            if (!endEvaluated)
+            {
+                EvaluateEnd(missed: true);
+                endEvaluated = true;
+            }
 
-   void Update()
-   {
-       if (!inZone)
-       {
-           float t = (songManager.getBeatsPosition() - myBeat) / (beatDur * 2);
-           transform.position = Vector2.Lerp(startingPosition, endingPosition, t);
+            Destroy(gameObject);
+            return;
+        }
 
+        // 🎯 Start evaluation
+        if (!startEvaluated && Input.GetKeyDown(KeyCode.Space))
+        {
+            EvaluateStart();
+            isHolding = true;
+            startEvaluated = true;
+        }
 
-           if (transform.position.y >= endingPosition.y)
-           {
-               levelManager.spawnFeedback(1); // 1 = Miss
-               Destroy(gameObject);
-           }
-       }
-       else
-       {
-           if (Input.GetKey(KeyCode.Space))
-           {
-               holdTimer += Time.deltaTime;
+        if (!startEvaluated && currentBeat > startBeat + 0.5f)
+        {
+            EvaluateStart(missed: true);
+            startEvaluated = true;
+        }
 
+        // 🎯 End evaluation
+        if (!endEvaluated && Input.GetKeyUp(KeyCode.Space))
+        {
+            if (isHolding)
+            {
+                EvaluateEnd();
+                isHolding = false;
+                endEvaluated = true;
+            }
+        }
 
-               if (holdTimer >= holdSeconds && !heldPerfect)
-               {
-                   heldPerfect = true;
-                   VegetablePeeler peeler = levelManager.currentVegetable.GetComponent<VegetablePeeler>();
-                   if (peeler != null)
-                   {
-                       peeler.SendMessage("PeelOneSection", SendMessageOptions.DontRequireReceiver);
-                   }
-                   levelManager.spawnFeedback(0);  // 0 = Perfect
-                   Destroy(gameObject);
-               }
-           }
-       }
-   }
+        if (!endEvaluated && currentBeat > endBeat + 0.5f)
+        {
+            EvaluateEnd(missed: true);
+            endEvaluated = true;
+        }
 
+        if (startEvaluated && endEvaluated)
+        {
+            Destroy(gameObject);
+        }
+    }
 
-   public void OnTriggerEnter2D(Collider2D collision)
-   {
-       if (collision.gameObject.CompareTag("Goal"))
-       {
-           inZone = true;
-           trigger.enabled = true;
-       }
-   }
+    void EvaluateStart(bool missed = false)
+    {
+        float currentBeat = songManager.getBeatsPosition();
+        float delta = Mathf.Abs(currentBeat - startBeat);
 
+        levelManager.currentVegetable.GetComponent<VegetablePeeler>()?.TriggerStartPeel();
 
-   public void OnTriggerExit2D(Collider2D collision)
-   {
-       if (collision.gameObject.CompareTag("Goal"))
-       {
-           if (!heldPerfect)
-               levelManager.spawnFeedback(1);
-           Destroy(gameObject);
-       }
-   }
+        if (missed || delta > 1f)
+        {
+            levelManager.spawnFeedback(1); // Miss
+        }
+        else if (delta < 0.2f)
+        {
+            levelManager.spawnFeedback(0); // Perfect
+        }
+        else if (currentBeat < startBeat)
+        {
+            levelManager.spawnFeedback(2); // Too Early
+        }
+        else
+        {
+            levelManager.spawnFeedback(3); // Too Late
+        }
+    }
+
+    void EvaluateEnd(bool missed = false)
+    {
+        float currentBeat = songManager.getBeatsPosition();
+        float delta = Mathf.Abs(currentBeat - endBeat);
+
+        levelManager.currentVegetable.GetComponent<VegetablePeeler>()?.TriggerEndPeel();
+
+        if (missed || delta > 1f)
+        {
+            levelManager.spawnFeedback(1); // Miss
+        }
+        else if (delta < 0.2f)
+        {
+            levelManager.spawnFeedback(0); // Perfect
+        }
+        else if (currentBeat < endBeat)
+        {
+            levelManager.spawnFeedback(2); // Too Early
+        }
+        else
+        {
+            levelManager.spawnFeedback(3); // Too Late
+        }
+    }
+
+    public HoldNote()
+    {
+        Debug.Log("[HoldNote] Constructor called");
+    }
 }
