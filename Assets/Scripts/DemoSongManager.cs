@@ -115,7 +115,7 @@ public class DemoSongManager : MonoBehaviour
             songPosition = (float)(AudioSettings.dspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
 
-            if (isOnion) { spawnInterval = 1; maxNotes = 12; }
+            if (isOnion) { spawnInterval = 1; maxNotes = 11; }
             else if (isCarrot) { spawnInterval = 2; maxNotes = 4; }
             else if (isPotato) { spawnInterval = 4; maxNotes = 5; }
 

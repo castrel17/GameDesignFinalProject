@@ -43,7 +43,7 @@ public class VegetableCutting : MonoBehaviour
         else if(vegetableType == Vegetables.Onion)
         {
             verticalCuts = 6;
-            horizontalCuts = 6;
+            horizontalCuts = 5;
         }
         
     }

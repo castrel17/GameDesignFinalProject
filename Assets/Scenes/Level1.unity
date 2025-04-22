@@ -938,6 +938,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 79
+  noteTravelBeats: 8
+  activeHoldNote: {fileID: 0}
+  holdNoteContainerPrefab: {fileID: 771873054292305035, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   countDown: {fileID: 549417250}
   countDownTime: 3
   note: {fileID: 3141943632068709071, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
@@ -1667,7 +1670,6 @@ MonoBehaviour:
   songManager: {fileID: 610167287}
   needVeg: 1
   tutorialText: {fileID: 728945562}
-  peelFillBar: {fileID: 1096986119}
   TooEarly: {fileID: 1702596484875735762, guid: 342bc6cde9dd94055b61370528332db6, type: 3}
   TooLate: {fileID: 1917556046250911626, guid: c98a13c583598476c87cb705ba2542a0, type: 3}
   Perfect: {fileID: 8679905425073071012, guid: 2e09b34b2617248cf9c8cfb9d8b0d2b9, type: 3}
@@ -1709,37 +1711,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1eed0a0f3fbb940edb53cfe8bd5aeff2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  potatoPrefab: {fileID: 0}
-  carrotPrefab: {fileID: 0}
-  onionPrefab: {fileID: 0}
-  slideSpeed: 5
-  targetPosition: {x: 0, y: -3.25, z: 0}
-  offScreenPosition: {x: -10, y: -3.25, z: 0}
-  currentVegetable: {fileID: 0}
-  isSliding: 0
-  songManager: {fileID: 0}
-  needVeg: 1
-  tutorialText: {fileID: 0}
-  spawnIndex: 0
-  peelFillBar: {fileID: 0}
-  TooEarly: {fileID: 0}
-  TooLate: {fileID: 0}
-  Perfect: {fileID: 0}
-  Miss: {fileID: 0}
-  bonusStreak: {fileID: 0}
-  feedback: {fileID: 0}
-  bonus: {fileID: 0}
-  scoreBar: {fileID: 0}
-  goalNote: {fileID: 0}
-  streak: 0
-  scoreText: {fileID: 0}
-  score: 0
-  centerPos: {x: 0, y: 2, z: 0}
-  centerPosDown: {x: 0, y: -2, z: 0}
-  streakSlider: {fileID: 0}
-  fullCycles: 0
-  maxCycles: 21
-  cyclesThisLoop: 0
 --- !u!1 &1042927658
 GameObject:
   m_ObjectHideFlags: 0
@@ -2006,7 +1977,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   peelObjects: []
-  holdTimeRequired: 0.75
 --- !u!1 &1174447294
 GameObject:
   m_ObjectHideFlags: 0
@@ -3803,6 +3773,22 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 87181231363055178, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
+      propertyPath: m_Size.x
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 87181231363055178, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
+      propertyPath: m_Size.y
+      value: 32
+      objectReference: {fileID: 0}
+    - target: {fileID: 87181231363055178, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 4f82f62450d9c854eb5484431fe50a5d, type: 3}
+    - target: {fileID: 87181231363055178, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
+      propertyPath: m_WasSpriteAssigned
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2650802879248677190, guid: 802fd45d834b6f14d81a5bcebb2bb582, type: 3}
       propertyPath: m_Name
       value: Potato
