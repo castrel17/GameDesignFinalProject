@@ -46,7 +46,6 @@ public class DemoSongManager : MonoBehaviour
 
     private DemoLevelManager manager;
     private Animator animator;
-    private float timeSinceTrigger = 0;
 
     public AudioSource metronome;
     public bool metronomeOn = true;
@@ -63,7 +62,6 @@ public class DemoSongManager : MonoBehaviour
     public GameObject goal;
     private Vector3 originalScale;
     public float scaleMultiplier = 1.5f;
-
     void Start()
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
@@ -71,7 +69,6 @@ public class DemoSongManager : MonoBehaviour
 
         secondsPerBeat = 60f / bpm;
         numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
-
         for (int i = 0; i < numBeats; i++)
         {
             musicNoteBeats.Add(i * 1);
@@ -118,6 +115,7 @@ public class DemoSongManager : MonoBehaviour
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
+
                 int beatToSpawn = musicNoteBeats[beatIndex];
                 if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                 {
@@ -166,6 +164,7 @@ public class DemoSongManager : MonoBehaviour
                             curr.GetComponent<MeshRenderer>().enabled = false;
                     }
                 }
+                
 
                 beatIndex++;
                 if (metronomeOn) metronome.Play();
@@ -181,8 +180,13 @@ public class DemoSongManager : MonoBehaviour
 
                 beatIndex = 0;
                 notesSpawned = 0;
+                //clear out old music note queue
+                while (musicNotes.Count > 0)
+                {
+                    var oldNote = musicNotes.Dequeue();
+                    Destroy(oldNote.gameObject);
+                }
                 musicNotes = new Queue<MonoBehaviour>();
-                timeSinceTrigger = beatsPosition < numBeats ? beatsPosition : timeSinceTrigger;
             }
 
            if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
