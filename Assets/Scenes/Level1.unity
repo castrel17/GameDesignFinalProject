@@ -950,12 +950,9 @@ MonoBehaviour:
   isPotato: 0
   isCarrot: 0
   isOnion: 0
-  setBaseBool: 0
   notePressedOnBeat: 0
   numBeats: 0
   gameOver: 0
-  baseValue: 0
-  vegIndex: 0
   metronome: {fileID: 24833241}
   metronomeOn: 0
   metronomeToggleButton: {fileID: 2109268090}
@@ -2812,8 +2809,8 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1893879780}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.78, y: 3.02, z: 0.046440862}
+  m_LocalRotation: {x: 0, y: 0, z: 0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: 8.56, y: -1.82, z: 0.046440862}
   m_LocalScale: {x: 0.17976, y: 0.17976, z: 0.17976}
   m_ConstrainProportionsScale: 0
   m_Children:
@@ -2821,7 +2818,7 @@ Transform:
   - {fileID: 92195153}
   - {fileID: 1325834481}
   m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 90}
 --- !u!1 &1985271931
 GameObject:
   m_ObjectHideFlags: 0
