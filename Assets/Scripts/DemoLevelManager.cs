@@ -38,7 +38,7 @@ public class DemoLevelManager : MonoBehaviour
     public TextMeshProUGUI scoreText;
     private int score = 0;
     Vector3 centerPos = new Vector3(0f, 2f, 0f);
-    Vector3 centerPosDown = new Vector3(0f, -2f, 0f);
+    Vector3 centerPosDown = new Vector3(0f, 2f, 0f);
 
     public Slider streakSlider;
     public int fullCycles = 0;
