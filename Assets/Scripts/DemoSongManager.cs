@@ -17,7 +17,7 @@ public class DemoSongManager : MonoBehaviour
     public GameObject holdNoteContainerPrefab;
 
     public TextMeshProUGUI countDown;
-    public int countDownTime = 3;
+    public int countDownTime = 1;
     public MusicNote note;
     public HoldNote holdNote;
     public AudioSource song;
@@ -228,12 +228,12 @@ public class DemoSongManager : MonoBehaviour
     {
         while (countDownTime > 0)
         {
-            countDown.text = countDownTime.ToString();
+           // countDown.text = countDownTime.ToString();
             yield return new WaitForSeconds(1f);
             countDownTime--;
         }
 
-        countDown.text = "Start!";
+       // countDown.text = "Start!";
         yield return new WaitForSeconds(1f);
         countDown.gameObject.SetActive(false);
 
