@@ -49,7 +49,9 @@ public class DemoLevelManager : MonoBehaviour
 
     void Start()
     {
+        //maxCycles = level == 0 ? 21 : 50;
         maxCycles = level == 0 ? 21 : 50;
+        //maxCycles = level == 0 ? 3 : 3;
     }
 
     void Update()
@@ -132,7 +134,10 @@ public class DemoLevelManager : MonoBehaviour
         if (fullCycles >= maxCycles)
         {
             tutorialText?.SetText("All vegetables done! Excellent work!");
-            SceneManager.LoadScene("EndScene");
+            if (level == 0)
+                SceneManager.LoadScene("EndDemo");
+            else if (level == 1)
+                SceneManager.LoadScene("EndScene");
             return;
         }
 
