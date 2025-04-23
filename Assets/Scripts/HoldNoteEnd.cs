@@ -31,6 +31,7 @@ public class HoldNoteEnd : MonoBehaviour
             // Only evaluate key release if this is the currently active hold note
             if (songManager.activeHoldNote == GetComponentInParent<HoldNoteController>())
             {
+
                 float currentBeat = songManager.getBeatsPosition();
 
                 if (Input.GetKeyUp(KeyCode.Space))

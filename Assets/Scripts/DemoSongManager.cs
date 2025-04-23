@@ -38,7 +38,6 @@ public class DemoSongManager : MonoBehaviour
     public bool isOnion = false;
 
     private bool spawnNote = false;
-    public bool setBaseBool = false;
 
     public bool notePressedOnBeat = false;
     public int numBeats;
@@ -46,8 +45,6 @@ public class DemoSongManager : MonoBehaviour
     public bool gameOver = false;
 
     private DemoLevelManager manager;
-    public int baseValue = 0;
-    public int vegIndex = 0;
     private Animator animator;
     private float timeSinceTrigger = 0;
 
@@ -121,18 +118,10 @@ public class DemoSongManager : MonoBehaviour
 
             if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
             {
-                if (setBaseBool)
-                {
-                    setBaseBool = false;
-                    setBase();
-                }
-
                 int beatToSpawn = musicNoteBeats[beatIndex];
                 if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                 {
                     MusicNote curr = null;
-
-                    Debug.Log(isPotato);
 
                     if (isPotato)
                     {
@@ -199,9 +188,13 @@ public class DemoSongManager : MonoBehaviour
            if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
                 var note = musicNotes.Peek(); // peek instead of dequeue
-
+                if(note == null)
+                {
+                    Debug.Log("WHY");
+                }
                 if (note != null)
                 {
+                    Debug.Log("pressed");
                     note.SendMessage("notePressed", SendMessageOptions.DontRequireReceiver);
                     musicNotes.Dequeue(); // remove only after pressing
                 }
@@ -209,12 +202,6 @@ public class DemoSongManager : MonoBehaviour
         }
     }
 
-    public void setBase()
-    {
-        baseValue = musicNoteBeats[beatIndex];
-        vegIndex = 0;
-        notesSpawned = 0;
-    }
 
     public void dequeueNote()
     {

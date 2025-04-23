@@ -56,9 +56,6 @@ public class DemoLevelManager : MonoBehaviour
     {
         if (!songManager.gameOver && songManager.loopStarted)
         {
-            if (songManager.startStatus() && needVeg && spawnIndex > 0)
-                songManager.setBaseBool = true;
-
             if (songManager.startStatus() && needVeg)
             {
                 needVeg = false;

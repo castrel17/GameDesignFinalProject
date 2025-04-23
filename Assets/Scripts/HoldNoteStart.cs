@@ -35,8 +35,11 @@ public class HoldNoteStart : MonoBehaviour
         float missCutoffBeat = beat - travelBeats * 0.1f;
         if (!evaluated && currentBeat > missCutoffBeat)
         {
-            levelManager.currentVegetable.GetComponent<VegetablePeeler>()?.TriggerStartPeel();
             levelManager.spawnFeedback(1); // Miss
+            //dequeue music note
+            songManager.dequeueNote();
+            //peel potato 
+            levelManager.currentVegetable.GetComponent<VegetablePeeler>().TriggerEndPeel();
             evaluated = true;
             isMissedStart = true;
             return;
