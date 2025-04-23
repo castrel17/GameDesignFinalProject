@@ -53,7 +53,10 @@ public class HoldNoteStart : MonoBehaviour
         else if (delta > 1f)
         {
             levelManager.spawnFeedback(1); // Miss
+            var peeler = levelManager.currentVegetable.GetComponent<VegetablePeeler>();
+            peeler?.PeelOneSection();
             isMissedStart = true;
+
         }
         else if (currentBeat < idealBeat)
             levelManager.spawnFeedback(2); // Too Early
@@ -69,6 +72,10 @@ public class HoldNoteStart : MonoBehaviour
         float idealBeat = beat - (songManager.noteTravelBeats / 2f);
         float delta = Mathf.Abs(currentBeat - idealBeat);
 
+         Debug.Log(
+                $"[HoldNoteStart] Pressed at beat={currentBeat:F2}, ideal={idealBeat:F2}, delta={delta:F2}"
+                + $" → before Evaluate"
+                );
         levelManager.currentVegetable.GetComponent<VegetablePeeler>()?.TriggerStartPeel();
         Evaluate(delta, currentBeat, idealBeat);
 

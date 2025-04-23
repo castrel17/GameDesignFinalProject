@@ -24,7 +24,6 @@ public class HoldNoteController : MonoBehaviour
         if (endNote != null)
             endNote.Initialize(endBeat, startPos, endPos, songManager);
 
-        Debug.Log($"[HoldNoteController] Initialized with StartBeat={startBeat}, EndBeat={endBeat}");
     }
 
     void Update()

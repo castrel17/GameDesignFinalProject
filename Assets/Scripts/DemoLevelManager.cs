@@ -132,6 +132,7 @@ public class DemoLevelManager : MonoBehaviour
         if (fullCycles >= maxCycles)
         {
             tutorialText?.SetText("All vegetables done! Excellent work!");
+            SceneManager.LoadScene("EndScene");
             return;
         }
 
