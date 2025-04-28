@@ -32,6 +32,7 @@ public class DemoSongManager : MonoBehaviour
     public bool started = false;
     private bool startMusic = false;
     private bool startedCountDown = false;
+    private Animator countDownAnimator;
 
     public bool isPotato = false;
     public bool isCarrot = false;
@@ -66,6 +67,7 @@ public class DemoSongManager : MonoBehaviour
     {
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         animator = GameObject.Find("Goal").GetComponent<Animator>();
+        countDownAnimator = GameObject.Find("Countdown").GetComponent<Animator>();
 
         secondsPerBeat = 60f / bpm;
         numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
@@ -228,13 +230,15 @@ public class DemoSongManager : MonoBehaviour
     {
         while (countDownTime > 0)
         {
-           // countDown.text = countDownTime.ToString();
+            // countDown.text = countDownTime.ToString();
             yield return new WaitForSeconds(1f);
+            countDownAnimator.SetTrigger("Next");
             countDownTime--;
         }
 
        // countDown.text = "Start!";
         yield return new WaitForSeconds(1f);
+        countDownAnimator.SetTrigger("Next");
         countDown.gameObject.SetActive(false);
 
         started = true;
