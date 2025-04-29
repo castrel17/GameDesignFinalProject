@@ -178,7 +178,7 @@ public class DemoSongManager : MonoBehaviour
                 songTime += song.clip.length;
                 loopCount++;
                 loopStarted = true;
-                if (loopCount >= 3) StopMusic();
+                if (loopCount >= 1) StopMusic();
 
                 beatIndex = 0;
                 notesSpawned = 0;
