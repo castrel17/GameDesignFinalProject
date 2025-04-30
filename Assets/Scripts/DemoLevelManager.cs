@@ -51,7 +51,7 @@ public class DemoLevelManager : MonoBehaviour
     {
         //maxCycles = level == 0 ? 21 : 50;
         //maxCycles = level == 0 ? 21 : 50;
-        maxCycles = level == 0 ? 6 : 12;
+        maxCycles = level == 0 ? 7 : 12;
         //maxCycles = level == 0 ? 3 : 3;
     }
 
@@ -167,11 +167,11 @@ public class DemoLevelManager : MonoBehaviour
         fullCycles++;
         cyclesThisLoop++;
 
-        if (cyclesThisLoop == 6 && level == 0)
-        {
-            songManager.loopStarted = false;
-            cyclesThisLoop = 0;
-        }
+        // if (cyclesThisLoop == 6 && level == 0)
+        // {
+        //     songManager.loopStarted = false;
+        //     cyclesThisLoop = 0;
+        // }
     }
 
     public int whatLevel() => level;

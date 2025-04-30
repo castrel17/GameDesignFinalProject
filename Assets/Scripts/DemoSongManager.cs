@@ -6,6 +6,7 @@ using TMPro;
 using UnityEngine.UI;
 using Unity.VisualScripting;
 using NUnit.Framework;
+using UnityEngine.SceneManagement;
 
 public class DemoSongManager : MonoBehaviour
 {
@@ -72,6 +73,7 @@ public class DemoSongManager : MonoBehaviour
 
     private double pauseStartDspTime = 0;
     private double totalPausedDuration = 0;
+    public int level;
 
 
     void Start()
@@ -244,7 +246,15 @@ public class DemoSongManager : MonoBehaviour
                 songTime += song.clip.length;
                 loopCount++;
                 loopStarted = true;
-                if (loopCount >= 1) StopMusic();
+                if (loopCount >= 1) {
+                    if (level == 0)
+                        SceneManager.LoadScene("EndDemo");
+                    else if (level == 1)
+                        SceneManager.LoadScene("EndScene");
+                        StopMusic();
+                    return;
+
+                }
 
                 beatIndex = 0;
                 notesSpawned = 0;

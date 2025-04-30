@@ -1019,6 +1019,7 @@ MonoBehaviour:
   scaleMultiplier: 1.5
   instructionText: {fileID: 0}
   noteSizeSlider: {fileID: 1279955451}
+  level: 1
 --- !u!1 &611970380
 GameObject:
   m_ObjectHideFlags: 0
