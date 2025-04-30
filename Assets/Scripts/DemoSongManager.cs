@@ -67,6 +67,11 @@ public class DemoSongManager : MonoBehaviour
     public TextMeshProUGUI instructionText;
     private bool waitingForStartInput = true;
 
+    [Header("Note Size Control")]
+    public Slider noteSizeSlider;
+    private const float DEFAULT_SIZE = 1f;
+
+
     void Start()
     {
         if (instructionText != null)
@@ -104,6 +109,12 @@ public class DemoSongManager : MonoBehaviour
         }
 
         song.loop = true;
+
+        if (noteSizeSlider != null)
+        {
+            UpdateAllNotesVisualScale(noteSizeSlider.value);
+            noteSizeSlider.onValueChanged.AddListener(UpdateAllNotesVisualScale);
+        }
     }
 
     void Update()
@@ -168,6 +179,14 @@ public class DemoSongManager : MonoBehaviour
                         else
                         {
                             curr = Instantiate(note, transform);
+                            var vs = curr.GetComponent<VisualScaler>();
+                            if (vs != null)
+                            {
+                                vs.scaleFactor = noteSizeSlider != null
+                                    ? noteSizeSlider.value
+                                    : DEFAULT_SIZE;
+                                vs.ApplyScale();
+                            }
                             curr.myBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
                             curr.startingPosition = new Vector2(0f, -4f);
                             curr.endingPosition = new Vector2(0f, 4f);
@@ -177,6 +196,14 @@ public class DemoSongManager : MonoBehaviour
                     else
                     {
                         curr = Instantiate(note, transform);
+                        var vs = curr.GetComponent<VisualScaler>();
+                        if (vs != null)
+                        {
+                            vs.scaleFactor = noteSizeSlider != null
+                                ? noteSizeSlider.value
+                                : DEFAULT_SIZE;
+                            vs.ApplyScale();
+                        }
                         curr.myBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
                         curr.endingPosition = new Vector2(0f, 4f);
@@ -250,6 +277,16 @@ public class DemoSongManager : MonoBehaviour
         if (metronomeButtonText != null)
         {
             metronomeButtonText.text = "Metronome: " + (metronomeOn ? "ON" : "OFF");
+        }
+    }
+
+    private void UpdateAllNotesVisualScale(float scale)
+    {
+        float s = Mathf.Clamp(scale, 0.1f, 2f);
+        foreach (var vs in FindObjectsOfType<VisualScaler>())
+        {
+            vs.scaleFactor = s;
+            vs.ApplyScale();
         }
     }
 
