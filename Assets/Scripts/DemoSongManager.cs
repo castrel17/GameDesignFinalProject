@@ -19,7 +19,6 @@ public class DemoSongManager : MonoBehaviour
     public TextMeshProUGUI countDown;
     public int countDownTime = 1;
     public MusicNote note;
-    public HoldNote holdNote;
     public AudioSource song;
     private float songPosition;
     private float beatsPosition;
