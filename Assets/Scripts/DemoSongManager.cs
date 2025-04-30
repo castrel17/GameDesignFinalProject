@@ -63,8 +63,23 @@ public class DemoSongManager : MonoBehaviour
     public GameObject goal;
     private Vector3 originalScale;
     public float scaleMultiplier = 1.5f;
+
+    public TextMeshProUGUI instructionText;
+    private bool waitingForStartInput = true;
+
     void Start()
     {
+        if (instructionText != null)
+        {
+            startedCountDown     = true;   
+            waitingForStartInput = true;
+            instructionText.gameObject.SetActive(true);
+        }
+        else
+        {
+            waitingForStartInput = false;
+        }
+
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         countDownAnimator = GameObject.Find("Countdown").GetComponent<Animator>();
@@ -93,6 +108,18 @@ public class DemoSongManager : MonoBehaviour
 
     void Update()
     {
+        if (waitingForStartInput)
+        {
+            if (Input.GetKeyDown(KeyCode.Space))
+            {
+                instructionText.gameObject.SetActive(false);
+                waitingForStartInput = false;
+
+                StartCoroutine(CountDownToStart());
+            }
+            return;
+        }
+
         if (!started && !startedCountDown)
         {
             StartCoroutine(CountDownToStart());
