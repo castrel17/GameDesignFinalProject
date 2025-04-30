@@ -70,6 +70,9 @@ public class DemoSongManager : MonoBehaviour
     public Slider noteSizeSlider;
     private const float DEFAULT_SIZE = 1f;
 
+    private double pauseStartDspTime = 0;
+    private double totalPausedDuration = 0;
+
 
     void Start()
     {
@@ -145,7 +148,10 @@ public class DemoSongManager : MonoBehaviour
                 StopAllCoroutines();
             }
 
-            songPosition = (float)(AudioSettings.dspTime - songTime);
+            // songPosition = (float)(AudioSettings.dspTime - songTime);
+            // beatsPosition = songPosition / secondsPerBeat;
+            double effectiveDspTime = AudioSettings.dspTime - totalPausedDuration;
+            songPosition = (float)(effectiveDspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
 
             if (isOnion) { spawnInterval = 1; maxNotes = 11; }
@@ -342,7 +348,19 @@ public class DemoSongManager : MonoBehaviour
     }
 
     public void ResetNoteCounter()
-{
-    notesSpawned = 0;
-}
+    {
+        notesSpawned = 0;
+    }
+
+    public void PauseMusic()
+    {
+        pauseStartDspTime = AudioSettings.dspTime;
+        song.Pause();
+    }
+
+    public void UnpauseMusic()
+    {
+        totalPausedDuration += AudioSettings.dspTime - pauseStartDspTime;
+        song.UnPause();
+    }
 }
