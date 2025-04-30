@@ -166,6 +166,13 @@ public class DemoSongManager : MonoBehaviour
                         if (notesSpawned < 3)
                         {
                             var container = Instantiate(holdNoteContainerPrefab, transform);
+                            foreach (var vs in container.GetComponentsInChildren<VisualScaler>())
+                            {
+                                vs.scaleFactor = noteSizeSlider != null
+                                    ? noteSizeSlider.value
+                                    : DEFAULT_SIZE;
+                                vs.ApplyScale();
+                            }
                             var controller = container.GetComponent<HoldNoteController>();
 
                             float startBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
