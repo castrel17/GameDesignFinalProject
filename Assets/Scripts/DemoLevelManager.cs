@@ -50,7 +50,8 @@ public class DemoLevelManager : MonoBehaviour
     void Start()
     {
         //maxCycles = level == 0 ? 21 : 50;
-        maxCycles = level == 0 ? 21 : 50;
+        //maxCycles = level == 0 ? 21 : 50;
+        maxCycles = level == 0 ? 6 : 12;
         //maxCycles = level == 0 ? 3 : 3;
     }
 
