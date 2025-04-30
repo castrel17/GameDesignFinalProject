@@ -7,6 +7,7 @@ public class HoldNoteStart : MonoBehaviour
     private Vector2 endPos;
     private DemoSongManager songManager;
     private DemoLevelManager levelManager;
+    public bool isHeld = false;
 
     public bool evaluated { get; private set; } = false;
     public bool isMissedStart { get; private set; } = false;
@@ -22,6 +23,7 @@ public class HoldNoteStart : MonoBehaviour
 
     void Update()
     {
+        if (isHeld) return;
         if (songManager == null) return;
 
         float currentBeat = songManager.getBeatsPosition();
@@ -49,7 +51,10 @@ public class HoldNoteStart : MonoBehaviour
     void Evaluate(float delta, float currentBeat, float idealBeat)
     {
         if (delta < 0.2f)
+        {
+            isHeld = true;
             levelManager.spawnFeedback(0); // Perfect
+        }
         else if (delta > 1f)
         {
             levelManager.spawnFeedback(1); // Miss
@@ -59,9 +64,15 @@ public class HoldNoteStart : MonoBehaviour
 
         }
         else if (currentBeat < idealBeat)
+        {
+            isHeld = true;
             levelManager.spawnFeedback(2); // Too Early
+        }
         else
+        {
+            isHeld = true;
             levelManager.spawnFeedback(3); // Too Late
+        }
 
         evaluated = true;
     }
@@ -72,10 +83,10 @@ public class HoldNoteStart : MonoBehaviour
         float idealBeat = beat - (songManager.noteTravelBeats / 2f);
         float delta = Mathf.Abs(currentBeat - idealBeat);
 
-         Debug.Log(
-                $"[HoldNoteStart] Pressed at beat={currentBeat:F2}, ideal={idealBeat:F2}, delta={delta:F2}"
-                + $" → before Evaluate"
-                );
+        Debug.Log(
+               $"[HoldNoteStart] Pressed at beat={currentBeat:F2}, ideal={idealBeat:F2}, delta={delta:F2}"
+               + $" → before Evaluate"
+               );
         levelManager.currentVegetable.GetComponent<VegetablePeeler>()?.TriggerStartPeel();
         Evaluate(delta, currentBeat, idealBeat);
 
