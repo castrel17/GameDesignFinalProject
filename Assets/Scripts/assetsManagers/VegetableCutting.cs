@@ -37,7 +37,7 @@ public class VegetableCutting : MonoBehaviour
         }
         else if(vegetableType == Vegetables.Potato)
         {
-            numberOfCuts = 1;
+            numberOfCuts = 2;
             animator = GetComponent<Animator>();
         }
         else if(vegetableType == Vegetables.Onion)

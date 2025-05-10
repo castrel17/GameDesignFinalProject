@@ -59,7 +59,7 @@ public class DemoSongManager : MonoBehaviour
 
     public List<int> spawnBeats = new List<int>();
     private int spawnInterval = 1;
-    private int notesSpawned = 0;
+    private int notesSpawned = 100;
     private int maxNotes = 0;
     private int loopCount = 0;
     public bool loopStarted = false;
@@ -98,12 +98,12 @@ public class DemoSongManager : MonoBehaviour
 
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         countDownAnimator = GameObject.Find("Countdown").GetComponent<Animator>();
-
+        manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         secondsPerBeat = 60f / bpm;
         
         // Determine whether to use MIDI or hardcoded beats based on level
         SetupBeatsForLevel();
-        
+
         maxNotes = 10000;
         musicNotes = new Queue<MonoBehaviour>();
 
@@ -185,7 +185,6 @@ public class DemoSongManager : MonoBehaviour
             double effectiveDspTime = AudioSettings.dspTime - totalPausedDuration;
             songPosition = (float)(effectiveDspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
-
             // For demo and level 1, handle vegetable-specific logic
             if (level <= 1)
             {
@@ -198,11 +197,12 @@ public class DemoSongManager : MonoBehaviour
             if (level <= 1)
             {
                 // Original vegetable-specific logic for demo and level 1
-                if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
+                if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition && !manager.needVeg)
                 {
                     int beatToSpawn = (int)musicNoteBeats[beatIndex];
                     if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                     {
+                        Debug.Log("note spawned value " + notesSpawned);
                         MusicNote curr = null;
 
                         if (isPotato)
