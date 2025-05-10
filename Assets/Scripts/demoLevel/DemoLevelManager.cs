@@ -46,6 +46,8 @@ public class DemoLevelManager : MonoBehaviour
     private int cyclesThisLoop = 0;
 
     public int level;
+    private bool firstPotato = true;
+    private bool tutorialPause = false;
 
     void Start()
     {
@@ -56,6 +58,14 @@ public class DemoLevelManager : MonoBehaviour
     {
         if (!songManager.gameOver && songManager.loopStarted)
         {
+            if(tutorialPause && Input.GetMouseButtonDown(0))
+            {
+                Time.timeScale = 1f;
+                AudioListener.pause = false;
+                songManager.UnpauseMusic();
+                songManager.instructionText.gameObject.SetActive(false);
+                tutorialPause = false;
+            }
             if (songManager.startStatus() && needVeg)
             {
                 needVeg = false;
@@ -74,7 +84,18 @@ public class DemoLevelManager : MonoBehaviour
                 if (CheckVegetableProgress())
                 {
                     isSliding = false;
+                    
                 }
+            }
+            if (level == 0 && songManager.isPotato && firstPotato && currentVegetable.transform.position == targetPosition)
+            {
+                firstPotato = false;
+                Time.timeScale = 0f;
+                AudioListener.pause = true;
+                songManager.PauseMusic();
+                tutorialPause = true;
+                songManager.instructionText.SetText("To peel the potato you have to press and hold until you get to the end of the note");
+                songManager.instructionText.gameObject.SetActive(true);
             }
         }
         else if (Input.GetKeyDown(KeyCode.Tab))

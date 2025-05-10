@@ -561,7 +561,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
-  m_AnchoredPosition: {x: 5.69, y: -93}
+  m_AnchoredPosition: {x: 5.69, y: -159}
   m_SizeDelta: {x: 563.38, y: 127.13}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &442051371
@@ -584,10 +584,13 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: ^ SPACE on Sync ^
+  m_text: 'Press Space when the note reaches the middle of the screen
+
+    Left click
+    to get rid of instructions'
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 79459efec17a4d00a321bdcc27bbc385, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -617,7 +620,7 @@ MonoBehaviour:
   m_enableAutoSizing: 0
   m_fontSizeMin: 18
   m_fontSizeMax: 72
-  m_fontStyle: 769
+  m_fontStyle: 1
   m_HorizontalAlignment: 2
   m_VerticalAlignment: 512
   m_textAlignment: 65535
@@ -1039,8 +1042,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 80
-  noteTravelBeats: 8
-  activeHoldNote: {fileID: 0}
   holdNoteContainerPrefab: {fileID: 771873054292305035, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   countDown: {fileID: 549417250}
   countDownTime: 3
@@ -1064,6 +1065,8 @@ MonoBehaviour:
   instructionText: {fileID: 442051371}
   noteSizeSlider: {fileID: 1838441834}
   level: 0
+  midiFileName: level2.mid
+  useMidiFile: 0
 --- !u!1 &616985374 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 505961869153952726, guid: d851fd1f752c048e9aa80ea9d1faec38, type: 3}
@@ -2984,7 +2987,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &1330040871
 RectTransform:

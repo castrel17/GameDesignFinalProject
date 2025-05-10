@@ -157,7 +157,7 @@ public class DemoSongManager : MonoBehaviour
     {
         if (waitingForStartInput)
         {
-            if (Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetMouseButtonDown(0))
             {
                 instructionText.gameObject.SetActive(false);
                 waitingForStartInput = false;
