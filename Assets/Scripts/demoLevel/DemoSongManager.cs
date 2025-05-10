@@ -9,10 +9,9 @@ using NUnit.Framework;
 using UnityEngine.SceneManagement;
 
 
-public class DemoSongManager : MonoBehaviour, IsSongManager
+public class DemoSongManager : MonoBehaviour
 {
     public float bpm;
-    float IsSongManager.bpm => bpm;
     public float noteTravelBeats { get; set; } = 8f;
 
     public HoldNoteController activeHoldNote { get; set; }

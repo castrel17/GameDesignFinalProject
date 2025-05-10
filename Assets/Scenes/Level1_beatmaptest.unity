@@ -284,6 +284,11 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: -20, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!1 &115075431 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 771873054292305035, guid: e67282b9585634f97a345b546cf0b760, type: 3}
+  m_PrefabInstance: {fileID: 133001652064712299}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &143341344
 GameObject:
   m_ObjectHideFlags: 0
@@ -509,6 +514,11 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 201094493}
   m_CullTransparentMesh: 1
+--- !u!1 &322234082 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 7883923122968734579, guid: dbbabcb1ee7b72d4a8d752d50a6c204d, type: 3}
+  m_PrefabInstance: {fileID: 4401431395400293937}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &346941615
 GameObject:
   m_ObjectHideFlags: 0
@@ -852,6 +862,26 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 549417248}
   m_CullTransparentMesh: 1
+--- !u!1 &588931212 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 3926037408780857874, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
+  m_PrefabInstance: {fileID: 5237977699768166848}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &588931217
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 588931212}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a33249cefe79461c8a06b9790948258, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  startingPosition: {x: 0, y: 0}
+  endingPosition: {x: 0, y: 0}
+  myBeat: 0
 --- !u!1 &610167284
 GameObject:
   m_ObjectHideFlags: 0
@@ -990,14 +1020,12 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 610167284}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 3de8ab018069aa64e84f97a8ec90920b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 79
-  noteTravelBeats: 8
-  activeHoldNote: {fileID: 0}
   holdNoteContainerPrefab: {fileID: 771873054292305035, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   countDown: {fileID: 549417250}
   countDownTime: 3
@@ -1021,7 +1049,6 @@ MonoBehaviour:
   instructionText: {fileID: 0}
   noteSizeSlider: {fileID: 1279955451}
   level: 1
-  midiFileName: Level1_beatmaptest.mid
 --- !u!114 &610167288
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1034,6 +1061,31 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5b75bf513be79459987aafd02f89f88f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  bpm: 79
+  holdNoteContainerPrefab: {fileID: 115075431}
+  countDown: {fileID: 549417250}
+  countDownTime: 3
+  note: {fileID: 0}
+  song: {fileID: 0}
+  started: 0
+  isPotato: 0
+  isCarrot: 0
+  isOnion: 0
+  notePressedOnBeat: 0
+  numBeats: 0
+  gameOver: 0
+  metronome: {fileID: 0}
+  metronomeOn: 1
+  metronomeToggleButton: {fileID: 0}
+  metronomeButtonText: {fileID: 0}
+  spawnBeats: 
+  loopStarted: 0
+  goal: {fileID: 655364661}
+  scaleMultiplier: 1.5
+  instructionText: {fileID: 0}
+  noteSizeSlider: {fileID: 0}
+  level: 0
+  midiFileName: level1.mid
 --- !u!1 &611970380
 GameObject:
   m_ObjectHideFlags: 0
@@ -1365,13 +1417,13 @@ MonoBehaviour:
   m_GameObject: {fileID: 655364661}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 2b2ca7c2905ae44efbe623fc9d321e22, type: 3}
+  m_Script: {fileID: 11500000, guid: 8e8b10fca3fd049e4ac6d9077c00ee06, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   shakeMagnitude: 0.05
   shakeDuration: 0.5
-  pulseMagnitude: 0.2
-  songManager: {fileID: 610167287}
+  pulseMagnitude: 0.5
+  songManager: {fileID: 0}
 --- !u!1 &678733981
 GameObject:
   m_ObjectHideFlags: 0
@@ -1547,10 +1599,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2b2ca7c2905ae44efbe623fc9d321e22, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  shakeMagnitude: 0.05
-  shakeDuration: 0.5
-  pulseMagnitude: 0.5
-  songManager: {fileID: 610167287}
 --- !u!1 &728945560
 GameObject:
   m_ObjectHideFlags: 0
@@ -2185,7 +2233,7 @@ MonoBehaviour:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 992531441}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 98d27e93da2f24283a49ce37f5331bc3, type: 3}
   m_Name: 
@@ -2206,7 +2254,7 @@ MonoBehaviour:
   feedback: {fileID: 1359843253584772293, guid: 896edf8b70d4d498aa8b4d00a08cd47b, type: 3}
   bonus: {fileID: 629565063}
   scoreBar: {fileID: 1893879781}
-  goalNote: {fileID: 655364669}
+  goalNote: {fileID: 0}
   scoreText: {fileID: 2086510676}
   streakSlider: {fileID: 143341346}
   fullCycles: 0
@@ -2239,6 +2287,25 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f235c89c2ba0d41e0a9c3fffad098493, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  potatoPrefab: {fileID: 1154618361}
+  carrotPrefab: {fileID: 1891451662230749683}
+  onionPrefab: {fileID: 322234082}
+  slideSpeed: 5
+  currentVegetable: {fileID: 1154618361}
+  needVeg: 1
+  tutorialText: {fileID: 728945562}
+  TooEarly: {fileID: 0}
+  TooLate: {fileID: 616985374}
+  Perfect: {fileID: 1627165753}
+  Miss: {fileID: 0}
+  bonusStreak: {fileID: 0}
+  feedback: {fileID: 0}
+  bonus: {fileID: 0}
+  scoreBar: {fileID: 1893879781}
+  goalNote: {fileID: 655364669}
+  scoreText: {fileID: 2086510676}
+  streakSlider: {fileID: 143341346}
+  level: 1
 --- !u!1 &1000782434
 GameObject:
   m_ObjectHideFlags: 0
@@ -3740,11 +3807,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 1756945597}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 6e8df8d1a030b48e192e101eb06356d3, type: 3}
+  m_Script: {fileID: 11500000, guid: 78c76ece8f9b54af3947efc176df7547, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  pauseButton: {fileID: 1240118214}
-  pauseMenuUI: {fileID: 1000782434}
+  pauseButton: {fileID: 0}
+  pauseMenuUI: {fileID: 0}
 --- !u!114 &1893879781 stripped
 MonoBehaviour:
   m_CorrespondingSourceObject: {fileID: 5514963411605665302, guid: 4ceb0fed56421475b92afecbf888b564, type: 3}
@@ -4732,7 +4799,10 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 3926037408780857874, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 588931217}
   m_SourcePrefab: {fileID: 100100000, guid: 40b0dae616eaa0041b5f7573218f200c, type: 3}
 --- !u!1001 &5869486096847561601
 PrefabInstance:

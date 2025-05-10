@@ -1,10 +1,12 @@
-using Melanchall.DryWetMidi;
-using Melanchall.DryWetMidi.Interaction;
 using UnityEngine;
 using TMPro;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System.Collections.Generic;
+using UnityEngine.UI;
+using Melanchall.DryWetMidi.MusicTheory;
+using Melanchall.DryWetMidi.Interaction;
+
 
 public class Level1Manager : MonoBehaviour
 {
@@ -18,8 +20,7 @@ public class Level1Manager : MonoBehaviour
 
     public GameObject currentVegetable;
     private bool isSliding = false;
-
-    public BeatMappingManager songManager;
+    private Level1SongManager songManager;
     public bool needVeg = true;
 
     public TextMeshProUGUI tutorialText;
@@ -33,7 +34,7 @@ public class Level1Manager : MonoBehaviour
     public GameObject bonus;
 
     public ScoreBar scoreBar;
-    public GoalNote goalNote;
+    public GoalNote2 goalNote;
     private int streak;
 
     public TextMeshProUGUI scoreText;
@@ -49,9 +50,9 @@ public class Level1Manager : MonoBehaviour
 
     void Start()
     {
-        notes = songManager.GetNotesFromMidi();
-    }
+        List<double> notes = songManager.GetMusicNoteBeats();
 
+    }
     void Update()
     {
         if (!songManager.gameOver && songManager.loopStarted)
@@ -85,9 +86,9 @@ public class Level1Manager : MonoBehaviour
 
     public void spawnNew()
     {
-        var notesForCarrot = notes.Where(note => note.NoteName == Melanchall.DryWetMidi.MusicTheory.NoteName.C4).ToList();
-        var notesForPotato = notes.Where(note => note.NoteName == Melanchall.DryWetMidi.MusicTheory.NoteName.DSharp4).ToList();
-        var notesForOnion = notes.Where(note => note.NoteName == Melanchall.DryWetMidi.MusicTheory.NoteName.F4).ToList();
+        var notesForCarrot = notes.Where(note => note.NoteName == NoteName.C && note.Octave == 4).ToList();
+        var notesForPotato = notes.Where(note => note.NoteName == NoteName.DSharp && note.Octave == 4).ToList();
+        var notesForOnion = notes.Where(note => note.NoteName == NoteName.F && note.Octave == 4).ToList();
 
         if (notesForCarrot.Count > 0)
         {
@@ -153,4 +154,48 @@ public class Level1Manager : MonoBehaviour
 
         return true;
     }
+
+    public void spawnFeedback(int opt)
+{
+    switch (opt)
+    {
+        case 0:
+            feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
+            streak++;
+            score += 100;
+            scoreBar.updateScoreBar(2);
+            break;
+        case 1:
+            feedback = Instantiate(Miss, centerPos, Quaternion.identity);
+            streak = 0;
+            goalNote.shake();
+            break;
+        case 2:
+            feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
+            streak = 0;
+            score += 50;
+            scoreBar.updateScoreBar(1);
+            break;
+        case 3:
+            feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
+            streak = 0;
+            score += 50;
+            scoreBar.updateScoreBar(1);
+            break;
+    }
+
+    if (streak == 3)
+    {
+        score += 100;
+        bonus = Instantiate(bonusStreak, centerPosDown, Quaternion.identity);
+        bonus.SetActive(true);
+        Destroy(bonus, 1.0f);
+        streak = 0;
+    }
+
+    streakSlider.value = streak;
+    feedback.SetActive(true);
+    Destroy(feedback, 1.0f);
+    scoreText.text = "Score: " + score;
+}
 }

@@ -12,18 +12,16 @@ using Melanchall.DryWetMidi.Interaction;
 using System.IO;
 
 
-
-public class BeatMappingManager : MonoBehaviour, IsSongManager
+public class Level1SongManager : MonoBehaviour
 {
     public float bpm;
-    float IsSongManager.bpm => bpm;
     public float noteTravelBeats { get; set; } = 8f;
-    public HoldNoteController activeHoldNote { get; set; }
+    public HoldNoteController2 activeHoldNote { get; set; }
     public GameObject holdNoteContainerPrefab;
 
     public TextMeshProUGUI countDown;
     public int countDownTime = 1;
-    public MusicNote note;
+    public MusicNote2 note;
     public AudioSource song;
     private float songPosition;
     private float beatsPosition;
@@ -92,7 +90,6 @@ public class BeatMappingManager : MonoBehaviour, IsSongManager
             waitingForStartInput = false;
         }
 
-        manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         countDownAnimator = GameObject.Find("Countdown").GetComponent<Animator>();
 
@@ -169,7 +166,7 @@ public class BeatMappingManager : MonoBehaviour, IsSongManager
                 int beatToSpawn = (int)musicNoteBeats[beatIndex];
                 if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                 {
-                    MusicNote curr = null;
+                    MusicNote2 curr = null;
 
                     if (isPotato)
                     {
@@ -183,7 +180,7 @@ public class BeatMappingManager : MonoBehaviour, IsSongManager
                                     : DEFAULT_SIZE;
                                 vs.ApplyScale();
                             }
-                            var controller = container.GetComponent<HoldNoteController>();
+                            var controller = container.GetComponent<HoldNoteController2>();
 
                             float startBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
                             float endBeat = startBeat + 2f;
@@ -229,13 +226,6 @@ public class BeatMappingManager : MonoBehaviour, IsSongManager
 
                     notesSpawned++;
 
-                    if (loopCount >= 3 && curr != null && manager.whatLevel() != 1)
-                    {
-                        var sr = curr.GetComponent<SpriteRenderer>();
-                        if (sr != null) sr.enabled = false;
-                        else if (curr.GetComponent<MeshRenderer>() != null)
-                            curr.GetComponent<MeshRenderer>().enabled = false;
-                    }
                 }
                 
 
@@ -377,54 +367,59 @@ public class BeatMappingManager : MonoBehaviour, IsSongManager
         song.UnPause();
     }
 
-void LoadMidiFile()
-{
-    string midiPath = Path.Combine(Application.streamingAssetsPath, midiFileName);
-    if (!File.Exists(midiPath))
+    void LoadMidiFile()
     {
-        Debug.LogError("MIDI file not found: " + midiPath);
-        return;
+        string midiPath = Path.Combine(Application.streamingAssetsPath, midiFileName);
+        if (!File.Exists(midiPath))
+        {
+            Debug.LogError("MIDI file not found: " + midiPath);
+            return;
+        }
+
+        var midiFile = MidiFile.Read(midiPath);
+        var tempoMap = midiFile.GetTempoMap();
+        var notes = midiFile.GetNotes();
+
+        musicNoteBeats.Clear();
+        foreach (var note in notes)
+        {
+            string noteName = note.NoteName.ToString();
+
+            if (noteName == "C4") 
+            {
+                musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
+            }
+            else if (noteName == "Eb4") // Potato
+            {
+                musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
+            }
+            else if (noteName == "F4") // Onion
+            {
+                musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
+            }
+        }
+
+        musicNoteBeats.Sort();
+
+        if (musicNoteBeats.Count > 0)
+        {
+            numBeats = Mathf.CeilToInt((float)musicNoteBeats[^1]) + 1;
+            Debug.Log($"Set numBeats dynamically to {numBeats}");
+        }
+
+        Debug.Log($"Loaded {musicNoteBeats.Count} notes from MIDI.");
     }
 
-    var midiFile = MidiFile.Read(midiPath);
-    var tempoMap = midiFile.GetTempoMap();
-    var notes = midiFile.GetNotes();
-
-    musicNoteBeats.Clear();
-    foreach (var note in notes)
+    float ConvertNoteToBeat(Melanchall.DryWetMidi.Interaction.Note note, TempoMap tempoMap)
     {
-        string noteName = note.NoteName.ToString();
-
-        if (noteName == "C4") 
-        {
-            musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
-        }
-        else if (noteName == "Eb4") // Potato
-        {
-            musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
-        }
-        else if (noteName == "F4") // Onion
-        {
-            musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
-        }
+        var metricTime = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
+        double timeInSeconds = metricTime.TotalMicroseconds / 1_000_000.0;
+        return (float)(timeInSeconds / secondsPerBeat);
     }
 
-    musicNoteBeats.Sort();
-
-    if (musicNoteBeats.Count > 0)
+    public List<double> GetMusicNoteBeats()
     {
-        numBeats = Mathf.CeilToInt((float)musicNoteBeats[^1]) + 1;
-        Debug.Log($"Set numBeats dynamically to {numBeats}");
+        return musicNoteBeats;
     }
-
-    Debug.Log($"Loaded {musicNoteBeats.Count} notes from MIDI.");
-}
-
-float ConvertNoteToBeat(Melanchall.DryWetMidi.Interaction.Note note, TempoMap tempoMap)
-{
-    var metricTime = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
-    double timeInSeconds = metricTime.TotalMicroseconds / 1_000_000.0;
-    return (float)(timeInSeconds / secondsPerBeat);
-}
 
 }
