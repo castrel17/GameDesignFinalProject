@@ -1,15 +1,16 @@
 using UnityEngine;
-
 public class MusicNote : MonoBehaviour
 {
     public Vector2 startingPosition;
     public Vector2 endingPosition;
     public float myBeat;
+    public float travelTime; 
 
     private DemoLevelManager manager;
     private DemoSongManager songManager;
     private bool moving = true;
     private bool markedForDelete = false;
+
 
     void Start()
     {
@@ -24,6 +25,7 @@ public class MusicNote : MonoBehaviour
             float currentBeat = songManager.getBeatsPosition();
             float travelBeats = songManager.noteTravelBeats;
 
+            // Calculate normalized position based on travel time
             float t = 1 - ((myBeat - currentBeat) / travelBeats);
             t = Mathf.Clamp01(t);
             transform.position = Vector2.Lerp(startingPosition, endingPosition, t);
@@ -44,7 +46,7 @@ public class MusicNote : MonoBehaviour
             {
                 markedForDelete = true;
                 outOfBoundsSlicing();
-                manager.spawnFeedback(1);
+                manager.spawnFeedback(1); // Miss
                 Destroy(gameObject, 0.75f);
             }
         }
@@ -85,7 +87,7 @@ public class MusicNote : MonoBehaviour
         }
 
         markedForDelete = true;
-        Destroy(gameObject, 0.75f);
+        Destroy(gameObject, 0.75f); // Destroy the note after handling the hit
     }
 
     private void outOfBoundsSlicing()
@@ -102,5 +104,10 @@ public class MusicNote : MonoBehaviour
         {
             cutting.slice();
         }
+    }
+
+    public void SetTravelTime(float time)
+    {
+        travelTime = time;
     }
 }

@@ -7,16 +7,16 @@ using UnityEngine.UI;
 using Unity.VisualScripting;
 using NUnit.Framework;
 using UnityEngine.SceneManagement;
+using Melanchall.DryWetMidi.Core;
+using Melanchall.DryWetMidi.Interaction;
+using System.IO;
 
 
-public class DemoSongManager : MonoBehaviour, IsSongManager
+public class DemoSongManager : MonoBehaviour
 {
     public float bpm;
-    float IsSongManager.bpm => bpm;
     public float noteTravelBeats { get; set; } = 8f;
-
     public HoldNoteController activeHoldNote { get; set; }
-
     public GameObject holdNoteContainerPrefab;
 
     public TextMeshProUGUI countDown;
@@ -28,7 +28,7 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
     private float secondsPerBeat;
     private float songTime;
 
-    private List<int> musicNoteBeats = new List<int>();
+    private List<double> musicNoteBeats = new List<double>();
     private Queue<MonoBehaviour> musicNotes;
     private int beatIndex = 0;
     public bool started = false;
@@ -48,6 +48,8 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
     public bool gameOver = false;
 
     private DemoLevelManager manager;
+    
+    [Header("Vegetable Types (Demo & Level 1 Only)")]
     private Animator animator;
 
     public AudioSource metronome;
@@ -75,7 +77,12 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
 
     private double pauseStartDspTime = 0;
     private double totalPausedDuration = 0;
+    
+    [Header("Level Information")]
     public int level;
+    public string midiFileName = "level2.mid"; 
+    public bool useMidiFile = false;
+    
     void Start()
     {
         if (instructionText != null)
@@ -89,22 +96,15 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
             waitingForStartInput = false;
         }
 
-        manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         countDownAnimator = GameObject.Find("Countdown").GetComponent<Animator>();
 
         secondsPerBeat = 60f / bpm;
-        numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
-        for (int i = 0; i < numBeats; i++)
-        {
-            musicNoteBeats.Add(i * 1);
-        }
-
-        for (int i = 1; i <= 96; i += 1)
-        {
-            spawnBeats.Add(i);
-        }
-
+        
+        // Determine whether to use MIDI or hardcoded beats based on level
+        SetupBeatsForLevel();
+        
+        maxNotes = 10000;
         musicNotes = new Queue<MonoBehaviour>();
 
         if (metronomeToggleButton != null)
@@ -119,6 +119,38 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
             UpdateAllNotesVisualScale(noteSizeSlider.value);
             noteSizeSlider.onValueChanged.AddListener(UpdateAllNotesVisualScale);
         }
+    }
+
+    private void SetupBeatsForLevel()
+    {
+        musicNoteBeats.Clear();
+        spawnBeats.Clear();
+        
+        if (level <= 1)
+        {
+            SetupHardcodedBeats();
+        }
+        else
+        {
+            LoadMidiFile();
+        }
+    }
+
+    private void SetupHardcodedBeats()
+    {
+        numBeats = Mathf.FloorToInt(bpm * song.clip.length / 60f);
+        
+        for (int i = 0; i < numBeats; i++)
+        {
+            musicNoteBeats.Add(i * 1);
+        }
+        
+        for (int i = 1; i <= 96; i += 1)
+        {
+            spawnBeats.Add(i);
+        }
+        
+        Debug.Log($"Setup hardcoded beats. Total beats: {numBeats}");
     }
 
     void Update()
@@ -150,45 +182,67 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
                 StopAllCoroutines();
             }
 
-            // songPosition = (float)(AudioSettings.dspTime - songTime);
-            // beatsPosition = songPosition / secondsPerBeat;
             double effectiveDspTime = AudioSettings.dspTime - totalPausedDuration;
             songPosition = (float)(effectiveDspTime - songTime);
             beatsPosition = songPosition / secondsPerBeat;
 
-            if (isOnion) { spawnInterval = 1; maxNotes = 11; }
-            else if (isCarrot) { spawnInterval = 2; maxNotes = 4; }
-            else if (isPotato) { spawnInterval = 4; maxNotes = 5; }
-
-            if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
+            // For demo and level 1, handle vegetable-specific logic
+            if (level <= 1)
             {
+                if (isOnion) { spawnInterval = 1; maxNotes = 11; }
+                else if (isCarrot) { spawnInterval = 2; maxNotes = 4; }
+                else if (isPotato) { spawnInterval = 4; maxNotes = 5; }
+            }
 
-                int beatToSpawn = musicNoteBeats[beatIndex];
-                if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
+            // Different note spawning logic for different levels
+            if (level <= 1)
+            {
+                // Original vegetable-specific logic for demo and level 1
+                if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition)
                 {
-                    MusicNote curr = null;
-
-                    if (isPotato)
+                    int beatToSpawn = (int)musicNoteBeats[beatIndex];
+                    if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                     {
-                        if (notesSpawned < 3)
+                        MusicNote curr = null;
+
+                        if (isPotato)
                         {
-                            var container = Instantiate(holdNoteContainerPrefab, transform);
-                            foreach (var vs in container.GetComponentsInChildren<VisualScaler>())
+                            if (notesSpawned < 3)
                             {
-                                vs.scaleFactor = noteSizeSlider != null
-                                    ? noteSizeSlider.value
-                                    : DEFAULT_SIZE;
-                                vs.ApplyScale();
+                                var container = Instantiate(holdNoteContainerPrefab, transform);
+                                foreach (var vs in container.GetComponentsInChildren<VisualScaler>())
+                                {
+                                    vs.scaleFactor = noteSizeSlider != null
+                                        ? noteSizeSlider.value
+                                        : DEFAULT_SIZE;
+                                    vs.ApplyScale();
+                                }
+                                var controller = container.GetComponent<HoldNoteController>();
+
+                                float startBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
+                                float endBeat = startBeat + 2f;
+
+                                controller.Initialize(startBeat, endBeat, new Vector2(0f, -4f), new Vector2(0f, 4f), this);
+                                musicNotes.Enqueue(controller.startNote);
+
+                                Debug.Log("hold note spawned");
                             }
-                            var controller = container.GetComponent<HoldNoteController>();
-
-                            float startBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
-                            float endBeat = startBeat + 2f;
-
-                            controller.Initialize(startBeat, endBeat, new Vector2(0f, -4f), new Vector2(0f, 4f), this);
-                            musicNotes.Enqueue(controller.startNote);
-
-                            Debug.Log("hold note spawned");
+                            else
+                            {
+                                curr = Instantiate(note, transform);
+                                var vs = curr.GetComponent<VisualScaler>();
+                                if (vs != null)
+                                {
+                                    vs.scaleFactor = noteSizeSlider != null
+                                        ? noteSizeSlider.value
+                                        : DEFAULT_SIZE;
+                                    vs.ApplyScale();
+                                }
+                                curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
+                                curr.startingPosition = new Vector2(0f, -4f);
+                                curr.endingPosition = new Vector2(0f, 4f);
+                                musicNotes.Enqueue(curr);
+                            }
                         }
                         else
                         {
@@ -201,14 +255,40 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
                                     : DEFAULT_SIZE;
                                 vs.ApplyScale();
                             }
-                            curr.myBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
+                            curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
                             curr.startingPosition = new Vector2(0f, -4f);
                             curr.endingPosition = new Vector2(0f, 4f);
                             musicNotes.Enqueue(curr);
                         }
+
+                        notesSpawned++;
+
+                        if (loopCount >= 3 && curr != null && manager != null && manager.whatLevel() != 1)
+                        {
+                            var sr = curr.GetComponent<SpriteRenderer>();
+                            if (sr != null) sr.enabled = false;
+                            else if (curr.GetComponent<MeshRenderer>() != null)
+                                curr.GetComponent<MeshRenderer>().enabled = false;
+                        }
                     }
-                    else
+                    
+                    beatIndex++;
+                    if (metronomeOn) metronome.Play();
+                    animator.SetTrigger("Next");
+                }
+            }
+            else
+            {
+                // MIDI file based note spawning for level 2 and 3
+                float spawnThreshold = 0.01f;
+                
+                while (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] <= beatsPosition + spawnThreshold)
+                {
+                    int beatToSpawn = (int)musicNoteBeats[beatIndex];
+                    if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
                     {
+                        MusicNote curr = null;
+                        
                         curr = Instantiate(note, transform);
                         var vs = curr.GetComponent<VisualScaler>();
                         if (vs != null)
@@ -218,27 +298,19 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
                                 : DEFAULT_SIZE;
                             vs.ApplyScale();
                         }
-                        curr.myBeat = musicNoteBeats[beatIndex] + noteTravelBeats;
+                        
+                        curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
                         curr.endingPosition = new Vector2(0f, 4f);
                         musicNotes.Enqueue(curr);
+                        
+                        notesSpawned++;
                     }
-
-                    notesSpawned++;
-
-                    if (loopCount >= 3 && curr != null && manager.whatLevel() != 1)
-                    {
-                        var sr = curr.GetComponent<SpriteRenderer>();
-                        if (sr != null) sr.enabled = false;
-                        else if (curr.GetComponent<MeshRenderer>() != null)
-                            curr.GetComponent<MeshRenderer>().enabled = false;
-                    }
+                    
+                    beatIndex++;
+                    if (metronomeOn) metronome.Play();
+                    animator.SetTrigger("Next");
                 }
-                
-
-                beatIndex++;
-                if (metronomeOn) metronome.Play();
-                animator.SetTrigger("Next");
             }
 
             if (beatsPosition >= numBeats)
@@ -251,9 +323,11 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
                         SceneManager.LoadScene("EndDemo");
                     else if (level == 1)
                         SceneManager.LoadScene("EndScene");
-                        StopMusic();
+                    else if (level == 2 || level == 3)
+                        SceneManager.LoadScene("EndScene");
+                        
+                    StopMusic();
                     return;
-
                 }
 
                 beatIndex = 0;
@@ -269,7 +343,7 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
 
            if (Input.GetKeyDown(KeyCode.Space) && musicNotes.Count > 0)
             {
-                var note = musicNotes.Peek(); // peek instead of dequeue
+                var note = musicNotes.Peek(); 
                 if(note == null)
                 {
                     Debug.Log("WHY");
@@ -278,7 +352,7 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
                 {
                     Debug.Log("pressed");
                     note.SendMessage("notePressed", SendMessageOptions.DontRequireReceiver);
-                    musicNotes.Dequeue(); // remove only after pressing
+                    musicNotes.Dequeue(); 
                 }
             }
         }
@@ -316,13 +390,10 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
     {
         while (countDownTime > 0)
         {
-            // countDown.text = countDownTime.ToString();
             yield return new WaitForSeconds(1f);
             countDownAnimator.SetTrigger("Next");
             countDownTime--;
         }
-
-       // countDown.text = "Start!";
         yield return new WaitForSeconds(1f);
         countDownAnimator.SetTrigger("Next");
         countDown.gameObject.SetActive(false);
@@ -372,5 +443,62 @@ public class DemoSongManager : MonoBehaviour, IsSongManager
     {
         totalPausedDuration += AudioSettings.dspTime - pauseStartDspTime;
         song.UnPause();
+    }
+
+    void LoadMidiFile()
+    {
+        string midiPath = Path.Combine(Application.streamingAssetsPath, midiFileName);
+        if (!File.Exists(midiPath))
+        {
+            Debug.LogError("MIDI file not found: " + midiPath);
+            SetupHardcodedBeats();
+            return;
+        }
+
+        var midiFile = MidiFile.Read(midiPath);
+        var tempoMap = midiFile.GetTempoMap();
+        var notes = midiFile.GetNotes();
+
+        Debug.Log($"MIDI file loaded. Total notes found: {notes.Count}");
+
+        musicNoteBeats.Clear();
+        foreach (var note in notes)
+        {
+            Debug.Log($"Note: {note.NoteName} at time {note.Time}");
+
+            musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
+        }
+
+        musicNoteBeats.Sort();
+
+        if (musicNoteBeats.Count > 0)
+        {
+            numBeats = Mathf.CeilToInt((float)musicNoteBeats[^1]) + 1;
+            Debug.Log($"Set numBeats dynamically to {numBeats}");
+            
+            for (int i = 0; i < musicNoteBeats.Count; i++)
+            {
+                spawnBeats.Add(i);
+            }
+        }
+        else
+        {
+            Debug.LogWarning("MIDI file had no usable notes, falling back to hardcoded beats.");
+            SetupHardcodedBeats();
+        }
+
+        Debug.Log($"Loaded {musicNoteBeats.Count} notes from MIDI.");
+    }
+
+    float ConvertNoteToBeat(Melanchall.DryWetMidi.Interaction.Note note, TempoMap tempoMap)
+    {
+        var metricTime = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
+        double timeInSeconds = metricTime.TotalMicroseconds / 1_000_000.0;
+        return (float)(timeInSeconds / secondsPerBeat);
+    }
+
+    public List<double> GetMusicNoteBeats()
+    {
+        return musicNoteBeats;
     }
 }
