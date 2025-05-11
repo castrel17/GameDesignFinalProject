@@ -262,14 +262,6 @@ public class DemoSongManager : MonoBehaviour
                         }
 
                         notesSpawned++;
-
-                        if (loopCount >= 3 && curr != null && manager != null && manager.whatLevel() != 1)
-                        {
-                            var sr = curr.GetComponent<SpriteRenderer>();
-                            if (sr != null) sr.enabled = false;
-                            else if (curr.GetComponent<MeshRenderer>() != null)
-                                curr.GetComponent<MeshRenderer>().enabled = false;
-                        }
                     }
                     
                     beatIndex++;
@@ -279,7 +271,6 @@ public class DemoSongManager : MonoBehaviour
             }
             else
             {
-                // MIDI file based note spawning for level 2 and 3
                 float spawnThreshold = 0.01f;
                 
                 while (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] <= beatsPosition + spawnThreshold)
@@ -299,7 +290,7 @@ public class DemoSongManager : MonoBehaviour
                             vs.ApplyScale();
                         }
                         
-                        curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
+                        curr.myBeat = (float)musicNoteBeats[beatIndex] - noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
                         curr.endingPosition = new Vector2(0f, 4f);
                         musicNotes.Enqueue(curr);
