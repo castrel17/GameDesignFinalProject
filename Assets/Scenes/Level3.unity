@@ -1019,6 +1019,7 @@ MonoBehaviour:
   noteSizeSlider: {fileID: 1279955451}
   level: 3
   midiFileName: level1.mid
+  useMidiFile: 0
 --- !u!1 &611970380
 GameObject:
   m_ObjectHideFlags: 0
@@ -2195,7 +2196,7 @@ MonoBehaviour:
   streakSlider: {fileID: 143341346}
   fullCycles: 0
   maxCycles: 50
-  level: 1
+  level: 3
 --- !u!4 &992531443
 Transform:
   m_ObjectHideFlags: 0

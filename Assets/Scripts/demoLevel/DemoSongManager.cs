@@ -290,7 +290,7 @@ public class DemoSongManager : MonoBehaviour
                             vs.ApplyScale();
                         }
                         
-                        curr.myBeat = (float)musicNoteBeats[beatIndex] - noteTravelBeats;
+                        curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
                         curr.endingPosition = new Vector2(0f, 4f);
                         musicNotes.Enqueue(curr);

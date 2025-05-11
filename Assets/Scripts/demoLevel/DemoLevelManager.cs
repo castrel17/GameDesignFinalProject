@@ -162,31 +162,55 @@ public class DemoLevelManager : MonoBehaviour
             
             return;
         }
-
-        switch (fullCycles % 3)
+        if (level <=1)
         {
-            case 0:
-                SpawnCarrot();
-                songManager.isCarrot = true;
-                songManager.isPotato = false;
-                songManager.isOnion = false;
-                break;
-            case 1:
-                SpawnPotato();
-                songManager.isCarrot = false;
-                songManager.isPotato = true;
-                songManager.isOnion = false;
-                break;
-            case 2:
-                SpawnOnion();
-                songManager.isCarrot = false;
-                songManager.isPotato = false;
-                songManager.isOnion = true;
-                break;
-        }
+            switch (fullCycles % 3)
+            {
+                case 0:
+                    SpawnCarrot();
+                    songManager.isCarrot = true;
+                    songManager.isPotato = false;
+                    songManager.isOnion = false;
+                    break;
+                case 1:
+                    SpawnPotato();
+                    songManager.isCarrot = false;
+                    songManager.isPotato = true;
+                    songManager.isOnion = false;
+                    break;
+                case 2:
+                    SpawnOnion();
+                    songManager.isCarrot = false;
+                    songManager.isPotato = false;
+                    songManager.isOnion = true;
+                    break;
+            }
 
-        fullCycles++;
-        cyclesThisLoop++;
+            fullCycles++;
+            cyclesThisLoop++;
+        }
+        else
+        {
+            switch (fullCycles % 2)
+            {
+                case 0:
+                    SpawnCarrot();
+                    songManager.isCarrot = true;
+                    songManager.isPotato = false;
+                    songManager.isOnion = false;
+                    break;
+                case 1:
+                    SpawnOnion();
+                    songManager.isCarrot = false;
+                    songManager.isPotato = false;
+                    songManager.isOnion = true;
+                    break;
+            }
+
+            fullCycles++;
+            cyclesThisLoop++;
+        }
+        
 
         // if (cyclesThisLoop == 6 && level == 0)
         // {
