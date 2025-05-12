@@ -25,10 +25,10 @@ public class MusicNote : MonoBehaviour
             float currentBeat = songManager.getBeatsPosition();
             float travelBeats = songManager.noteTravelBeats;
 
-            // Calculate normalized position based on travel time
             float t = 1 - ((myBeat - currentBeat) / travelBeats);
             t = Mathf.Clamp01(t);
             transform.position = Vector2.Lerp(startingPosition, endingPosition, t);
+            
 
             float missCutoffBeat = myBeat - travelBeats * 0.1f;
             if (currentBeat > missCutoffBeat)
