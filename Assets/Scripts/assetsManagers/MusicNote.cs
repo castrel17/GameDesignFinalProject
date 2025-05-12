@@ -64,7 +64,8 @@ public class MusicNote : MonoBehaviour
         float travelBeats = songManager.noteTravelBeats;
         float idealHitBeat = myBeat - (travelBeats / 2f);  // player should hit when note is halfway through
         float beatDelta = Mathf.Abs(currentBeat - idealHitBeat);
-
+        Debug.Log("ideal beat " + idealHitBeat);
+        Debug.Log("beat at which the note was hit " + currentBeat);
         if (beatDelta < 0.2f)
         {
             manager.currentVegetable.GetComponent<VegetableCutting>().slice();

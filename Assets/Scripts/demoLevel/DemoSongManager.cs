@@ -271,8 +271,7 @@ public class DemoSongManager : MonoBehaviour
             }
             else
             {
-                float spawnThreshold = 0.01f;
-                
+                float spawnThreshold = 4.0f;
                 while (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] <= beatsPosition + spawnThreshold)
                 {
                     int beatToSpawn = (int)musicNoteBeats[beatIndex];
@@ -289,8 +288,8 @@ public class DemoSongManager : MonoBehaviour
                                 : DEFAULT_SIZE;
                             vs.ApplyScale();
                         }
-                        
-                        curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
+
+                        curr.myBeat = (float)musicNoteBeats[beatIndex] + spawnThreshold;// + noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
                         curr.endingPosition = new Vector2(0f, 4f);
                         musicNotes.Enqueue(curr);
@@ -485,6 +484,7 @@ public class DemoSongManager : MonoBehaviour
     {
         var metricTime = TimeConverter.ConvertTo<MetricTimeSpan>(note.Time, tempoMap);
         double timeInSeconds = metricTime.TotalMicroseconds / 1_000_000.0;
+        Debug.Log("Note beat " + (float)(timeInSeconds / secondsPerBeat));
         return (float)(timeInSeconds / secondsPerBeat);
     }
 
