@@ -269,38 +269,58 @@ public class DemoSongManager : MonoBehaviour
                     animator.SetTrigger("Next");
                 }
             }
-            else
+          else
             {
                 float spawnThreshold = 0.01f;
                 
-                while (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] <= beatsPosition + spawnThreshold)
+                float lookAheadPosition = beatsPosition + 12f;
+                
+                while (beatIndex < musicNoteBeats.Count && 
+                       musicNoteBeats[beatIndex] <= lookAheadPosition + spawnThreshold)
                 {
-                    int beatToSpawn = (int)musicNoteBeats[beatIndex];
-                    if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)
+                    float targetBeat = (float)musicNoteBeats[beatIndex];
+                    float spawnBeat = targetBeat - noteTravelBeats;
+                    
+                    if (beatsPosition >= spawnBeat - spawnThreshold && 
+                        beatsPosition <= spawnBeat + 1f) 
                     {
-                        MusicNote curr = null;
-                        
-                        curr = Instantiate(note, transform);
-                        var vs = curr.GetComponent<VisualScaler>();
-                        if (vs != null)
+                        if (notesSpawned < maxNotes)
                         {
-                            vs.scaleFactor = noteSizeSlider != null
-                                ? noteSizeSlider.value
-                                : DEFAULT_SIZE;
-                            vs.ApplyScale();
+                            MusicNote curr = Instantiate(note, transform);
+                            var vs = curr.GetComponent<VisualScaler>();
+                            if (vs != null)
+                            {
+                                vs.scaleFactor = noteSizeSlider != null
+                                    ? noteSizeSlider.value
+                                    : DEFAULT_SIZE;
+                                vs.ApplyScale();
+                            }
+                            
+                            curr.myBeat = targetBeat;
+                            curr.startingPosition = new Vector2(0f, -4f);
+                            curr.endingPosition = new Vector2(0f, 4f);
+                            musicNotes.Enqueue(curr);
+                            
+                            notesSpawned++;
+                            
+                            Debug.Log($"Spawned note for beat {targetBeat}, arriving in {noteTravelBeats} beats");
                         }
                         
-                        curr.myBeat = (float)musicNoteBeats[beatIndex] + noteTravelBeats;
-                        curr.startingPosition = new Vector2(0f, -4f);
-                        curr.endingPosition = new Vector2(0f, 4f);
-                        musicNotes.Enqueue(curr);
-                        
-                        notesSpawned++;
+                        beatIndex++;
+                        if (metronomeOn) metronome.Play();
+                        animator.SetTrigger("Next");
                     }
-                    
-                    beatIndex++;
-                    if (metronomeOn) metronome.Play();
-                    animator.SetTrigger("Next");
+                    else if (beatsPosition > spawnBeat + 2f)
+                    {
+                        // If we've missed the spawn window, skip this note
+                        Debug.LogWarning($"Missed spawn window for beat {targetBeat}");
+                        beatIndex++;
+                    }
+                    else
+                    {
+                        // Not time to spawn this note yet
+                        break;
+                    }
                 }
             }
 
@@ -451,13 +471,14 @@ public class DemoSongManager : MonoBehaviour
         var notes = midiFile.GetNotes();
 
         Debug.Log($"MIDI file loaded. Total notes found: {notes.Count}");
-
+        int noteCount = 0;
         musicNoteBeats.Clear();
         foreach (var note in notes)
         {
-            Debug.Log($"Note: {note.NoteName} at time {note.Time}");
-
             musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
+
+            noteCount++;
+            Debug.Log($"Note: {note.NoteName} at time {note.Time}");
         }
 
         musicNoteBeats.Sort();
@@ -492,4 +513,6 @@ public class DemoSongManager : MonoBehaviour
     {
         return musicNoteBeats;
     }
+
+    public int getLevel(){return level;}
 }
