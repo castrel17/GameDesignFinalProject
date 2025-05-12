@@ -197,7 +197,7 @@ public class DemoSongManager : MonoBehaviour
             if (level <= 1)
             {
                 // Original vegetable-specific logic for demo and level 1
-                if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition && !manager.needVeg)
+                if (beatIndex < musicNoteBeats.Count && musicNoteBeats[beatIndex] < beatsPosition && !manager.needVeg && !manager.getAllCut())
                 {
                     int beatToSpawn = (int)musicNoteBeats[beatIndex];
                     if (beatToSpawn % spawnInterval == 0 && notesSpawned < maxNotes)

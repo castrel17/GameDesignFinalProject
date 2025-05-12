@@ -49,6 +49,8 @@ public class DemoLevelManager : MonoBehaviour
     private bool firstPotato = true;
     private bool tutorialPause = false;
 
+    private bool allCut = false;
+
     void Start()
     {
         maxCycles = level == 0 ? 7 : 9;
@@ -151,14 +153,19 @@ public class DemoLevelManager : MonoBehaviour
     public void spawnNew()
     {
         Debug.Log("cycle value " + fullCycles);
+        if (allCut)
+        {
+            return;
+        }
 
         if (fullCycles >= maxCycles)
         {
             tutorialText?.SetText("All vegetables done! Excellent work!");
-            if (level == 0)
-                SceneManager.LoadScene("EndDemo");
-            else if (level == 1)
-                SceneManager.LoadScene("EndScene");
+            allCut = true;
+            // if (level == 0)
+            //     SceneManager.LoadScene("EndDemo");
+            // else if (level == 1)
+            //     SceneManager.LoadScene("EndScene");
             
             return;
         }
@@ -261,4 +268,6 @@ public class DemoLevelManager : MonoBehaviour
         Debug.Log("Vegetable fully processed. Moving to next.");
         return true; // ✅ Done!
     }
+
+    public bool getAllCut(){return allCut;}
 }
