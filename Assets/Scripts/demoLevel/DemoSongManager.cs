@@ -492,4 +492,5 @@ public class DemoSongManager : MonoBehaviour
     {
         return musicNoteBeats;
     }
+    public int getNumBeats(){return musicNoteBeats.Count;}
 }

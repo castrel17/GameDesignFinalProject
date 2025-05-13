@@ -51,6 +51,8 @@ public class DemoLevelManager : MonoBehaviour
 
     private bool allCut = false;
 
+    private int numCuts = 0;
+
     void Start()
     {
         maxCycles = level == 0 ? 7 : 9;
@@ -157,20 +159,15 @@ public class DemoLevelManager : MonoBehaviour
         {
             return;
         }
-
-        if (fullCycles >= maxCycles)
-        {
-            tutorialText?.SetText("All vegetables done! Excellent work!");
-            allCut = true;
-            // if (level == 0)
-            //     SceneManager.LoadScene("EndDemo");
-            // else if (level == 1)
-            //     SceneManager.LoadScene("EndScene");
-            
-            return;
-        }
         if (level <=1)
         {
+            if (fullCycles >= maxCycles)
+            {
+                tutorialText?.SetText("All vegetables done! Excellent work!");
+                allCut = true;
+                
+                return;
+            }
             switch (fullCycles % 3)
             {
                 case 0:
@@ -198,6 +195,13 @@ public class DemoLevelManager : MonoBehaviour
         }
         else
         {
+            if (numCuts >= songManager.getNumBeats())
+            {
+                tutorialText?.SetText("All vegetables done! Excellent work!");
+                allCut = true;
+                
+                return;
+            }
             switch (fullCycles % 2)
             {
                 case 0:
@@ -205,12 +209,14 @@ public class DemoLevelManager : MonoBehaviour
                     songManager.isCarrot = true;
                     songManager.isPotato = false;
                     songManager.isOnion = false;
+                    numCuts += 4;
                     break;
                 case 1:
                     SpawnOnion();
                     songManager.isCarrot = false;
                     songManager.isPotato = false;
                     songManager.isOnion = true;
+                    numCuts += 11;
                     break;
             }
 
