@@ -995,8 +995,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   bpm: 79
-  noteTravelBeats: 8
-  activeHoldNote: {fileID: 0}
   holdNoteContainerPrefab: {fileID: 771873054292305035, guid: e67282b9585634f97a345b546cf0b760, type: 3}
   countDown: {fileID: 549417250}
   countDownTime: 3
@@ -1020,6 +1018,8 @@ MonoBehaviour:
   instructionText: {fileID: 0}
   noteSizeSlider: {fileID: 1279955451}
   level: 1
+  midiFileName: level2.mid
+  useMidiFile: 0
 --- !u!1 &611970380
 GameObject:
   m_ObjectHideFlags: 0
@@ -3168,7 +3168,7 @@ Canvas:
   m_AdditionalShaderChannelsFlag: 25
   m_UpdateRectTransformForStandalone: 0
   m_SortingLayerID: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 100
   m_TargetDisplay: 0
 --- !u!224 &1330040871
 RectTransform:
