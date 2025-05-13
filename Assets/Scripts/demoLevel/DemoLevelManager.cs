@@ -116,7 +116,7 @@ public class DemoLevelManager : MonoBehaviour
                 feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
                 streak++;
                 score += 100;
-                scoreBar.updateScoreBar(2);
+                scoreBar.updateScoreBar(1);
                 break;
             case 1:
                 feedback = Instantiate(Miss, centerPos, Quaternion.identity);
@@ -141,14 +141,14 @@ public class DemoLevelManager : MonoBehaviour
         {
             score += 100;
             bonus = Instantiate(bonusStreak, centerPosDown, Quaternion.identity);
-            bonus.SetActive(true);
+           // bonus.SetActive(true);
             Destroy(bonus, 1.0f);
             streak = 0;
         }
 
         streakSlider.value = streak;
         feedback.SetActive(true);
-        Destroy(feedback, 1.0f);
+        Destroy(feedback, 0.5f);
         scoreText.text = "Score: " + score;
     }
 

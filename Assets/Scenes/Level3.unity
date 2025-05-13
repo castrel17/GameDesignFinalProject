@@ -1018,7 +1018,7 @@ MonoBehaviour:
   instructionText: {fileID: 0}
   noteSizeSlider: {fileID: 1279955451}
   level: 3
-  midiFileName: level3beatmap.mid
+  midiFileName: level3_beatmapUSE.mid
   useMidiFile: 0
 --- !u!1 &611970380
 GameObject:
