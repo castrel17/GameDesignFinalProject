@@ -108,7 +108,7 @@ public class DemoLevelManager : MonoBehaviour
         }
     }
 
-    public void spawnFeedback(int opt)
+    public void spawnFeedback(int opt) //update score proportional to the number of beats they have 100=numCuts
     {
         switch (opt)
         {
@@ -116,7 +116,7 @@ public class DemoLevelManager : MonoBehaviour
                 feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
                 streak++;
                 score += 100;
-                scoreBar.updateScoreBar(1);
+                scoreBar.updateScoreBar((int)(songManager.getNumBeats() * .01));
                 break;
             case 1:
                 feedback = Instantiate(Miss, centerPos, Quaternion.identity);
@@ -127,13 +127,13 @@ public class DemoLevelManager : MonoBehaviour
                 feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
                 streak = 0;
                 score += 50;
-                scoreBar.updateScoreBar(1);
+                scoreBar.updateScoreBar(((int)(songManager.getNumBeats() * .01))/2);
                 break;
             case 3:
                 feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
                 streak = 0;
                 score += 50;
-                scoreBar.updateScoreBar(1);
+                scoreBar.updateScoreBar(((int)(songManager.getNumBeats() * .01))/2);
                 break;
         }
 
@@ -149,6 +149,7 @@ public class DemoLevelManager : MonoBehaviour
         streakSlider.value = streak;
         feedback.SetActive(true);
         Destroy(feedback, 0.5f);
+        Debug.Log($"score: {score}");
         scoreText.text = "Score: " + score;
     }
 
@@ -223,13 +224,6 @@ public class DemoLevelManager : MonoBehaviour
             fullCycles++;
             cyclesThisLoop++;
         }
-        
-
-        // if (cyclesThisLoop == 6 && level == 0)
-        // {
-        //     songManager.loopStarted = false;
-        //     cyclesThisLoop = 0;
-        // }
     }
 
     public int whatLevel() => level;

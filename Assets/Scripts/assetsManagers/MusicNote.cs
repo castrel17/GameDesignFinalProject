@@ -30,7 +30,7 @@ public class MusicNote : MonoBehaviour
             transform.position = Vector2.Lerp(startingPosition, endingPosition, t);
             
 
-            float missCutoffBeat = myBeat - travelBeats * 0.3f;
+            float missCutoffBeat = myBeat - travelBeats * 0.1f; 
             if (currentBeat > missCutoffBeat)
             {
                 outOfBoundsSlicing();
