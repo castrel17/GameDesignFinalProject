@@ -291,7 +291,7 @@ public class DemoSongManager : MonoBehaviour
 
                         curr.myBeat = (float)musicNoteBeats[beatIndex] + spawnThreshold;// + noteTravelBeats;
                         curr.startingPosition = new Vector2(0f, -4f);
-                        curr.endingPosition = new Vector2(0f, 4f);
+                        curr.endingPosition = new Vector2(0f, 3.8f); //changed to match speeds better
                         musicNotes.Enqueue(curr);
                         
                         notesSpawned++;
