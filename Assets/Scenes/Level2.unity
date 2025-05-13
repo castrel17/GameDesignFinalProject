@@ -895,8 +895,8 @@ AudioSource:
   m_Enabled: 1
   serializedVersion: 4
   OutputAudioMixerGroup: {fileID: 0}
-  m_audioClip: {fileID: 8300000, guid: 00297c930b1274909a14378896875d25, type: 3}
-  m_Resource: {fileID: 8300000, guid: 00297c930b1274909a14378896875d25, type: 3}
+  m_audioClip: {fileID: 8300000, guid: b6bcf766030dd4d7d92c83bb06730cdc, type: 3}
+  m_Resource: {fileID: 8300000, guid: b6bcf766030dd4d7d92c83bb06730cdc, type: 3}
   m_PlayOnAwake: 0
   m_Volume: 1
   m_Pitch: 1
@@ -1018,7 +1018,7 @@ MonoBehaviour:
   instructionText: {fileID: 0}
   noteSizeSlider: {fileID: 1279955451}
   level: 2
-  midiFileName: level2_beatmap.mid
+  midiFileName: level3BM.mid
   useMidiFile: 0
 --- !u!1 &611970380
 GameObject:

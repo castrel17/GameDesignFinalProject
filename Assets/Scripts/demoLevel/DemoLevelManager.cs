@@ -53,6 +53,9 @@ public class DemoLevelManager : MonoBehaviour
 
     private int numCuts = 0;
 
+    private int successfulCuts = 0;
+    private int scoreBarIndex = 0;
+
     void Start()
     {
         maxCycles = level == 0 ? 7 : 9;
@@ -108,50 +111,71 @@ public class DemoLevelManager : MonoBehaviour
         }
     }
 
-    public void spawnFeedback(int opt) //update score proportional to the number of beats they have 100=numCuts
+    public void spawnFeedback(int opt)
     {
+        int numBeats = songManager.getNumBeats();
+        int spriteCount = scoreBar.progress.Length;
+
+        bool isScoringAction = false;
+
         switch (opt)
         {
-            case 0:
+            case 0: // Perfect
                 feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
                 streak++;
                 score += 100;
-                scoreBar.updateScoreBar((int)(songManager.getNumBeats() * .01));
+                successfulCuts++;
+                isScoringAction = true;
                 break;
-            case 1:
+
+            case 1: // Miss
                 feedback = Instantiate(Miss, centerPos, Quaternion.identity);
                 streak = 0;
                 goalNote.shake();
                 break;
-            case 2:
-                feedback = Instantiate(TooEarly, centerPos, Quaternion.identity);
+
+            case 2: // Too Early
+            case 3: // Too Late
+                feedback = Instantiate(opt == 2 ? TooEarly : TooLate, centerPos, Quaternion.identity);
                 streak = 0;
                 score += 50;
-                scoreBar.updateScoreBar(((int)(songManager.getNumBeats() * .01))/2);
-                break;
-            case 3:
-                feedback = Instantiate(TooLate, centerPos, Quaternion.identity);
-                streak = 0;
-                score += 50;
-                scoreBar.updateScoreBar(((int)(songManager.getNumBeats() * .01))/2);
+                successfulCuts++;
+                isScoringAction = true;
                 break;
         }
 
-        if (streak == 3)
+        // Only update the score bar if the cut counted toward score
+        if (isScoringAction)
         {
-            score += 100;
-            bonus = Instantiate(bonusStreak, centerPosDown, Quaternion.identity);
-           // bonus.SetActive(true);
-            Destroy(bonus, 1.0f);
-            streak = 0;
+            // Proportional progress
+            float progress = (float)successfulCuts / numBeats;
+            int newIndex = Mathf.Clamp(Mathf.FloorToInt(progress * spriteCount), 0, spriteCount - 1);
+            int delta = newIndex - scoreBarIndex;
+
+            if (delta > 0)
+            {
+                scoreBar.updateScoreBar(delta);
+                scoreBarIndex = newIndex;
+            }
         }
+
+        // Optional: Streak bonus
+        // if (streak == 3)
+        // {
+        //     score += 100;
+        //     bonus = Instantiate(bonusStreak, centerPosDown, Quaternion.identity);
+        //     Destroy(bonus, 1.0f);
+        //     streak = 0;
+        // }
 
         streakSlider.value = streak;
         feedback.SetActive(true);
         Destroy(feedback, 0.5f);
-        Debug.Log($"score: {score}");
+        Debug.Log($"score: {score} / MaxPossible: {numBeats * 100}");
         scoreText.text = "Score: " + score;
     }
+
+
 
     public void spawnNew()
     {
