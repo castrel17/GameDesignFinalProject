@@ -10,6 +10,7 @@ using UnityEngine.SceneManagement;
 using Melanchall.DryWetMidi.Core;
 using Melanchall.DryWetMidi.Interaction;
 using System.IO;
+using UnityEngine.Networking; 
 
 
 public class DemoSongManager : MonoBehaviour
@@ -125,16 +126,21 @@ public class DemoSongManager : MonoBehaviour
     {
         musicNoteBeats.Clear();
         spawnBeats.Clear();
-        
+
         if (level <= 1)
         {
             SetupHardcodedBeats();
         }
         else
         {
-            LoadMidiFile();
+    #if UNITY_WEBGL && !UNITY_EDITOR
+            StartCoroutine(LoadMidiFileWebGL());
+    #else
+            LoadMidiFileLocal();
+    #endif
         }
     }
+
 
     private void SetupHardcodedBeats()
     {
@@ -435,17 +441,61 @@ public class DemoSongManager : MonoBehaviour
         song.UnPause();
     }
 
-    void LoadMidiFile()
+    IEnumerator LoadMidiFileWebGL()
     {
         string midiPath = Path.Combine(Application.streamingAssetsPath, midiFileName);
+
+        UnityWebRequest www = UnityWebRequest.Get(midiPath);
+        yield return www.SendWebRequest();
+
+        if (www.result != UnityWebRequest.Result.Success)
+        {
+            Debug.LogError("WebGL: Failed to load MIDI file: " + www.error);
+            SetupHardcodedBeats();
+            yield break;
+        }
+
+        byte[] midiData = www.downloadHandler.data;
+
+        try
+        {
+            using (var stream = new MemoryStream(midiData))
+            {
+                ProcessMidiFile(MidiFile.Read(stream));
+            }
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("WebGL: Failed to read MIDI: " + e.Message);
+            SetupHardcodedBeats();
+        }
+    }
+
+    void LoadMidiFileLocal()
+    {
+        string midiPath = Path.Combine(Application.streamingAssetsPath, midiFileName);
+
         if (!File.Exists(midiPath))
         {
-            Debug.LogError("MIDI file not found: " + midiPath);
+            Debug.LogError("Local: MIDI file not found: " + midiPath);
             SetupHardcodedBeats();
             return;
         }
 
-        var midiFile = MidiFile.Read(midiPath);
+        try
+        {
+            var midiFile = MidiFile.Read(midiPath);
+            ProcessMidiFile(midiFile);
+        }
+        catch (System.Exception e)
+        {
+            Debug.LogError("Local: Failed to read MIDI file: " + e.Message);
+            SetupHardcodedBeats();
+        }
+    }
+
+    void ProcessMidiFile(MidiFile midiFile)
+    {
         var tempoMap = midiFile.GetTempoMap();
         var notes = midiFile.GetNotes();
 
@@ -454,31 +504,27 @@ public class DemoSongManager : MonoBehaviour
         musicNoteBeats.Clear();
         foreach (var note in notes)
         {
-            Debug.Log($"Note: {note.NoteName} at time {note.Time}");
-
             musicNoteBeats.Add(ConvertNoteToBeat(note, tempoMap));
         }
 
         musicNoteBeats.Sort();
-
         if (musicNoteBeats.Count > 0)
         {
             numBeats = Mathf.CeilToInt((float)musicNoteBeats[^1]) + 1;
-            Debug.Log($"Set numBeats dynamically to {numBeats}");
-            
+
             for (int i = 0; i < musicNoteBeats.Count; i++)
-            {
                 spawnBeats.Add(i);
-            }
         }
         else
         {
-            Debug.LogWarning("MIDI file had no usable notes, falling back to hardcoded beats.");
+            Debug.LogWarning("No usable notes, falling back to hardcoded beats.");
             SetupHardcodedBeats();
         }
-
-        Debug.Log($"Loaded {musicNoteBeats.Count} notes from MIDI.");
     }
+
+
+
+
 
     float ConvertNoteToBeat(Melanchall.DryWetMidi.Interaction.Note note, TempoMap tempoMap)
     {
