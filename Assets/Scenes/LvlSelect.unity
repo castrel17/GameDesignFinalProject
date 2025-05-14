@@ -2142,8 +2142,8 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1432979292}
   - {fileID: 1195428075}
+  - {fileID: 1432979292}
   - {fileID: 1586463810}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -2697,23 +2697,81 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1954024349
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1954024351}
+  - component: {fileID: 1954024350}
+  m_Layer: 0
+  m_Name: LevelSelectStars
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1954024350
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954024349}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1872b2b1e25e7400bb76bb980ce98841, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  filledStar: {fileID: -5950311793530899828, guid: d799fa7fc69347845870d3d2c4fe39bd, type: 3}
+  demoStar1: {fileID: 1195428076}
+  demoStar2: {fileID: 1432979293}
+  demoStar3: {fileID: 1586463811}
+  level1Star1: {fileID: 714266819}
+  level1Star2: {fileID: 1098853068}
+  level1Star3: {fileID: 1461476095}
+  level2Star1: {fileID: 729282979}
+  level2Star2: {fileID: 1580097502}
+  level2Star3: {fileID: 316700430}
+  level3Star1: {fileID: 919393466}
+  level3Star2: {fileID: 335620016}
+  level3Star3: {fileID: 1925742614}
+--- !u!4 &1954024351
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1954024349}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 1.9359713, y: -0.43360803, z: -0.002168841}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
   m_Roots:
   - {fileID: 1896777452}
-  - {fileID: 822496731}
   - {fileID: 378511674}
   - {fileID: 196004790}
   - {fileID: 1528278396}
   - {fileID: 1844009208}
-  - {fileID: 1580524722}
   - {fileID: 1333633607}
   - {fileID: 1540612721}
-  - {fileID: 1233751609}
   - {fileID: 1354991654}
   - {fileID: 285541752}
   - {fileID: 864694991}
-  - {fileID: 1783728775}
   - {fileID: 1620985018}
   - {fileID: 1931299184}
+  - {fileID: 1954024351}
+  - {fileID: 1783728775}
+  - {fileID: 822496731}
+  - {fileID: 1233751609}
+  - {fileID: 1580524722}

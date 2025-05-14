@@ -3663,9 +3663,9 @@ MonoBehaviour:
   lvl0_star1: {fileID: 1135501972}
   lvl0_star2: {fileID: 1529321858}
   lvl0_star3: {fileID: 1031158799}
-  lvl1_star1: {fileID: 1004056522}
-  lvl1_star2: {fileID: 927328897}
-  lvl1_star3: {fileID: 2143972144}
+  lvl1_star1: {fileID: 839339500}
+  lvl1_star2: {fileID: 2119064563}
+  lvl1_star3: {fileID: 331021710}
   lvl2_star1: {fileID: 839339500}
   lvl2_star2: {fileID: 2119064563}
   lvl2_star3: {fileID: 331021710}

@@ -43,7 +43,7 @@ public class EndScreenManager : MonoBehaviour
         _star3Renderer    = lvl_star3.GetComponent<SpriteRenderer>();
 
         //    94%+ -> 3, 66%+ -> 2, 33%+ -> 1, else 0
-        if      (finalPercent >= 94)
+        if      (finalPercent >= 95)
         {
             _frameRenderer.sprite = star3;
             _star1Renderer.sprite = filled_star;

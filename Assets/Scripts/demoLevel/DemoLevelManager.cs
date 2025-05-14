@@ -353,6 +353,8 @@ public class DemoLevelManager : MonoBehaviour
         Debug.Log($"[EndLevel] accumulatedHits={accumulatedHits} totalExpectedNotes={totalExpectedNotes}");
         PlayerPrefs.SetInt("beatPercent", percentScore);
         PlayerPrefs.SetString("scene", currScene);
+        PlayerPrefs.SetInt($"best_{currScene}", percentScore);
+        ScoreManager.previousScores[currScene] = percentScore;
         PlayerPrefs.Save();
         Debug.Log($"[FINAL SAVE] Beats {hitBeats}/{totalBeats} → {percentScore}%");
         SceneManager.LoadScene(endSceneName);
