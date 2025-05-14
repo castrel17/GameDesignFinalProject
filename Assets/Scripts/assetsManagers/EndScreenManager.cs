@@ -1,4 +1,5 @@
 using UnityEngine;
+using TMPro;
 
 public class EndScreenManager : MonoBehaviour
 {
@@ -7,13 +8,15 @@ public class EndScreenManager : MonoBehaviour
     public Sprite star2;
     public Sprite star3;
 
-    public Sprite filled_star;
     public Sprite empty_star;
+    public Sprite filled_star;
 
     public GameObject endscreen;
     public GameObject lvl_star1;
     public GameObject lvl_star2;
     public GameObject lvl_star3;
+
+    public TextMeshProUGUI percentText;
 
     private SpriteRenderer spriteRenderer;
     private SpriteRenderer star1Renderer;

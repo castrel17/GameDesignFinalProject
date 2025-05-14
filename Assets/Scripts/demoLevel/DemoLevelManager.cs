@@ -56,6 +56,8 @@ public class DemoLevelManager : MonoBehaviour
     private int successfulCuts = 0;
     private int scoreBarIndex = 0;
 
+    public static float endLevelHitRatio;
+
     void Start()
     {
         maxCycles = level == 0 ? 7 : 9;
@@ -204,9 +206,16 @@ public class DemoLevelManager : MonoBehaviour
                 PlayerPrefs.SetInt("score", percentScore);
                 SceneManager.LoadScene("EndScene");
                 allCut = true;
-                
+
+                float ratio = (float)successfulCuts / (float)songManager.getNumBeats();
+                endLevelHitRatio = ratio;
+                PlayerPrefs.SetFloat("HitRatio", ratio);
+                PlayerPrefs.Save();
+
+                SceneManager.LoadScene("EndScene");
                 return;
             }
+
             switch (fullCycles % 3)
             {
                 case 0:
