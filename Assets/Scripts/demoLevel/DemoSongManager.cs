@@ -100,6 +100,7 @@ public class DemoSongManager : MonoBehaviour
         animator = GameObject.Find("Goal").GetComponent<Animator>();
         countDownAnimator = GameObject.Find("Countdown").GetComponent<Animator>();
         manager = GameObject.Find("GameManager").GetComponent<DemoLevelManager>();
+        //manager = FindObjectOfType<DemoLevelManager>();
         secondsPerBeat = 60f / bpm;
         
         // Determine whether to use MIDI or hardcoded beats based on level
@@ -421,11 +422,11 @@ public class DemoSongManager : MonoBehaviour
         var lvl = FindObjectOfType<DemoLevelManager>();
         if (lvl != null)
         {
-            string endScene = "EndScene";
+            // pick end scene based on your level
+            string endScene = (level == 0) ? "EndDemo" : "EndScene";
             lvl.EndLevel(endScene);
         }
     }
-
 
     public void ResetNoteCounter()
     {
@@ -524,10 +525,6 @@ public class DemoSongManager : MonoBehaviour
             SetupHardcodedBeats();
         }
     }
-
-
-
-
 
     float ConvertNoteToBeat(Melanchall.DryWetMidi.Interaction.Note note, TempoMap tempoMap)
     {
