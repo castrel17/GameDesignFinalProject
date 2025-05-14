@@ -40,7 +40,7 @@ public class PauseManager : MonoBehaviour
     {
         Time.timeScale = 1f;
         AudioListener.pause = false;
-        SceneManager.LoadScene("LevelSelect");
+        SceneManager.LoadScene("LvlSelect");
     }
 
 }
