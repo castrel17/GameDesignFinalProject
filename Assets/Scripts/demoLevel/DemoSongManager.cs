@@ -421,8 +421,7 @@ public class DemoSongManager : MonoBehaviour
         var lvl = FindObjectOfType<DemoLevelManager>();
         if (lvl != null)
         {
-            // pick end scene based on your level
-            string endScene = (level == 0) ? "EndDemo" : "EndScene";
+            string endScene = "EndScene";
             lvl.EndLevel(endScene);
         }
     }
