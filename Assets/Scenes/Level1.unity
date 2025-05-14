@@ -1180,6 +1180,7 @@ GameObject:
   - component: {fileID: 655364668}
   - component: {fileID: 655364667}
   - component: {fileID: 655364669}
+  - component: {fileID: 655364670}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Goal
@@ -1358,6 +1359,20 @@ MonoBehaviour:
   shakeDuration: 0.5
   pulseMagnitude: 0.2
   songManager: {fileID: 610167287}
+--- !u!114 &655364670
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 655364661}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450de7f189d644052bed43659515f14d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualTransform: {fileID: 655364664}
+  scaleFactor: 1
 --- !u!1 &678733981
 GameObject:
   m_ObjectHideFlags: 0
@@ -1444,6 +1459,7 @@ GameObject:
   - component: {fileID: 717914055}
   - component: {fileID: 717914054}
   - component: {fileID: 717914056}
+  - component: {fileID: 717914057}
   m_Layer: 0
   m_Name: OuterRing
   m_TagString: OuterRing
@@ -1537,6 +1553,20 @@ MonoBehaviour:
   shakeDuration: 0.5
   pulseMagnitude: 0.5
   songManager: {fileID: 610167287}
+--- !u!114 &717914057
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 717914052}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 450de7f189d644052bed43659515f14d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  visualTransform: {fileID: 717914055}
+  scaleFactor: 1
 --- !u!1 &728945560
 GameObject:
   m_ObjectHideFlags: 0

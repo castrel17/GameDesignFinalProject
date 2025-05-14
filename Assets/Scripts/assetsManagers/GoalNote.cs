@@ -14,10 +14,14 @@ public class GoalNote : MonoBehaviour
     private bool isPulsing = false;
     private float lastPulseTime = -1f; 
 
+    private Vector3 unscaledOriginal;
+    private VisualScaler vs;
+
     void Start()
     {
         originalPosition = transform.position;
-        originalScale = transform.localScale;
+        vs = GetComponent<VisualScaler>();
+        unscaledOriginal = vs.visualTransform.localScale;
     }
 
     void Update()
@@ -66,12 +70,13 @@ public class GoalNote : MonoBehaviour
 
         while (elapsed < pulseDuration)
         {
-            float pulseScale = Mathf.Abs(Mathf.Sin(elapsed / pulseDuration * Mathf.PI)) * pulseMagnitude + 1.0f;
-            transform.localScale = originalScale * pulseScale;
+            float factor = Mathf.Abs(Mathf.Sin(elapsed / pulseDuration * Mathf.PI)) * pulseMagnitude + 1f;
+            transform.localScale = unscaledOriginal * factor;
 
             elapsed += Time.deltaTime;
             yield return null;
         }
-        transform.localScale = originalScale;
+
+        transform.localScale = unscaledOriginal;
     }
 }

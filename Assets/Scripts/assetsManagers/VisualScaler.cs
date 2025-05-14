@@ -2,20 +2,20 @@ using UnityEngine;
 
 public class VisualScaler : MonoBehaviour
 {
-    [Header("Visual child here")]
     public Transform visualTransform;
 
-    [Range(0.1f,2f)]
     public float scaleFactor = 1f;
+
+    private Vector3 _baseScale;
 
     void Awake()
     {
+        _baseScale = visualTransform.localScale;
         ApplyScale();
     }
 
     public void ApplyScale()
     {
-        if (visualTransform != null)
-            visualTransform.localScale = Vector3.one * scaleFactor;
+        visualTransform.localScale = _baseScale * scaleFactor;
     }
 }
