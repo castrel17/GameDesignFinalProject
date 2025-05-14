@@ -68,16 +68,16 @@ public class DemoLevelManager : MonoBehaviour
     {
         
         maxCycles = level == 0 ? 7 : 9;
-        // switch(level)
-        // {
-        // case 0: totalExpectedNotes = 46f; break;
-        // case 1: totalExpectedNotes = 69f; break;
-        // case 2: totalExpectedNotes = 150f; break;
-        // case 3: totalExpectedNotes = 105f; break;
-        // default:
-        //     totalExpectedNotes = possibleHits;
-        //     break;
-        // }
+        switch(level)
+        {
+        case 0: totalExpectedNotes = 46f; break;
+        case 1: totalExpectedNotes = 69f; break;
+        case 2: totalExpectedNotes = 150f; break;
+        case 3: totalExpectedNotes = 105f; break;
+        default:
+            totalExpectedNotes = songManager.getNumBeats();
+            break;
+        }
 
         currScene = SceneManager.GetActiveScene().name;
     }
@@ -165,7 +165,7 @@ public class DemoLevelManager : MonoBehaviour
         }
         accumulatedHits += add;
 
-        float ratio = Mathf.Clamp01(accumulatedHits / possibleHits);
+        float ratio = Mathf.Clamp01(accumulatedHits / totalExpectedNotes);
         scoreBar.SetProgress(ratio);
     }
 
@@ -347,10 +347,10 @@ public class DemoLevelManager : MonoBehaviour
         allCut = true;
 
         float hitBeats    = accumulatedHits;
-        float totalBeats = possibleHits;
+        float totalBeats = totalExpectedNotes;
         int percentScore  = Mathf.RoundToInt((hitBeats / totalBeats) * 100);
 
-        Debug.Log($"[EndLevel] accumulatedHits={accumulatedHits} totalExpectedNotes={possibleHits}");
+        Debug.Log($"[EndLevel] accumulatedHits={accumulatedHits} totalExpectedNotes={totalExpectedNotes}");
         PlayerPrefs.SetInt("beatPercent", percentScore);
         PlayerPrefs.SetString("scene", currScene);
         PlayerPrefs.Save();
