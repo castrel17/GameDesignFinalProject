@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using TMPro;
 
 public class EndScreenManager : MonoBehaviour
@@ -11,67 +12,61 @@ public class EndScreenManager : MonoBehaviour
     public Sprite empty_star;
     public Sprite filled_star;
 
-    public GameObject endscreen;
     public GameObject lvl_star1;
     public GameObject lvl_star2;
     public GameObject lvl_star3;
-
     public TextMeshProUGUI percentText;
 
-    private SpriteRenderer spriteRenderer;
-    private SpriteRenderer star1Renderer;
-    private SpriteRenderer star2Renderer;
-    private SpriteRenderer star3Renderer;
+    private SpriteRenderer _frameRenderer;
+    private SpriteRenderer _star1Renderer;
+    private SpriteRenderer _star2Renderer;
+    private SpriteRenderer _star3Renderer;
 
-    private int finalScore;
-    private string level_name;
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        spriteRenderer = GetComponent<SpriteRenderer>();
-        finalScore = PlayerPrefs.GetInt("score");
-        level_name = PlayerPrefs.GetString("scene");
-        if(finalScore > ScoreManager.previousScores[level_name])
-        {
-            ScoreManager.previousScores[level_name] = finalScore;
-        }
-        Debug.Log($"Score: {finalScore}");
-        star1Renderer = lvl_star1.GetComponent<SpriteRenderer>();
-        star2Renderer = lvl_star2.GetComponent<SpriteRenderer>();
-        star3Renderer = lvl_star3.GetComponent<SpriteRenderer>();
+        int finalPercent = PlayerPrefs.GetInt("beatPercent", 0);
 
-        if (finalScore >= 99)
-        {
-            spriteRenderer.sprite = star3;
-            Debug.Log("3 Stars");
-            star1Renderer.sprite = filled_star;
-            star2Renderer.sprite = filled_star;
-            star3Renderer.sprite = filled_star;
+        string levelName = SceneManager.GetActiveScene().name;
 
-        }
-        else if (finalScore >= 66)
+        int previousBest;
+        if (!ScoreManager.previousScores.TryGetValue(levelName, out previousBest))
+            previousBest = 0;
+
+        if (finalPercent > previousBest)
+            ScoreManager.previousScores[levelName] = finalPercent;
+
+        Debug.Log($"[EndScreen] Level '{levelName}', percent = {finalPercent}, previous best = {previousBest}");
+
+        _frameRenderer    = GetComponent<SpriteRenderer>();
+        _star1Renderer    = lvl_star1.GetComponent<SpriteRenderer>();
+        _star2Renderer    = lvl_star2.GetComponent<SpriteRenderer>();
+        _star3Renderer    = lvl_star3.GetComponent<SpriteRenderer>();
+
+        //    90%+ -> 3, 66%+ -> 2, 33%+ -> 1, else 0
+        if      (finalPercent >= 90)
         {
-            spriteRenderer.sprite = star2;
-            Debug.Log("2 Stars");
-            star1Renderer.sprite = filled_star;
-            star2Renderer.sprite = filled_star;
+            _frameRenderer.sprite = star3;
+            _star1Renderer.sprite = filled_star;
+            _star2Renderer.sprite = filled_star;
+            _star3Renderer.sprite = filled_star;
         }
-        else if (finalScore >= 33)
+        else if (finalPercent >= 66)
         {
-            spriteRenderer.sprite = star1;
-            Debug.Log("1 Stars");
-            star1Renderer.sprite = filled_star;
+            _frameRenderer.sprite = star2;
+            _star1Renderer.sprite = filled_star;
+            _star2Renderer.sprite = filled_star;
+        }
+        else if (finalPercent >= 33)
+        {
+            _frameRenderer.sprite = star1;
+            _star1Renderer.sprite = filled_star;
         }
         else
         {
-            Debug.Log("0 Stars");
+            _frameRenderer.sprite = star0;
         }
-    }
 
-    // Update is called once per frame
-    void Update()
-    {
-       
-
+        if (percentText != null)
+            percentText.text = $"{finalPercent}%";
     }
 }

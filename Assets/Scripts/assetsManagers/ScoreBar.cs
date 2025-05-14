@@ -3,12 +3,11 @@ using UnityEngine;
 public class ScoreBar : MonoBehaviour
 {
     public Sprite[] progress;
-    private int index = 0;
-    private SpriteRenderer render;
+    private SpriteRenderer rend;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        render = GetComponent<SpriteRenderer>();
+        rend = GetComponent<SpriteRenderer>();
     }
 
     // Update is called once per frame
@@ -17,13 +16,10 @@ public class ScoreBar : MonoBehaviour
         
     }
 
-    public void updateScoreBar(int value)
+    public void SetProgress(float ratio) 
     {
-        index += value;
-        if (index >= progress.Length)
-        {
-            index = progress.Length - 1;
-        }
-        render.sprite = progress[index];
+        ratio = Mathf.Clamp01(ratio);
+        int idx = Mathf.FloorToInt(ratio * (progress.Length - 1));
+        rend.sprite = progress[idx];
     }
 }

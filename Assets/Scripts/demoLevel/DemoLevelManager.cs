@@ -60,6 +60,8 @@ public class DemoLevelManager : MonoBehaviour
 
     private string currScene;
 
+    private float accumulatedHits = 0f;
+
     void Start()
     {
         maxCycles = level == 0 ? 7 : 9;
@@ -115,27 +117,43 @@ public class DemoLevelManager : MonoBehaviour
             SceneManager.LoadScene(0);
         }
 
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            int maxScore = songManager.getNumBeats() * 100;
-            int percentScore = (100*score / maxScore);
-            percentScore = 100;
-            PlayerPrefs.SetInt("score", percentScore);
-            PlayerPrefs.SetString("scene", currScene);
-            Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
-            SceneManager.LoadScene("EndScene");
-        }
+        // if (Input.GetKeyDown(KeyCode.P))
+        // {
+        //     int maxScore = songManager.getNumBeats() * 100;
+        //     int percentScore = (100*score / maxScore);
+        //     percentScore = 100;
+        //     PlayerPrefs.SetInt("score", percentScore);
+        //     PlayerPrefs.SetString("scene", currScene);
+        //     Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
+        //     SceneManager.LoadScene("EndScene");
+        // }
 
-        if (Input.GetKeyDown(KeyCode.O))
+        // if (Input.GetKeyDown(KeyCode.O))
+        // {
+        //     int maxScore = songManager.getNumBeats() * 100;
+        //     int percentScore = (100 * score / maxScore);
+        //     percentScore = 50;
+        //     PlayerPrefs.SetInt("score", percentScore);
+        //     PlayerPrefs.SetString("scene", currScene);
+        //     Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
+        //     SceneManager.LoadScene("EndScene");
+        // }
+    }
+
+    private void UpdateHitProgress(int opt)
+    {
+        float add = 0f;
+        switch (opt)
         {
-            int maxScore = songManager.getNumBeats() * 100;
-            int percentScore = (100 * score / maxScore);
-            percentScore = 50;
-            PlayerPrefs.SetInt("score", percentScore);
-            PlayerPrefs.SetString("scene", currScene);
-            Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
-            SceneManager.LoadScene("EndScene");
+            case 0: add = 1.5f; break;
+            case 2:
+            case 3: add = 0.5f; break;
         }
+        accumulatedHits += add;
+
+        float totalBeats = songManager.getNumBeats();
+        float ratio      = Mathf.Clamp01(accumulatedHits / totalBeats);
+        scoreBar.SetProgress(ratio);
     }
 
     public void spawnFeedback(int opt)
@@ -150,8 +168,6 @@ public class DemoLevelManager : MonoBehaviour
             case 0: // Perfect
                 feedback = Instantiate(Perfect, centerPos, Quaternion.identity);
                 streak++;
-                score += 100;
-                successfulCuts++;
                 isScoringAction = true;
                 break;
 
@@ -165,25 +181,8 @@ public class DemoLevelManager : MonoBehaviour
             case 3: // Too Late
                 feedback = Instantiate(opt == 2 ? TooEarly : TooLate, centerPos, Quaternion.identity);
                 streak = 0;
-                score += 50;
-                successfulCuts++;
                 isScoringAction = true;
                 break;
-        }
-
-        // Only update the score bar if the cut counted toward score
-        if (isScoringAction)
-        {
-            // Proportional progress
-            float progress = (float)successfulCuts / numBeats;
-            int newIndex = Mathf.Clamp(Mathf.FloorToInt(progress * spriteCount), 0, spriteCount - 1);
-            int delta = newIndex - scoreBarIndex;
-
-            if (delta > 0)
-            {
-                scoreBar.updateScoreBar(delta);
-                scoreBarIndex = newIndex;
-            }
         }
 
         // Optional: Streak bonus
@@ -194,12 +193,16 @@ public class DemoLevelManager : MonoBehaviour
         //     Destroy(bonus, 1.0f);
         //     streak = 0;
         // }
+        if (isScoringAction)
+            UpdateHitProgress(opt);
 
         streakSlider.value = streak;
         feedback.SetActive(true);
         Destroy(feedback, 0.5f);
-        Debug.Log($"score: {score} / MaxPossible: {numBeats * 100}");
-        scoreText.text = "Score: " + score;
+
+        float tb = songManager.getNumBeats();
+        float hb = accumulatedHits;
+        Debug.Log($"Beats hit: {hb} / Total beats: {tb}");
     }
 
 
@@ -216,20 +219,15 @@ public class DemoLevelManager : MonoBehaviour
             if (fullCycles >= maxCycles)
             {
                 tutorialText?.SetText("All vegetables done! Excellent work!");
-                int maxScore = songManager.getNumBeats() * 100;
-                int percentScore = (100 * score / maxScore);
-                PlayerPrefs.SetInt("score", percentScore);
+                float tb = songManager.getNumBeats();
+                float hb = accumulatedHits;
+                int percentScore = Mathf.RoundToInt((hb / tb) * 100);
+                PlayerPrefs.SetInt("beatPercent", percentScore);
                 PlayerPrefs.SetString("scene", currScene);
-                SceneManager.LoadScene("EndScene");
-                allCut = true;
-
-                float ratio = (float)successfulCuts / (float)songManager.getNumBeats();
-                endLevelHitRatio = ratio;
-                PlayerPrefs.SetFloat("HitRatio", ratio);
                 PlayerPrefs.Save();
-
                 SceneManager.LoadScene("EndScene");
                 return;
+
             }
 
             switch (fullCycles % 3)
@@ -263,8 +261,15 @@ public class DemoLevelManager : MonoBehaviour
             {
                 tutorialText?.SetText("All vegetables done! Excellent work!");
                 allCut = true;
-                
+                float tb = songManager.getNumBeats();
+                float hb = accumulatedHits;
+                int percentScore = Mathf.RoundToInt((hb / tb) * 100);
+                PlayerPrefs.SetInt("beatPercent", percentScore);
+                PlayerPrefs.SetString("scene", currScene);
+                PlayerPrefs.Save();
+                SceneManager.LoadScene("EndScene");
                 return;
+
             }
             switch (fullCycles % 2)
             {
@@ -333,4 +338,22 @@ public class DemoLevelManager : MonoBehaviour
     }
 
     public bool getAllCut(){return allCut;}
+
+    public void EndLevel(string endSceneName)
+    {
+        if (allCut) return;
+        allCut = true;
+
+        float totalBeats = songManager.getNumBeats();
+        float hitBeats   = accumulatedHits;
+        int percentScore = Mathf.RoundToInt((hitBeats / totalBeats) * 100);
+
+        PlayerPrefs.SetInt("beatPercent", percentScore);
+        PlayerPrefs.SetString("scene", currScene);
+        PlayerPrefs.Save();
+
+        Debug.Log($"[FINAL SAVE] Beats {hitBeats}/{totalBeats} → {percentScore}%");
+        SceneManager.LoadScene(endSceneName);
+    }
+
 }

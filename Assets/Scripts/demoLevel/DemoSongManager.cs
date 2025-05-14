@@ -314,25 +314,20 @@ public class DemoSongManager : MonoBehaviour
                 songTime += song.clip.length;
                 loopCount++;
                 loopStarted = true;
-                if (loopCount >= 1) {
-                    if (level == 0)
-                        SceneManager.LoadScene("EndDemo");
-                    else if (level == 1)
-                        SceneManager.LoadScene("EndScene");
-                    else if (level == 2 || level == 3)
-                        SceneManager.LoadScene("EndScene");
-                        
+
+                if (loopCount >= 1)
+                {
                     StopMusic();
                     return;
                 }
 
-                beatIndex = 0;
+                beatIndex    = 0;
                 notesSpawned = 0;
-                //clear out old music note queue
+
+                // clear out old notes
                 while (musicNotes.Count > 0)
                 {
-                    var oldNote = musicNotes.Dequeue();
-                    Destroy(oldNote.gameObject);
+                    Destroy(musicNotes.Dequeue().gameObject);
                 }
                 musicNotes = new Queue<MonoBehaviour>();
             }
@@ -413,16 +408,25 @@ public class DemoSongManager : MonoBehaviour
 
     public void StopMusic()
     {
-        AudioSource audioSource = GetComponent<AudioSource>();
+        var audioSource = GetComponent<AudioSource>();
         if (audioSource != null && audioSource.isPlaying)
         {
             audioSource.Stop();
             Debug.Log("Music stopped.");
         }
 
-        started = false;
+        started  = false;
         gameOver = true;
+
+        var lvl = FindObjectOfType<DemoLevelManager>();
+        if (lvl != null)
+        {
+            // pick end scene based on your level
+            string endScene = (level == 0) ? "EndDemo" : "EndScene";
+            lvl.EndLevel(endScene);
+        }
     }
+
 
     public void ResetNoteCounter()
     {
