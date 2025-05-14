@@ -122,7 +122,7 @@ public class DemoLevelManager : MonoBehaviour
                 AudioListener.pause = true;
                 songManager.PauseMusic();
                 tutorialPause = true;
-                songManager.instructionText.SetText("To peel the potato you have to press and hold until you get to the end of the note");
+                songManager.instructionText.SetText("To peel the potato you have to press and hold until you get to the end of the note (left click to continue)");
                 songManager.instructionText.gameObject.SetActive(true);
             }
         }
