@@ -27,6 +27,7 @@ public class VegetablePeeler : MonoBehaviour
     {
         if (peelCount < 3)
         {
+            SoundManager.Instance.peelSFX();
             animator.SetTrigger("Next");
             Debug.Log("Peeled section");
 

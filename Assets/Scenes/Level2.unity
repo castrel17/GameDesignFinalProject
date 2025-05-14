@@ -2011,6 +2011,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: dcee773febc2042b6b15537913537f22, type: 3}
   - {fileID: 8300000, guid: 3856fd3bab22b4a6989b06bb84eef64e, type: 3}
   - {fileID: 8300000, guid: e838fe0993e544b8484edbdd780a5335, type: 3}
+  peelSound: {fileID: 8300000, guid: b7c51855ff2264f35a7c915e2515f1d9, type: 3}
 --- !u!4 &894956635
 Transform:
   m_ObjectHideFlags: 0
@@ -2500,6 +2501,7 @@ MonoBehaviour:
   fullCycles: 0
   maxCycles: 50
   level: 2
+  totalExpectedNotes: 0
 --- !u!4 &992531443
 Transform:
   m_ObjectHideFlags: 0
