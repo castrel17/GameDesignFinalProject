@@ -58,9 +58,12 @@ public class DemoLevelManager : MonoBehaviour
 
     public static float endLevelHitRatio;
 
+    private string currScene;
+
     void Start()
     {
         maxCycles = level == 0 ? 7 : 9;
+        currScene = SceneManager.GetActiveScene().name;
     }
 
     void Update()
@@ -118,6 +121,18 @@ public class DemoLevelManager : MonoBehaviour
             int percentScore = (100*score / maxScore);
             percentScore = 100;
             PlayerPrefs.SetInt("score", percentScore);
+            PlayerPrefs.SetString("scene", currScene);
+            Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
+            SceneManager.LoadScene("EndScene");
+        }
+
+        if (Input.GetKeyDown(KeyCode.O))
+        {
+            int maxScore = songManager.getNumBeats() * 100;
+            int percentScore = (100 * score / maxScore);
+            percentScore = 50;
+            PlayerPrefs.SetInt("score", percentScore);
+            PlayerPrefs.SetString("scene", currScene);
             Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
             SceneManager.LoadScene("EndScene");
         }
@@ -204,6 +219,7 @@ public class DemoLevelManager : MonoBehaviour
                 int maxScore = songManager.getNumBeats() * 100;
                 int percentScore = (100 * score / maxScore);
                 PlayerPrefs.SetInt("score", percentScore);
+                PlayerPrefs.SetString("scene", currScene);
                 SceneManager.LoadScene("EndScene");
                 allCut = true;
 

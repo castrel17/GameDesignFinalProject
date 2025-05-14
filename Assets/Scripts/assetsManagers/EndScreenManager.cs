@@ -24,11 +24,17 @@ public class EndScreenManager : MonoBehaviour
     private SpriteRenderer star3Renderer;
 
     private int finalScore;
+    private string level_name;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
         spriteRenderer = GetComponent<SpriteRenderer>();
         finalScore = PlayerPrefs.GetInt("score");
+        level_name = PlayerPrefs.GetString("scene");
+        if(finalScore > ScoreManager.previousScores[level_name])
+        {
+            ScoreManager.previousScores[level_name] = finalScore;
+        }
         Debug.Log($"Score: {finalScore}");
         star1Renderer = lvl_star1.GetComponent<SpriteRenderer>();
         star2Renderer = lvl_star2.GetComponent<SpriteRenderer>();
