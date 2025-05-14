@@ -72,8 +72,10 @@ public class DemoLevelManager : MonoBehaviour
         {
         case 0: totalExpectedNotes = 46f; break;
         case 1: totalExpectedNotes = 69f; break;
+        case 2: totalExpectedNotes = 150f; break;
+        case 3: totalExpectedNotes = 105f; break;
         default:
-            totalExpectedNotes = possibleHits;
+            totalExpectedNotes = songManager.getNumBeats();
             break;
         }
 
@@ -230,7 +232,7 @@ public class DemoLevelManager : MonoBehaviour
         {
             if (fullCycles >= maxCycles)
             {
-                string endScene = level == 0 ? "EndDemo" : "EndScene";
+                string endScene = "EndScene";
                 EndLevel(endScene);
                 return;
             }
@@ -265,8 +267,8 @@ public class DemoLevelManager : MonoBehaviour
             if (numCuts >= songManager.getNumBeats())
             {
                 tutorialText?.SetText("All vegetables done! Excellent work!");
-                allCut = true;
-                string endScene = level == 0 ? "EndDemo" : "EndScene";
+                //allCut = true;
+                string endScene = "EndScene";
                 EndLevel(endScene);
                 return;
 

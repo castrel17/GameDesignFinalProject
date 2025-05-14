@@ -318,7 +318,9 @@ public class DemoSongManager : MonoBehaviour
 
                 if (loopCount >= 1)
                 {
-                    StopMusic();
+                    song.Stop();
+                    Debug.Log("Music stopped.");
+                    manager.EndLevel("EndScene");
                     return;
                 }
 
@@ -418,15 +420,9 @@ public class DemoSongManager : MonoBehaviour
 
         started  = false;
         gameOver = true;
-
-        var lvl = FindObjectOfType<DemoLevelManager>();
-        if (lvl != null)
-        {
-            // pick end scene based on your level
-            string endScene = "EndScene";
-            lvl.EndLevel(endScene);
-        }
+        manager.EndLevel("EndScene");
     }
+
 
     public void ResetNoteCounter()
     {
