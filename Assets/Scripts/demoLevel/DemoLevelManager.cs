@@ -109,6 +109,16 @@ public class DemoLevelManager : MonoBehaviour
         {
             SceneManager.LoadScene(0);
         }
+
+        if (Input.GetKeyDown(KeyCode.P))
+        {
+            int maxScore = songManager.getNumBeats() * 100;
+            int percentScore = (100*score / maxScore);
+            percentScore = 100;
+            PlayerPrefs.SetInt("score", percentScore);
+            Debug.Log($"Max {maxScore}, Score {score}, Percent {percentScore}");
+            SceneManager.LoadScene("EndScene");
+        }
     }
 
     public void spawnFeedback(int opt)
@@ -189,6 +199,10 @@ public class DemoLevelManager : MonoBehaviour
             if (fullCycles >= maxCycles)
             {
                 tutorialText?.SetText("All vegetables done! Excellent work!");
+                int maxScore = songManager.getNumBeats() * 100;
+                int percentScore = (100 * score / maxScore);
+                PlayerPrefs.SetInt("score", percentScore);
+                SceneManager.LoadScene("EndScene");
                 allCut = true;
                 
                 return;
