@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Goal
   - OuterRing
+  - Droppable
   layers:
   - Default
   - TransparentFX
